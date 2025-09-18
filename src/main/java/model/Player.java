@@ -20,6 +20,11 @@ public class Player {
     public int getHealth() {
         return health;
     }
+    // Add inside Player class
+    public void setHealth(int health) {
+        this.health = health;
+    }
+
 
     public void takeDamage(int amount) {
         health -= amount;
