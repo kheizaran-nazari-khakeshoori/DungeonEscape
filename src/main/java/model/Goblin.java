@@ -7,7 +7,7 @@ public class Goblin extends Enemy {
 
     @Override
     public void attack(Player player) {
-        System.out.println(getName() + " attacks " + player.getName() + " for 10 damage!");
-        player.takeDamage(10);
+        System.out.println(getName() + " attacks " + player.getName() + " for " + getDamage() + " damage!");
+        player.takeDamage(getDamage());
     }
 }

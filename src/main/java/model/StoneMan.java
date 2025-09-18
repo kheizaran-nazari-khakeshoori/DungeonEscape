@@ -8,7 +8,6 @@ public class StoneMan extends Enemy {
     @Override
     public void attack(Player player) {
         System.out.println(getName() + " crushes " + player.getName() + " with a rock for " + getDamage() + " damage!");
-        player.takeDamage(getDamage());
     }
 
     @Override

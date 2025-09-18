@@ -1,9 +1,9 @@
 package com.dungeonescape;
 
 import model.*;
-import system.CombatSystem;
 import controller.RuleEngine;
 import exceptions.InvalidMoveException;
+import controller.CombatSystem;
 
 public class Main {
     public static void main(String[] args) {
@@ -18,26 +18,25 @@ public class Main {
         player.getInventory().showInventory();
 
         // Create RuleEngine and CombatSystem
-        RuleEngine ruleEngine = new RuleEngine();
-        CombatSystem combat = new CombatSystem();
+        CombatSystem combat = new controller.CombatSystem();
 
         // Combat against enemies
         Enemy goblin = new Goblin();
         Enemy ghost = new Ghost();
 
+        // Player starts at 100 health
         combat.fight(player, goblin);
-        combat.fight(player, ghost);
 
-        // Player uses potion (may exceed max health)
-        try {
-            player.useItem("Health Potion");
-        } catch (InvalidMoveException e) {
-            System.out.println("Exception caught: " + e.getMessage());
+        // If player is still alive, they can use items
+        if (player.isAlive()) {
+            System.out.println("\n" + player.getName() + " survived the fight! Current health: " + player.getHealth());
+            System.out.println("Using a health potion to recover...");
+            try {
+                player.useItem("Health Potion"); // The heal method now caps health at 100
+            } catch (InvalidMoveException e) {
+                System.out.println("Exception caught: " + e.getMessage());
+            }
         }
-
-        // Apply rules after using potion
-        ruleEngine.applyRules(player);
-        System.out.println("Player health after rules: " + player.getHealth());
 
         // Test invalid item usage
         try {

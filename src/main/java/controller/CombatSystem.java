@@ -1,4 +1,4 @@
-package system;
+package controller;
 
 import model.Player;
 import model.Enemy;

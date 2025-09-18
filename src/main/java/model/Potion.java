@@ -20,8 +20,7 @@ public class Potion extends Item {
 
     @Override
     public void use(Player player) {
-        System.out.println(getName() + " heals " + player.getName() + " for " + healing + " health for " + duration + " turns!");
-        // Optionally increase player health
-        // player.heal(healing);
+        System.out.println("Using " + getName() + "...");
+        player.heal(healing);
     }
 }

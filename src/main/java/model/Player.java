@@ -20,16 +20,18 @@ public class Player {
     public int getHealth() {
         return health;
     }
-    // Add inside Player class
-    public void setHealth(int health) {
-        this.health = health;
-    }
-
 
     public void takeDamage(int amount) {
         health -= amount;
         if (health < 0) health = 0;
         System.out.println(name + " took " + amount + " damage. Health now: " + health);
+    }
+
+    public void heal(int amount) {
+        this.health += amount;
+        // Enforce the max health rule here, strengthening encapsulation
+        if (this.health > 100) this.health = 100;
+        System.out.println(name + " healed for " + amount + ". Health now: " + this.health);
     }
 
     public boolean isAlive() {

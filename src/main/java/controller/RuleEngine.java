@@ -6,10 +6,8 @@ public class RuleEngine {
 
     // Apply rules to a player
     public void applyRules(Player player) {
-        // Rule: Player health cannot exceed 100
-        if (player.getHealth() > 100) {
-            player.setHealth(100);
-            System.out.println("Rule applied: Player health capped at 100.");
-        }
+        // This specific rule is now handled by the Player.heal() method.
+        // This engine could be used for more complex, external rules in the future.
+        System.out.println("Applying game rules...");
     }
 }
