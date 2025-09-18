@@ -7,12 +7,7 @@ public class Goblin extends Enemy {
 
     @Override
     public void attack(Player player) {
-        System.out.println(getName() + " swings a club at " + player.getName() + " for " + getDamage() + " damage!");
-        // You could implement player.takeDamage(getDamage()) if Player supports it
-    }
-
-    @Override
-    public void move() {
-        System.out.println(getName() + " scurries quickly!");
+        System.out.println(getName() + " attacks " + player.getName() + " for 10 damage!");
+        player.takeDamage(10);
     }
 }

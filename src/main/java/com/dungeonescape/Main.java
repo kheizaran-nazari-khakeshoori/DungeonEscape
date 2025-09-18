@@ -1,8 +1,7 @@
 package com.dungeonescape;
 
-import model.Player;
-import model.Weapon;
-import model.Potion;
+import model.*;
+import system.CombatSystem;
 
 public class Main {
     public static void main(String[] args) {
@@ -16,7 +15,9 @@ public class Main {
 
         player.getInventory().showInventory();
 
-        // Test polymorphic use
-        player.getInventory().useAll(player);
+        Enemy goblin = new Goblin();
+
+        CombatSystem combat = new CombatSystem();
+        combat.fight(player, goblin);
     }
 }

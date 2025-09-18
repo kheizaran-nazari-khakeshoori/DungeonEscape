@@ -17,9 +17,13 @@ public class Inventory {
         }
     }
 
-    public void useAll(Player player) {
-        for (Item item : items) {
-            item.use(player); // polymorphism: different behavior for Weapon vs Potion
+    public Weapon getFirstWeapon() {
+    for (Item item : items) {
+        if (item instanceof Weapon) {
+            return (Weapon) item; // cast Item → Weapon
         }
     }
+    return null;
+}
+
 }
