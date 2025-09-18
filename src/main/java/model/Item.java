@@ -7,8 +7,11 @@ public abstract class Item {
         this.name = name;
     }
 
+    // Encapsulation: getter for name
     public String getName() {
         return name;
     }
-}
 
+    // Abstraction: every item can have a use effect
+    public abstract void use(Player player);
+}

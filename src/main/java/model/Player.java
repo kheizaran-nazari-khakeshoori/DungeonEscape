@@ -11,6 +11,10 @@ public class Player {
         this.inventory = new Inventory();
     }
 
+    public String getName() {
+        return name;
+    }
+
     public void pickItem(Item item) {
         inventory.addItem(item);
         System.out.println(item.getName() + " added to inventory.");
@@ -18,10 +22,5 @@ public class Player {
 
     public Inventory getInventory() {
         return inventory;
-    }
-
-    // <--- ADD THIS
-    public String getName() {
-        return name;
     }
 }

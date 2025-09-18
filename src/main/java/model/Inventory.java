@@ -16,4 +16,10 @@ public class Inventory {
             System.out.println("- " + item.getName());
         }
     }
+
+    public void useAll(Player player) {
+        for (Item item : items) {
+            item.use(player); // polymorphism: different behavior for Weapon vs Potion
+        }
+    }
 }
