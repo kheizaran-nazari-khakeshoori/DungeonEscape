@@ -1,8 +1,12 @@
 package com.dungeonescape;
 
+import model.Enemy;
+import model.Ghost;
+import model.Goblin;
 import model.Player;
-import model.Weapon;
 import model.Potion;
+import model.StoneMan;
+import model.Weapon;
 
 public class Main {
     public static void main(String[] args) {
@@ -15,5 +19,15 @@ public class Main {
         player.pickItem(potion);
 
         player.getInventory().showInventory();
+
+        Enemy goblin = new Goblin();
+        Enemy ghost = new Ghost();
+        Enemy stoneMan = new StoneMan();
+
+        goblin.attack(player);
+        ghost.move();
+        stoneMan.attack(player);
+
     }
+    
 }

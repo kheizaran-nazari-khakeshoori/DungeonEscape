@@ -19,4 +19,9 @@ public class Player {
     public Inventory getInventory() {
         return inventory;
     }
+
+    // <--- ADD THIS
+    public String getName() {
+        return name;
+    }
 }
