@@ -17,13 +17,18 @@ public class Inventory {
         }
     }
 
-    public Weapon getFirstWeapon() {
-    for (Item item : items) {
-        if (item instanceof Weapon) {
-            return (Weapon) item; // cast Item → Weapon
-        }
+    // Return a copy of the items list for safe access
+    public List<Item> getItems() {
+        return new ArrayList<>(items);
     }
-    return null;
-}
 
+    // Get first weapon in inventory
+    public Weapon getFirstWeapon() {
+        for (Item item : items) {
+            if (item instanceof Weapon) {
+                return (Weapon) item;
+            }
+        }
+        return null;
+    }
 }

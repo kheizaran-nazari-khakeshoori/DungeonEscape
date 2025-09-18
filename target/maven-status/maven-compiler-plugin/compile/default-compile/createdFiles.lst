@@ -18,8 +18,8 @@ system/CombatSystem.class
 model/Player.class
 utils/Logger.class
 model/Weapon.class
-utils/DiceRoller.class
 view/CombatDialog.class
+util/DiceRoller.class
 model/Trap.class
 view/HUDPanel.class
 model/Enemy.class

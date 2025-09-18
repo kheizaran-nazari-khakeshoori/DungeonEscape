@@ -2,6 +2,7 @@ package com.dungeonescape;
 
 import model.*;
 import system.CombatSystem;
+import exceptions.InvalidMoveException;
 
 public class Main {
     public static void main(String[] args) {
@@ -15,9 +16,16 @@ public class Main {
 
         player.getInventory().showInventory();
 
+        // Combat test
         Enemy goblin = new Goblin();
-
         CombatSystem combat = new CombatSystem();
         combat.fight(player, goblin);
+
+        // Test invalid move
+        try {
+            player.useItem("Magic Wand"); // not in inventory
+        } catch (InvalidMoveException e) {
+            System.out.println("Exception caught: " + e.getMessage());
+        }
     }
 }

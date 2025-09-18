@@ -1,21 +1,23 @@
 package system;
 
-import java.util.Random;
-
-import model.Enemy;
 import model.Player;
+import model.Enemy;
+import util.DiceRoller;
 
 public class CombatSystem {
+    private DiceRoller dice;
 
-    private Random dice = new Random();
+    public CombatSystem() {
+        dice = new DiceRoller();
+    }
 
     public void fight(Player player, Enemy enemy) {
         System.out.println("\nCombat begins: " + player.getName() + " vs " + enemy.getName() + "\n");
 
-        // Fight loop until one dies
         while (player.isAlive() && enemy.isAlive()) {
-            // Player attacks first
-            if (dice.nextBoolean()) { // random chance to hit
+            // Player turn
+            int playerRoll = dice.roll(6); // roll a 6-sided dice
+            if (playerRoll > 1) { // hit if roll > 1
                 player.attack(enemy);
             } else {
                 System.out.println(player.getName() + " missed the attack!");
@@ -26,8 +28,9 @@ public class CombatSystem {
                 break;
             }
 
-            // Enemy attacks
-            if (dice.nextBoolean()) { // random chance to hit
+            // Enemy turn
+            int enemyRoll = dice.roll(6);
+            if (enemyRoll > 1) {
                 enemy.attack(player);
             } else {
                 System.out.println(enemy.getName() + " missed the attack!");
@@ -40,4 +43,3 @@ public class CombatSystem {
         }
     }
 }
-

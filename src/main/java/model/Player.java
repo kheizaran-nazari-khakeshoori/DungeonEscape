@@ -1,5 +1,7 @@
 package model;
 
+import exceptions.InvalidMoveException;
+
 public class Player {
     private String name;
     private int health;
@@ -38,15 +40,31 @@ public class Player {
         System.out.println(item.getName() + " added to inventory.");
     }
 
-    // Player attacks an enemy using the first weapon in inventory
+    // Player attacks an enemy using the first weapon
     public void attack(Enemy enemy) {
         Weapon weapon = inventory.getFirstWeapon();
         if (weapon != null) {
-            System.out.println(name + " attacks " + enemy.getName() + " with " + weapon.getName() + " for " + weapon.getDamage() + " damage!");
+            System.out.println(name + " attacks " + enemy.getName() + " with " + weapon.getName() +
+                    " for " + weapon.getDamage() + " damage!");
             enemy.takeDamage(weapon.getDamage());
-            weapon.use(this); // reduce durability
+            weapon.use(this); // decrease durability or trigger effects
         } else {
             System.out.println(name + " has no weapon to attack!");
+        }
+    }
+
+    // Use item by name; throws exception if item not in inventory
+    public void useItem(String itemName) throws InvalidMoveException {
+        boolean found = false;
+        for (Item item : inventory.getItems()) {
+            if (item.getName().equalsIgnoreCase(itemName)) {
+                item.use(this);  // polymorphism: Weapon or Potion
+                found = true;
+                break;
+            }
+        }
+        if (!found) {
+            throw new InvalidMoveException("Item '" + itemName + "' is not in inventory!");
         }
     }
 }
