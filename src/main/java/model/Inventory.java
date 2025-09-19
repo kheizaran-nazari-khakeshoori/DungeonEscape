@@ -10,6 +10,10 @@ public class Inventory {
         items.add(item);
     }
 
+    public void removeItem(Item item) {
+        items.remove(item);
+    }
+
     public void showInventory() {
         System.out.println("Inventory:");
         for (Item item : items) {
@@ -20,6 +24,16 @@ public class Inventory {
     // Return a copy of the items list for safe access
     public List<Item> getItems() {
         return new ArrayList<>(items);
+    }
+
+    // Find an item by name
+    public Item findItem(String name) {
+        for (Item item : items) {
+            if (item.getName().equalsIgnoreCase(name)) {
+                return item;
+            }
+        }
+        return null;
     }
 
     // Get first weapon in inventory

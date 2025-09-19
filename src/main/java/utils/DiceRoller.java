@@ -1,4 +1,4 @@
-package util;
+package utils;
 
 import java.util.Random;
 
@@ -15,4 +15,3 @@ public class DiceRoller {
         return random.nextInt(sides) + 1;
     }
 }
-

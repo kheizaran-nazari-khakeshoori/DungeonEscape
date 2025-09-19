@@ -11,9 +11,8 @@ public abstract class Enemy {
         this.damage = damage;
     }
     public int getDamage() {
-    return damage;
-        }
-
+        return damage;
+    }
 
     public String getName() { return name; }
     public int getHealth() { return health; }

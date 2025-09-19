@@ -1,8 +1,8 @@
 package controller;
 
-import model.Player;
 import model.Enemy;
-import util.DiceRoller;
+import model.Player;
+import utils.DiceRoller;
 
 public class CombatSystem {
     private DiceRoller dice;
@@ -16,6 +16,13 @@ public class CombatSystem {
 
         while (player.isAlive() && enemy.isAlive()) {
             // Player turn
+            player.applyTurnEffects();
+
+            if (!player.isAlive()) {
+                // This check is for future effects like poison
+                break;
+            }
+
             int playerRoll = dice.roll(6); // roll a 6-sided dice
             if (playerRoll > 1) { // hit if roll > 1
                 player.attack(enemy);

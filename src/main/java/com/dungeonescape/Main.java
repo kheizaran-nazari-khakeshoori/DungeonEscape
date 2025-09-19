@@ -1,9 +1,13 @@
 package com.dungeonescape;
 
-import model.*;
-import controller.RuleEngine;
-import exceptions.InvalidMoveException;
 import controller.CombatSystem;
+import exceptions.InvalidMoveException;
+import model.Enemy;
+import model.Ghost;
+import model.Goblin;
+import model.Player;
+import model.Potion;
+import model.Weapon;
 
 public class Main {
     public static void main(String[] args) {
@@ -15,7 +19,7 @@ public class Main {
         player.pickItem(sword);
         player.pickItem(potion);
 
-        player.getInventory().showInventory();
+        player.showInventory();
 
         // Create RuleEngine and CombatSystem
         CombatSystem combat = new controller.CombatSystem();
