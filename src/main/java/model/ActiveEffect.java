@@ -1,6 +1,6 @@
 package model;
 
-public class ActiveEffect {
+public class ActiveEffect implements Effect {
     private String name;
     private int healingPerTurn;
     private int remainingDuration;
@@ -12,7 +12,8 @@ public class ActiveEffect {
     }
 
     // Applies the effect for one turn
-    public void tick(Player player) {
+    @Override
+    public void apply(Player player) {
         if (isFinished()) {
             return;
         }
@@ -23,6 +24,7 @@ public class ActiveEffect {
         }
     }
 
+    @Override
     public boolean isFinished() {
         return remainingDuration <= 0;
     }

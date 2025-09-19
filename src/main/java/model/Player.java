@@ -11,7 +11,7 @@ public class Player {
     private static final int MAX_HEALTH = 100;
     private int health;
     private Inventory inventory;
-    private List<ActiveEffect> activeEffects;
+    private List<Effect> activeEffects;
 
     public Player(String name) {
         this.name = name;
@@ -89,7 +89,7 @@ public class Player {
         }
     }
 
-    public void addEffect(ActiveEffect effect) {
+    public void addEffect(Effect effect) {
         activeEffects.add(effect);
     }
 
@@ -98,10 +98,10 @@ public class Player {
             return;
         }
 
-        Iterator<ActiveEffect> iterator = activeEffects.iterator();
+        Iterator<Effect> iterator = activeEffects.iterator();
         while (iterator.hasNext()) {
-            ActiveEffect effect = iterator.next();
-            effect.tick(this);
+            Effect effect = iterator.next();
+            effect.apply(this);
             if (effect.isFinished()) {
                 iterator.remove();
             }
