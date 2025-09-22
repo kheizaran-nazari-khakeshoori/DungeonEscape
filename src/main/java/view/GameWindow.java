@@ -18,15 +18,17 @@ public class GameWindow extends JFrame {
         InventoryPanel inventoryPanel = new InventoryPanel();
         LogPanel logPanel = new LogPanel();
         ControlPanel controlPanel = new ControlPanel();
+        HUDPanel hudPanel = new HUDPanel();
 
         // Create the game controller and link it to the panels
-        new Game(dungeonPanel, inventoryPanel, logPanel, controlPanel);
+        new Game(dungeonPanel, inventoryPanel, logPanel, controlPanel, hudPanel);
 
         // Set layout for the main frame
         setLayout(new BorderLayout());
 
         // Add panels to the frame
         add(controlPanel, BorderLayout.NORTH);
+        add(hudPanel, BorderLayout.WEST);
         add(dungeonPanel, BorderLayout.CENTER);
         add(inventoryPanel, BorderLayout.EAST);
         add(logPanel, BorderLayout.SOUTH);

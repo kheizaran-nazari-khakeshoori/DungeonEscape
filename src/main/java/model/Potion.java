@@ -20,7 +20,6 @@ public class Potion extends Item {
 
     @Override
     public void use(Player player) {
-        System.out.println("Using " + getName() + ". You will be healed over " + duration + " turns.");
         Effect effect = new ActiveEffect(getName(), healing, duration);
         player.addEffect(effect);
     }

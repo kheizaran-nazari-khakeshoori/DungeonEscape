@@ -3,7 +3,6 @@ package com.dungeonescape;
 import java.util.Random;
 import javax.swing.JOptionPane;
 
-import controller.CombatSystem;
 import exceptions.InvalidMoveException;
 import view.ControlPanel;
 import view.DungeonPanel;
@@ -24,8 +23,8 @@ public class Game {
     // Models
     private Player player;
     private EnemyFactory enemyFactory;
-    private CombatSystem combatSystem;
     private Random random;
+    private Enemy currentEnemy;
 
     // Views
     private DungeonPanel dungeonPanel;
@@ -34,12 +33,10 @@ public class Game {
     private ControlPanel controlPanel;
     private HUDPanel hudPanel;
 
-    public Game(DungeonPanel dungeonPanel, InventoryPanel inventoryPanel, LogPanel logPanel, ControlPanel controlPanel) {
     public Game(DungeonPanel dungeonPanel, InventoryPanel inventoryPanel, LogPanel logPanel, ControlPanel controlPanel, HUDPanel hudPanel) {
         // Models
         this.player = new Player("Hero");
         this.enemyFactory = new EnemyFactory();
-        this.combatSystem = new CombatSystem();
         this.random = new Random();
 
         // Views
@@ -52,6 +49,7 @@ public class Game {
         // Link controller to views by adding action listeners to buttons
         this.controlPanel.exploreButton.addActionListener(e -> explore());
         this.controlPanel.inventoryButton.addActionListener(e -> manageInventory());
+        this.controlPanel.attackButton.addActionListener(e -> performCombatRound());
 
         // Start the game
         startGame();
@@ -71,8 +69,6 @@ public class Game {
 
         logPanel.addMessage("\nYou start your journey with a sword and a potion.");
         try {
-            player.useItem("Sword"); // Auto-equip sword
-            logPanel.addMessage(player.getName() + " equipped Sword.");
             useItem("Sword"); // Auto-equip sword
         } catch (InvalidMoveException e) {
             logPanel.addMessage("Critical setup error: " + e.getMessage());
@@ -95,13 +91,7 @@ public class Game {
         int eventChance = random.nextInt(10); // 0-9
 
         if (eventChance < 6) { // 60% chance to find an enemy
-            Enemy enemy = enemyFactory.createRandomEnemy();
-            logPanel.addMessage("A wild " + enemy.getName() + " appears!");
-            // IMPORTANT: Combat still prints to console because we cannot see CombatSystem.java
-            // You will need to refactor CombatSystem to pass messages back here to be logged.
-            combatSystem.fight(player, enemy);
-            logPanel.addMessage("Combat is over.");
-
+            enterCombat(enemyFactory.createRandomEnemy());
         } else if (eventChance < 9) { // 30% chance to find an item (pickItem)
             logPanel.addMessage("You found a treasure chest!");
             Potion foundPotion = new Potion("Lesser Potion", 25, 1);
@@ -111,7 +101,6 @@ public class Game {
 
             if (choice == JOptionPane.YES_OPTION) {
                 player.pickItem(foundPotion);
-                logPanel.addMessage(foundPotion.getName() + " added to inventory.");
                 logPanel.addMessage("You picked up the " + foundPotion.getName() + ".");
             } else {
                 logPanel.addMessage("You leave the potion behind.");
@@ -122,10 +111,65 @@ public class Game {
         updateGUI();
     }
 
+    private void enterCombat(Enemy enemy) {
+        this.currentEnemy = enemy;
+        logPanel.addMessage("\nA wild " + enemy.getName() + " appears! (Health: " + enemy.getHealth() + ")");
+
+        // Update GUI for combat state
+        controlPanel.exploreButton.setVisible(false);
+        controlPanel.inventoryButton.setVisible(false);
+        controlPanel.attackButton.setVisible(true);
+        controlPanel.fleeButton.setVisible(true);
+    }
+
+    private void exitCombat() {
+        this.currentEnemy = null;
+        logPanel.addMessage("Combat is over.");
+
+        // Update GUI for exploration state
+        controlPanel.exploreButton.setVisible(true);
+        controlPanel.inventoryButton.setVisible(true);
+        controlPanel.attackButton.setVisible(false);
+        controlPanel.fleeButton.setVisible(false);
+    }
+
+    private void performCombatRound() {
+        if (currentEnemy == null || !player.isAlive()) {
+            return;
+        }
+
+        // Player's turn
+        String playerAttackResult = player.attack(currentEnemy);
+        logPanel.addMessage(playerAttackResult);
+
+        // Check if enemy is defeated
+        if (!currentEnemy.isAlive()) {
+            logPanel.addMessage("You defeated the " + currentEnemy.getName() + "!");
+            exitCombat();
+            updateGUI();
+            return;
+        }
+
+        // Enemy's turn
+        String enemyAttackResult = currentEnemy.attack(player);
+        logPanel.addMessage(enemyAttackResult);
+
+        // Check if player is defeated
+        if (!player.isAlive()) {
+            logPanel.addMessage("You have been defeated! GAME OVER.");
+            // Disable all buttons
+            controlPanel.exploreButton.setEnabled(false);
+            controlPanel.inventoryButton.setEnabled(false);
+            controlPanel.attackButton.setEnabled(false);
+            controlPanel.fleeButton.setEnabled(false);
+        }
+
+        updateGUI();
+    }
+
     /**
      * Manages the inventory screen, allowing the player to use items.
      */
-    private void manageInventory() {
     private void manageInventory() { // This is a private helper method
         // Create a list of item names for the dialog
         Object[] itemNames = player.getInventory().getItems().stream().map(Item::getName).toArray();
@@ -141,8 +185,6 @@ public class Game {
 
         if (selectedItem != null && !selectedItem.isEmpty()) {
             try {
-                player.useItem(selectedItem);
-                logPanel.addMessage("Used " + selectedItem + ".");
                 useItem(selectedItem);
             } catch (InvalidMoveException e) {
                 logPanel.addMessage("Could not use item: " + e.getMessage());

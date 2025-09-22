@@ -6,9 +6,9 @@ public class Ghost extends Enemy {
     }
 
     @Override
-    public void attack(Player player) {
-        System.out.println(getName() + " haunts " + player.getName() + " for " + getDamage() + " damage!");
+    public String attack(Player player) {
         player.takeDamage(getDamage());
+        return getName() + " haunts " + player.getName() + " for " + getDamage() + " damage!";
     }
 
     @Override

@@ -22,7 +22,6 @@ public class Weapon extends Item {
     public void use(Player player) {
         // Using a weapon from the inventory means equipping it.
         player.setEquippedWeapon(this);
-        System.out.println(player.getName() + " equipped " + getName() + ".");
     }
 
     public void decreaseDurability() {

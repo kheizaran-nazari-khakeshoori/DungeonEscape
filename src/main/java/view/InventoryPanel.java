@@ -6,7 +6,7 @@ import model.Player;
 import javax.swing.*;
 import java.awt.*;
 
-public class InventoryPanel {
+public class InventoryPanel extends JPanel {
     private JTextArea inventoryArea;
 
     public InventoryPanel() {

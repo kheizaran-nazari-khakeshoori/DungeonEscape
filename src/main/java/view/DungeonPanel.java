@@ -3,7 +3,7 @@ package view;
 import javax.swing.*;
 import java.awt.*;
 
-public class DungeonPanel {
+public class DungeonPanel extends JPanel {
     public DungeonPanel() {
         setLayout(new BorderLayout());
         setBorder(BorderFactory.createTitledBorder("Dungeon Map"));

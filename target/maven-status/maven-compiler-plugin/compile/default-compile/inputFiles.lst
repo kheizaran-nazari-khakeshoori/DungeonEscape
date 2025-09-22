@@ -4,10 +4,12 @@
 /home/kheizaran/Github/DungeonEscape/src/main/java/view/CombatDialog.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/controller/CombatSystem.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/Trap.java
+/home/kheizaran/Github/DungeonEscape/src/main/java/view/ControlPanel.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/StoneMan.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/Ghost.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/controller/RuleEngine.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/Potion.java
+/home/kheizaran/Github/DungeonEscape/src/main/java/view/GameWindow.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/Weapon.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/view/DungeonPanel.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/ActiveEffect.java
@@ -17,6 +19,7 @@
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/Effect.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/view/HUDPanel.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/Level.java
+/home/kheizaran/Github/DungeonEscape/src/main/java/com/dungeonescape/Game.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/EnemyFactory.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/utils/Logger.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/utils/ConfigLoader.java
@@ -26,4 +29,5 @@
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/Inventory.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/utils/DiceRoller.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/Item.java
+/home/kheizaran/Github/DungeonEscape/src/main/java/view/LogPanel.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/Player.java

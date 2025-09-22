@@ -21,10 +21,9 @@ public abstract class Enemy {
     public void takeDamage(int amount) {
         health -= amount;
         if (health < 0) health = 0;
-        System.out.println(name + " took " + amount + " damage. Health now: " + health);
     }
 
-    public abstract void attack(Player player);
+    public abstract String attack(Player player);
 
     public void move() {
         System.out.println(name + " moves cautiously.");

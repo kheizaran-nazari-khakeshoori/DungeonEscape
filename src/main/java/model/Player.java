@@ -37,14 +37,12 @@ public class Player {
     public void takeDamage(int amount) {
         health -= amount;
         if (health < 0) health = 0;
-        System.out.println(name + " took " + amount + " damage. Health now: " + health);
     }
 
     public void heal(int amount) {
         this.health += amount;
         // Enforce the max health rule here, strengthening encapsulation
         if (this.health > MAX_HEALTH) this.health = MAX_HEALTH;
-        System.out.println(name + " healed for " + amount + ". Health now: " + this.health);
     }
 
     public boolean isAlive() {
@@ -67,7 +65,6 @@ public class Player {
 
     public void pickItem(Item item) {
         inventory.addItem(item);
-        System.out.println(item.getName() + " added to inventory.");
     }
 
     public void setEquippedWeapon(Weapon weapon) {
@@ -79,28 +76,29 @@ public class Player {
     }
 
     // Player attacks an enemy using the equipped weapon
-    public void attack(Enemy enemy) {
+    public String attack(Enemy enemy) {
         // This standard attack calls the overloaded version with 0 bonus damage.
-        attack(enemy, 0);
+        return attack(enemy, 0);
     }
 
     // Overloaded attack method for special moves or bonuses (Overloading Polymorphism)
-    public void attack(Enemy enemy, int bonusDamage) {
+    public String attack(Enemy enemy, int bonusDamage) {
         if (equippedWeapon != null) {
             int totalDamage = equippedWeapon.getDamage() + bonusDamage;
-            System.out.println(name + " attacks " + enemy.getName() + " with " + equippedWeapon.getName() +
-                    " for " + totalDamage + " damage" + (bonusDamage > 0 ? " (" + bonusDamage + " bonus)!" : "!"));
             enemy.takeDamage(totalDamage);
             equippedWeapon.decreaseDurability();
 
+            String result = name + " attacks " + enemy.getName() + " with " + equippedWeapon.getName() +
+                    " for " + totalDamage + " damage" + (bonusDamage > 0 ? " (" + bonusDamage + " bonus)!" : "!");
+
             if (equippedWeapon.getDurability() <= 0) {
-                System.out.println(equippedWeapon.getName() + " broke and was removed from inventory.");
                 inventory.removeItem(equippedWeapon);
                 equippedWeapon = null; // Unequip the broken weapon
+                result += "\n" + "Your weapon broke!";
             }
-        } else {
-            System.out.println(name + " has no weapon equipped to attack!");
+            return result;
         }
+        return name + " has no weapon equipped to attack!";
     }
 
     // Use item by name; throws exception if item not in inventory
@@ -113,7 +111,6 @@ public class Player {
             // If the item reports that it is consumable, remove it after use.
             if (item.isConsumable()) {
                 inventory.removeItem(item);
-                System.out.println(item.getName() + " was consumed.");
             }
         } else {
             throw new InvalidMoveException("Item '" + itemName + "' is not in inventory!");
