@@ -20,12 +20,12 @@ public class Weapon extends Item {
 
     @Override
     public void use(Player player) {
-        System.out.println(getName() + " is used to attack, dealing " + damage + " damage!");
-        // Optionally decrease durability
-        durability--;
-        if (durability <= 0) {
-            System.out.println(getName() + " broke!");
-        }
+        // Using a weapon from the inventory means equipping it.
+        player.setEquippedWeapon(this);
+        System.out.println(player.getName() + " equipped " + getName() + ".");
+    }
+
+    public void decreaseDurability() {
+        this.durability--;
     }
 }
-

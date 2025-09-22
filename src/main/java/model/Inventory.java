@@ -35,14 +35,4 @@ public class Inventory {
         }
         return null;
     }
-
-    // Get first weapon in inventory
-    public Weapon getFirstWeapon() {
-        for (Item item : items) {
-            if (item instanceof Weapon) {
-                return (Weapon) item;
-            }
-        }
-        return null;
-    }
 }

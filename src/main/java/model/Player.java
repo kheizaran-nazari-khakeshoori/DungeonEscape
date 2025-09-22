@@ -12,12 +12,14 @@ public class Player {
     private int health;
     private Inventory inventory;
     private List<Effect> activeEffects;
+    private Weapon equippedWeapon;
 
     public Player(String name) {
         this.name = name;
         this.health = MAX_HEALTH;
         this.inventory = new Inventory();
         this.activeEffects = new ArrayList<>();
+        this.equippedWeapon = null;
     }
 
     public String getName() {
@@ -54,21 +56,29 @@ public class Player {
         System.out.println(item.getName() + " added to inventory.");
     }
 
-    // Player attacks an enemy using the first weapon
-    public void attack(Enemy enemy) {
-        Weapon weapon = inventory.getFirstWeapon();
-        if (weapon != null) {
-            System.out.println(name + " attacks " + enemy.getName() + " with " + weapon.getName() +
-                    " for " + weapon.getDamage() + " damage!");
-            enemy.takeDamage(weapon.getDamage());
-            weapon.use(this); // Decrease durability
+    public void setEquippedWeapon(Weapon weapon) {
+        this.equippedWeapon = weapon;
+    }
 
-            if (weapon.getDurability() <= 0) {
-                inventory.removeItem(weapon);
-                System.out.println(weapon.getName() + " broke and was removed from inventory.");
+    public Weapon getEquippedWeapon() {
+        return equippedWeapon;
+    }
+
+    // Player attacks an enemy using the equipped weapon
+    public void attack(Enemy enemy) {
+        if (equippedWeapon != null) {
+            System.out.println(name + " attacks " + enemy.getName() + " with " + equippedWeapon.getName() +
+                    " for " + equippedWeapon.getDamage() + " damage!");
+            enemy.takeDamage(equippedWeapon.getDamage());
+            equippedWeapon.decreaseDurability();
+
+            if (equippedWeapon.getDurability() <= 0) {
+                System.out.println(equippedWeapon.getName() + " broke and was removed from inventory.");
+                inventory.removeItem(equippedWeapon);
+                equippedWeapon = null; // Unequip the broken weapon
             }
         } else {
-            System.out.println(name + " has no weapon to attack!");
+            System.out.println(name + " has no weapon equipped to attack!");
         }
     }
 
