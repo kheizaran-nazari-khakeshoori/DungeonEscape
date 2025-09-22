@@ -9,8 +9,10 @@ view/LogPanel.class
 com/dungeonescape/Main.class
 model/Effect.class
 model/Goblin.class
+view/PartyPanel.class
 com/dungeonescape/Game.class
 view/CombatDialog.class
+com/dungeonescape/ItemSelectionWindow.class
 view/HUDPanel.class
 model/Enemy.class
 model/Level.class
@@ -38,3 +40,4 @@ model/Weapon.class
 model/Lucy.class
 utils/DiceRoller.class
 model/Trap.class
+model/SkeletonWarrior.class

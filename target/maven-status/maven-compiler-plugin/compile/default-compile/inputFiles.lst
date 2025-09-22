@@ -1,9 +1,11 @@
 /home/kheizaran/Github/DungeonEscape/src/main/java/view/InventoryPanel.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/com/dungeonescape/Main.java
+/home/kheizaran/Github/DungeonEscape/src/main/java/view/PartyPanel.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/Enemy.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/view/CombatDialog.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/controller/CombatSystem.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/Trap.java
+/home/kheizaran/Github/DungeonEscape/src/main/java/model/SkeletonWarrior.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/view/ControlPanel.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/StoneMan.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/Ghost.java
@@ -22,6 +24,7 @@
 /home/kheizaran/Github/DungeonEscape/src/main/java/view/HUDPanel.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/Level.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/com/dungeonescape/Game.java
+/home/kheizaran/Github/DungeonEscape/src/main/java/com/dungeonescape/ItemSelectionWindow.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/Elfo.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/com/dungeonescape/GameState.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/EnemyFactory.java
@@ -29,12 +32,10 @@
 /home/kheizaran/Github/DungeonEscape/src/main/java/utils/ConfigLoader.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/exceptions/InvalidMoveException.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/Goblin.java
-/home/kheizaran/Github/DungeonEscape/src/main/java/model/Rogue.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/controller/LevelManager.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/DamageType.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/Inventory.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/utils/DiceRoller.java
-/home/kheizaran/Github/DungeonEscape/src/main/java/model/Mage.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/Item.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/view/LogPanel.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/Player.java

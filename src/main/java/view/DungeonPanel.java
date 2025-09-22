@@ -1,7 +1,16 @@
 package view;
 
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Image;
+
+import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JPanel;
 
 public class DungeonPanel extends JPanel {
     private ImageIcon backgroundImage;
@@ -69,11 +78,27 @@ public class DungeonPanel extends JPanel {
             g.drawString("BACKGROUND IMAGE NOT FOUND", getWidth() / 2 - 120, getHeight() / 2);
         }
         if (foregroundImage != null) {
-            // Draw the foreground image, scaled and centered
-            Image scaledImage = getScaledImage(foregroundImage);
-            int x = (getWidth() - scaledImage.getWidth(null)) / 2;
-            int y = (getHeight() - scaledImage.getHeight(null)) / 2;
-            g.drawImage(scaledImage, x, y, null);
+            // Calculate the scaled dimensions while maintaining aspect ratio.
+            // This approach is better than getScaledInstance() as it's synchronous.
+            int padding = 30;
+            int maxWidth = getWidth() - padding;
+            int maxHeight = getHeight() - padding;
+
+            int originalWidth = foregroundImage.getWidth(this);
+            int originalHeight = foregroundImage.getHeight(this);
+
+            if (originalWidth > 0 && originalHeight > 0 && maxWidth > 0 && maxHeight > 0) {
+                double scale = Math.min((double) maxWidth / originalWidth, (double) maxHeight / originalHeight);
+                int newWidth = (int) (originalWidth * scale);
+                int newHeight = (int) (originalHeight * scale);
+
+                // Calculate centered position
+                int x = (getWidth() - newWidth) / 2;
+                int y = (getHeight() - newHeight) / 2;
+
+                // Draw the image, letting drawImage handle the scaling and observing
+                g.drawImage(foregroundImage, x, y, newWidth, newHeight, this);
+            }
         }
     }
 
@@ -94,25 +119,6 @@ public class DungeonPanel extends JPanel {
             this.foregroundImage = null;
         }
         repaint();
-    }
-
-    private Image getScaledImage(Image srcImg) {
-        int padding = 30; // Add some space around the image
-        int maxWidth = Math.max(0, getWidth() - padding);
-        int maxHeight = Math.max(0, getHeight() - padding);
-
-        int originalWidth = srcImg.getWidth(null);
-        int originalHeight = srcImg.getHeight(null);
-
-        if (originalWidth <= 0 || originalHeight <= 0 || maxWidth <= 0 || maxHeight <= 0) {
-            return srcImg; // Cannot scale
-        }
-
-        double scale = Math.min((double) maxWidth / originalWidth, (double) maxHeight / originalHeight);
-        int newWidth = (int) (originalWidth * scale);
-        int newHeight = (int) (originalHeight * scale);
-
-        return srcImg.getScaledInstance(newWidth, newHeight, Image.SCALE_SMOOTH);
     }
 
     public void clearImage() {

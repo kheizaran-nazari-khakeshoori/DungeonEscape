@@ -1,31 +1,32 @@
 package model;
 
 public class Potion extends Item {
-    private int healing;
-    private int duration;
+    private final int healAmount;
+    private int quantity; // Not currently used, but good for future features
 
-    public Potion(String name, int healing, int duration, String imagePath) {
-        super(name, imagePath);
-        this.healing = healing;
-        this.duration = duration;
+    public Potion(String name, String description, int healAmount, int quantity, String imagePath) {
+        super(name, description, imagePath);
+        this.healAmount = healAmount;
+        this.quantity = quantity;
     }
 
-    public int getHealing() {
-        return healing;
-    }
-
-    public int getDuration() {
-        return duration;
+    /**
+     * This is the missing method. It allows other parts of the code
+     * to ask the potion how much health it restores.
+     * @return The amount of health this potion heals.
+     */
+    public int getHealAmount() {
+        return healAmount;
     }
 
     @Override
     public void use(Player player) {
-        Effect effect = new ActiveEffect(getName(), healing, duration);
-        player.addEffect(effect);
+        player.heal(this.healAmount);
     }
 
     @Override
     public boolean isConsumable() {
+        // Potions are used up after one use.
         return true;
     }
 }

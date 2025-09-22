@@ -1,49 +1,64 @@
 package view;
 
-import model.Player;
 import model.Enemy;
+import model.Player;
+
 import javax.swing.*;
 import java.awt.*;
 
 public class HUDPanel extends JPanel {
-    private JLabel healthLabel;
-    private JLabel weaponLabel;
-    private JLabel enemyHealthLabel;
+    // Player components
+    private final JLabel playerNameLabel;
+    private final JProgressBar playerHealthBar;
+
+    // Enemy components
+    private final JLabel enemyNameLabel;
+    private final JProgressBar enemyHealthBar;
+    private final JPanel enemyPanel;
 
     public HUDPanel() {
-        setLayout(new GridLayout(3, 1)); // Increased rows for enemy health
-        setBorder(BorderFactory.createTitledBorder("Player Status"));
-        setPreferredSize(new Dimension(200, 100));
+        setLayout(new GridLayout(2, 1, 5, 5)); // Two rows, one for player, one for enemy
+        setBorder(BorderFactory.createTitledBorder("Status"));
 
-        healthLabel = new JLabel("Health: ");
-        weaponLabel = new JLabel("Weapon: ");
-        enemyHealthLabel = new JLabel("Enemy: ");
+        // --- Player Panel ---
+        JPanel playerPanel = new JPanel(new BorderLayout(10, 0));
+        playerNameLabel = new JLabel();
+        playerNameLabel.setFont(new Font("SansSerif", Font.BOLD, 14));
+        playerHealthBar = new JProgressBar();
+        playerHealthBar.setStringPainted(true);
+        playerPanel.add(playerNameLabel, BorderLayout.WEST);
+        playerPanel.add(playerHealthBar, BorderLayout.CENTER);
 
-        add(healthLabel);
-        add(weaponLabel);
-        add(enemyHealthLabel);
-        enemyHealthLabel.setVisible(false); // Hide it initially
+        // --- Enemy Panel ---
+        enemyPanel = new JPanel(new BorderLayout(10, 0));
+        enemyNameLabel = new JLabel();
+        enemyNameLabel.setFont(new Font("SansSerif", Font.BOLD, 14));
+        enemyHealthBar = new JProgressBar();
+        enemyHealthBar.setStringPainted(true);
+        enemyPanel.add(enemyNameLabel, BorderLayout.WEST);
+        enemyPanel.add(enemyHealthBar, BorderLayout.CENTER);
+
+        add(playerPanel);
+        add(enemyPanel);
     }
 
     public void updateStatus(Player player) {
-        healthLabel.setText("Health: " + player.getHealth() + " / " + player.getMaxHealth());
-        String weaponText = (player.getEquippedWeapon() != null)
-                ? "Weapon: " + player.getEquippedWeapon().getName()
-                : "Weapon: Fists";
-        weaponLabel.setText(weaponText);
-    }
-
-    public void updateEnemyStatus(Enemy enemy) {
-        if (enemy != null) {
-            enemyHealthLabel.setText("Enemy: " + enemy.getName() + " | HP: " + enemy.getHealth());
-            enemyHealthLabel.setVisible(true);
-        } else {
-            clearEnemyStatus();
+        if (player != null) {
+            playerNameLabel.setText(player.getName() + ":");
+            playerHealthBar.setMaximum(player.getMaxHealth());
+            playerHealthBar.setValue(player.getHealth());
+            playerHealthBar.setString(player.getHealth() + " / " + player.getMaxHealth());
         }
     }
 
-    public void clearEnemyStatus() {
-        enemyHealthLabel.setText("Enemy: ");
-        enemyHealthLabel.setVisible(false);
+    public void updateEnemyStatus(Enemy enemy) {
+        boolean enemyVisible = (enemy != null && enemy.isAlive());
+        enemyPanel.setVisible(enemyVisible);
+        if (enemyVisible) {
+            enemyNameLabel.setText(enemy.getName() + ":");
+            enemyHealthBar.setMaximum(enemy.getMaxHealth());
+            enemyHealthBar.setValue(enemy.getHealth());
+            enemyHealthBar.setString(enemy.getHealth() + " / " + enemy.getMaxHealth());
+        }
     }
 }

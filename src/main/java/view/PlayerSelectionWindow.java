@@ -1,13 +1,25 @@
 package view;
 
-import javax.swing.*;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Font;
+import java.awt.GridLayout;
+import java.awt.Image;
 import java.util.function.Supplier;
 
-import model.Player;
+import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextArea;
+import javax.swing.SwingConstants;
+
+import com.dungeonescape.ItemSelectionWindow;
 import model.Bean;
 import model.Elfo;
 import model.Lucy;
+import model.Player;
 
 public class PlayerSelectionWindow extends JFrame {
 
@@ -71,8 +83,9 @@ public class PlayerSelectionWindow extends JFrame {
         JButton selectButton = new JButton("Select " + name);
         selectButton.addActionListener(e -> {
             Player selectedPlayer = playerSupplier.get();
+            this.setVisible(false);
+            new ItemSelectionWindow(selectedPlayer).setVisible(true);
             this.dispose();
-            new GameWindow(selectedPlayer).setVisible(true);
         });
 
         panel.add(nameLabel, BorderLayout.NORTH);

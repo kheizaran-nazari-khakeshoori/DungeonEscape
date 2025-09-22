@@ -1,8 +1,7 @@
 package com.dungeonescape;
 
-import model.Elfo;
 import javax.swing.SwingUtilities;
-import view.GameWindow;
+import view.PlayerSelectionWindow;
 
 public class Main {
     public static void main(String[] args) {
@@ -10,8 +9,8 @@ public class Main {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                System.out.println("Starting game with default hero...");
-                new GameWindow(new Elfo()).setVisible(true);
+                System.out.println("Showing player selection screen...");
+                new PlayerSelectionWindow().setVisible(true);
             }
         });
     }

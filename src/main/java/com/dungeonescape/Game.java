@@ -1,30 +1,32 @@
 package com.dungeonescape;
 
-import java.util.Random;
-import javax.swing.JOptionPane;
-
-import exceptions.InvalidMoveException;
-import view.ControlPanel;
-import view.GameWindow;
-import view.DungeonPanel;
-import view.HUDPanel;
-import view.InventoryPanel;
-import view.PartyPanel;
-import view.LogPanel;
-import model.Item;
-import model.Enemy;
-import model.Bean;
-import model.Elfo;
-import model.EnemyFactory;
-import model.Lucy;
-import model.Player;
-import model.DamageType;
-import model.Potion;
-import model.Weapon;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Supplier;
+
+import javax.swing.JOptionPane;
+
+import exceptions.InvalidMoveException;
+import model.Bean;
+import model.Elfo;
+import model.Enemy;
+import model.EnemyFactory;
+import model.Item;
+import model.Lucy;
+import model.Player;
+import model.Potion;
+import model.Weapon;
+import utils.DiceRoller;
+import view.ControlPanel;
+import view.DungeonPanel;
+import view.GameWindow;
+import view.HUDPanel;
+import view.InventoryPanel;
+import view.LogPanel;
+import view.PartyPanel;
 
 /**
  * The main controller for the game, managing the game state and main loop.
@@ -34,8 +36,9 @@ public class Game {
     private Player activePlayer;
     private final List<Player> party;
     private final Map<String, Integer> enemyEncounterCount;
+    private List<Supplier<Enemy>> encounterDeck;
     private EnemyFactory enemyFactory;
-    private Random random;
+    private DiceRoller dice;
     private Enemy currentEnemy;
 
     // Views
@@ -48,15 +51,29 @@ public class Game {
 
     public Game(Player player, GameWindow gameWindow, PartyPanel partyPanel, DungeonPanel dungeonPanel, InventoryPanel inventoryPanel, LogPanel logPanel, ControlPanel controlPanel, HUDPanel hudPanel) {
         // Models
-        this.activePlayer = player;
         this.party = new ArrayList<>();
-        this.party.add(player); // Start with Elfo
-        this.party.add(new Bean()); // Add all players to the party list
+        this.party.add(new Elfo());
+        this.party.add(new Bean());
         this.party.add(new Lucy());
 
-        this.random = new Random();
-        this.enemyFactory = new EnemyFactory(this.random);
+        // Find the player in the party that matches the class of the one selected
+        // in the previous screen. This ensures the activePlayer is the same instance
+        // as the one in the party list, which is important for the UI.
+        this.activePlayer = party.stream()
+                .filter(p -> p.getClass().equals(player.getClass()))
+                .findFirst()
+                .orElse(party.get(0)); // Fallback to the first player if not found
+
+        // CRITICAL FIX: Transfer the inventory from the temporary player object (which has
+        // the selected items) to the actual player instance being used in the game.
+        for (Item item : player.getInventory().getItems()) {
+            this.activePlayer.pickItem(item);
+        }
+
+        this.dice = new DiceRoller();
+        this.enemyFactory = new EnemyFactory(this.dice);
         this.enemyEncounterCount = new HashMap<>();
+        this.encounterDeck = new ArrayList<>();
 
         // Views
         this.partyPanel = partyPanel;
@@ -71,6 +88,7 @@ public class Game {
         this.dungeonPanel.door2Button.addActionListener(e -> chooseDoor(2));
         this.controlPanel.attackButton.addActionListener(e -> performCombatRound());
         this.controlPanel.fleeButton.addActionListener(e -> fleeEncounter());
+        this.controlPanel.inventoryButton.addActionListener(e -> manageInventory());
         this.controlPanel.exitButton.addActionListener(e -> System.exit(0));
 
         // Start the game
@@ -81,19 +99,33 @@ public class Game {
      * Initializes the player with starting items and sets up the game state.
      */
     private void startGame() {
-        logPanel.addMessage("Welcome to Dungeon Escape!");
-        logPanel.addMessage("Your journey begins. You have a sword but no potions.");
+        logPanel.addMessage("Welcome to Dungeon Escape! Your adventure begins.");
+        logPanel.addMessage("You enter a dark dungeon. Choose a door to proceed.");
 
-        // Auto-equip the first weapon in the inventory, if one exists.
-        Item firstItem = activePlayer.getInventory().getItems().stream().findFirst().orElse(null);
-        if (firstItem instanceof Weapon) {
+        // Find the weapon the player chose during setup and equip it.
+        Item startingWeapon = activePlayer.getInventory().getItems().stream()
+                .filter(item -> item instanceof Weapon)
+                .findFirst()
+                .orElse(null);
+
+        if (startingWeapon != null) {
             try {
-                processUseItem(firstItem.getName());
+                // The processUseItem method for a weapon equips it.
+                processUseItem(startingWeapon.getName());
             } catch (InvalidMoveException e) {
-                logPanel.addMessage("Could not auto-equip starting weapon: " + e.getMessage());
+                logPanel.addMessage("Error equipping starting weapon: " + e.getMessage());
             }
         }
+        resetAndShuffleEncounterDeck();
         setDoorMode();
+    }
+
+    /**
+     * Refills the encounter deck with all possible enemies and shuffles it.
+     */
+    private void resetAndShuffleEncounterDeck() {
+        this.encounterDeck = enemyFactory.getEnemySuppliers();
+        Collections.shuffle(this.encounterDeck, this.dice.getRandom());
     }
 
     private void updateGUI() {
@@ -106,13 +138,40 @@ public class Game {
     /**
      * Handles the logic for exploring, which can lead to finding an enemy, an item, or nothing.
      */
-    private void chooseDoor(int doorNumber) {
+    private void chooseDoor(int doorNumber) { // Overloaded for simplicity
+        chooseDoor(doorNumber, null);
+    }
+
+    /**
+     * Main logic for choosing a door, with an option to avoid a specific enemy type.
+     * @param doorNumber The door chosen (1 or 2).
+     * @param enemyToAvoid The name of an enemy to not generate, or null.
+     */
+    private void chooseDoor(int doorNumber, String enemyToAvoid) {
         if (currentEnemy != null) return; // Can't open a door during combat
 
         String doorName = (doorNumber == 1) ? "left" : "right";
         logPanel.addMessage("\nYou open the " + doorName + " door...");
 
-        Enemy enemy = enemyFactory.createRandomEnemy();
+        if (encounterDeck.isEmpty()) {
+            logPanel.addMessage("You feel a shift in the dungeon's malevolent energy...");
+            resetAndShuffleEncounterDeck();
+        }
+
+        // Get the next enemy from our shuffled "deck"
+        Supplier<Enemy> enemySupplier = encounterDeck.remove(0);
+        Enemy enemy = enemySupplier.get();
+
+        // If we are fleeing and the next enemy is the same type, try to swap it
+        // for the next one in the deck to improve variety.
+        if (enemyToAvoid != null && enemy.getName().equals(enemyToAvoid) && !encounterDeck.isEmpty()) {
+            logPanel.addMessage("...but you manage to dodge into a different corridor!");
+            Supplier<Enemy> nextSupplier = encounterDeck.remove(0);
+            // Put the avoided enemy back at the end of the deck
+            encounterDeck.add(enemySupplier);
+            enemy = nextSupplier.get();
+        }
+        
         String enemyName = enemy.getName();
 
         // Strengthen enemy if it has been seen before
@@ -128,16 +187,16 @@ public class Game {
     private Item generateLoot() {
         // Tiered loot based on progression
         // For now, we keep it simple. This can be expanded later.
-        return new Potion("Health Potion", 25, 1, "images/potions/HealthPotion.png"); // Default common loot
+        return new Potion("Health Potion", "A common potion that restores 25 HP.", 25, 1, "images/potions/HealthPotion.png"); // Default common loot
     }
 
     private void enterCombat(Enemy enemy) {
         this.currentEnemy = enemy;
         logPanel.addMessage("\nA " + enemy.getName() + " (Lvl " + (enemyEncounterCount.getOrDefault(enemy.getName(), 0) + 1) + ") appears!");
         logPanel.addMessage(enemy.getHint()); // Display the hint
-        dungeonPanel.displayImage(enemy.getImagePath());
         setCombatMode();
         updateGUI();
+        dungeonPanel.displayImage(enemy.getImagePath());
     }
 
     private void setCombatMode() {
@@ -150,8 +209,8 @@ public class Game {
     private void setDoorMode() {
         this.currentEnemy = null;
         dungeonPanel.clearImage();
-        dungeonPanel.door1Button.setVisible(false);
-        dungeonPanel.door2Button.setVisible(false);
+        dungeonPanel.door1Button.setVisible(true);
+        dungeonPanel.door2Button.setVisible(true);
         controlPanel.attackButton.setVisible(false);
         controlPanel.fleeButton.setVisible(false);
         updateGUI();
@@ -200,14 +259,17 @@ public class Game {
     private void fleeEncounter() {
         if (currentEnemy == null) return;
 
-        logPanel.addMessage("You flee from the battle, but the escape was costly.");
-        activePlayer.takeDamage(5); // Apply the 5 HP penalty for fleeing
+        logPanel.addMessage("You flee from the battle and rush through another door...");
 
-        if (!activePlayer.isAlive()) {
-            endGame();
-        } else {
-            setDoorMode();
-        }
+        String fledEnemyName = currentEnemy.getName();
+
+        // To trigger a new encounter, we must first clear the current one.
+        this.currentEnemy = null;
+
+        // Simulate choosing another door, ensuring a different enemy appears.
+        // The door number (1 or 2) only affects the log message, so picking one randomly is fine.
+        int nextDoor = dice.roll(2);
+        chooseDoor(nextDoor, fledEnemyName);
     }
 
     private void endGame() {
@@ -218,6 +280,7 @@ public class Game {
         dungeonPanel.door2Button.setVisible(false);
         controlPanel.attackButton.setEnabled(false);
         controlPanel.fleeButton.setEnabled(false);
+        controlPanel.inventoryButton.setEnabled(false);
 
         // Display a game over image or message
         dungeonPanel.displayImage("images/ui/GameOver.png"); // Assuming you have this image

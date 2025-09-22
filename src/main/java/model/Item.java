@@ -3,9 +3,11 @@ package model;
 public abstract class Item {
     private String name;
     protected String imagePath;
+    protected String description;
 
-    public Item(String name, String imagePath) {
+    public Item(String name, String description, String imagePath) {
         this.name = name;
+        this.description = description;
         this.imagePath = imagePath;
     }
 
@@ -16,6 +18,10 @@ public abstract class Item {
 
     public String getImagePath() {
         return imagePath;
+    }
+
+    public String getDescription() {
+        return description;
     }
 
     // Abstraction: every item can have a use effect
