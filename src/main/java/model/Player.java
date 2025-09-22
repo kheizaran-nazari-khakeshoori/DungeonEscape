@@ -30,6 +30,10 @@ public class Player {
         return health;
     }
 
+    public Inventory getInventory() {
+        return inventory;
+    }
+
     public void takeDamage(int amount) {
         health -= amount;
         if (health < 0) health = 0;
