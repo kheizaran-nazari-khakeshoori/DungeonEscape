@@ -41,12 +41,9 @@ public class Main {
 
         // If player is still alive, they can use items
         if (player.isAlive()) {
-            System.out.println("\n" + player.getName() + " survived the fight! Current health: " + player.getHealth());
-            System.out.println("Using a health potion to recover...");
             System.out.println("\n" + player.getName() + " survived the first fight! Current health: " + player.getHealth());
             System.out.println("Using a health potion to prepare for the next foe...");
             try {
-                player.useItem("Health Potion"); // The heal method now caps health at 100
                 player.useItem("Health Potion"); // This will start a healing-over-time effect
             } catch (InvalidMoveException e) {
                 System.out.println("Exception caught: " + e.getMessage());
@@ -69,7 +66,6 @@ public class Main {
         try {
             player.useItem("Magic Wand"); // not in inventory
         } catch (InvalidMoveException e) {
-            System.out.println("Exception caught: " + e.getMessage());
             System.out.println("\nException caught: " + e.getMessage());
         }
     }

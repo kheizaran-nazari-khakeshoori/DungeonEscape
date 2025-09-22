@@ -66,10 +66,17 @@ public class Player {
 
     // Player attacks an enemy using the equipped weapon
     public void attack(Enemy enemy) {
+        // This standard attack calls the overloaded version with 0 bonus damage.
+        attack(enemy, 0);
+    }
+
+    // Overloaded attack method for special moves or bonuses (Overloading Polymorphism)
+    public void attack(Enemy enemy, int bonusDamage) {
         if (equippedWeapon != null) {
+            int totalDamage = equippedWeapon.getDamage() + bonusDamage;
             System.out.println(name + " attacks " + enemy.getName() + " with " + equippedWeapon.getName() +
-                    " for " + equippedWeapon.getDamage() + " damage!");
-            enemy.takeDamage(equippedWeapon.getDamage());
+                    " for " + totalDamage + " damage" + (bonusDamage > 0 ? " (" + bonusDamage + " bonus)!" : "!"));
+            enemy.takeDamage(totalDamage);
             equippedWeapon.decreaseDurability();
 
             if (equippedWeapon.getDurability() <= 0) {
