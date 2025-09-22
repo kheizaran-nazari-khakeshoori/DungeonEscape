@@ -1,4 +1,5 @@
 utils/RandomUtil.class
+model/EnemyFactory.class
 exceptions/InvalidMoveException.class
 model/Inventory.class
 model/Potion.class
@@ -6,9 +7,11 @@ model/Item.class
 controller/RuleEngine.class
 controller/LevelManager.class
 controller/CombatSystem.class
+model/ActiveEffect.class
 controller/GameController.class
 com/dungeonescape/Main.class
 utils/ConfigLoader.class
+model/Effect.class
 view/DungeonPanel.class
 model/Goblin.class
 exceptions/LevelLoadException.class
@@ -18,8 +21,8 @@ model/Ghost.class
 model/Player.class
 utils/Logger.class
 model/Weapon.class
+utils/DiceRoller.class
 view/CombatDialog.class
-util/DiceRoller.class
 model/Trap.class
 view/HUDPanel.class
 model/Enemy.class

@@ -24,4 +24,9 @@ public class Potion extends Item {
         Effect effect = new ActiveEffect(getName(), healing, duration);
         player.addEffect(effect);
     }
+
+    @Override
+    public boolean isConsumable() {
+        return true;
+    }
 }

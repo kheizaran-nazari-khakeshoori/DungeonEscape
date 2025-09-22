@@ -10,11 +10,14 @@
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/Potion.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/Weapon.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/view/DungeonPanel.java
+/home/kheizaran/Github/DungeonEscape/src/main/java/model/ActiveEffect.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/controller/GameController.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/utils/RandomUtil.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/exceptions/LevelLoadException.java
+/home/kheizaran/Github/DungeonEscape/src/main/java/model/Effect.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/view/HUDPanel.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/Level.java
+/home/kheizaran/Github/DungeonEscape/src/main/java/model/EnemyFactory.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/utils/Logger.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/utils/ConfigLoader.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/exceptions/InvalidMoveException.java

@@ -47,6 +47,16 @@ public class Player {
         return health > 0;
     }
 
+    public void showStatus() {
+        System.out.println(name + " | Health: " + health + "/" + MAX_HEALTH);
+        if (equippedWeapon != null) {
+            System.out.println("Equipped: " + equippedWeapon.getName() + " (Durability: " +
+                    equippedWeapon.getDurability() + ")");
+        } else {
+            System.out.println("Equipped: Fists");
+        }
+    }
+
     public void showInventory() {
         inventory.showInventory();
     }
@@ -96,8 +106,8 @@ public class Player {
         if (item != null) {
             item.use(this);  // Polymorphism: let the item decide what 'use' means
 
-            // Consumable items like potions should be removed after use.
-            if (item instanceof Potion) {
+            // If the item reports that it is consumable, remove it after use.
+            if (item.isConsumable()) {
                 inventory.removeItem(item);
                 System.out.println(item.getName() + " was consumed.");
             }
