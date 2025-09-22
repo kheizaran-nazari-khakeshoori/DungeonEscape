@@ -41,23 +41,15 @@ public class Game {
             printMainMenu();
             String choice = scanner.nextLine().trim().toUpperCase();
 
-            switch (choice) {
-                case "E":
-                case "EXPLORE":
-                    explore();
-                    break;
-                case "I":
-                case "INVENTORY":
-                    manageInventory();
-                    break;
-                case "Q":
-                case "QUIT":
-                    isRunning = false;
-                    System.out.println("You decide to rest. Game over.");
-                    break;
-                default:
-                    System.out.println("Invalid command. Try again.");
-                    break;
+            if (choice.equals("E") || choice.equals("EXPLORE")) {
+                explore();
+            } else if (choice.equals("I") || choice.equals("INVENTORY")) {
+                manageInventory();
+            } else if (choice.equals("Q") || choice.equals("QUIT")) {
+                isRunning = false;
+                System.out.println("You decide to rest. Game over.");
+            } else {
+                System.out.println("Invalid command. Try again.");
             }
         }
 

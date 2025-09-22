@@ -13,11 +13,14 @@ public class EnemyFactory {
 
     public Enemy createRandomEnemy() {
         int type = random.nextInt(3); // 0 for Goblin, 1 for Ghost, 2 for StoneMan
-        switch (type) {
-            case 0: return new Goblin();
-            case 1: return new Ghost();
-            case 2: return new StoneMan();
-            default: return new Goblin(); // Default case
+        if (type == 0) {
+            return new Goblin();
+        } else if (type == 1) {
+            return new Ghost();
+        } else if (type == 2) {
+            return new StoneMan();
+        } else {
+            return new Goblin(); // Default case
         }
     }
 }
