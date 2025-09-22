@@ -2,14 +2,20 @@ package model;
 
 public abstract class Item {
     private String name;
+    protected String imagePath;
 
-    public Item(String name) {
+    public Item(String name, String imagePath) {
         this.name = name;
+        this.imagePath = imagePath;
     }
 
     // Encapsulation: getter for name
     public String getName() {
         return name;
+    }
+
+    public String getImagePath() {
+        return imagePath;
     }
 
     // Abstraction: every item can have a use effect

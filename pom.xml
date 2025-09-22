@@ -7,13 +7,6 @@
     <artifactId>job-quest-game</artifactId>
     <version>1.0-SNAPSHOT</version>
 
-    <dependencies>
-        <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <version>8.0.33</version>
-        </dependency>
-    </dependencies>
 <build>
     <plugins>
         <plugin>
@@ -24,6 +17,12 @@
                 <source>17</source>  <!-- یا 11 یا 20 بسته به JDK -->
                 <target>17</target>
             </configuration>
+        </plugin>
+
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-resources-plugin</artifactId>
+            <version>3.3.1</version>
         </plugin>
 
         <plugin>

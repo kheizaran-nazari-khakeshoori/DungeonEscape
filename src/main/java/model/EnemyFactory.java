@@ -9,18 +9,23 @@ import java.util.Random;
  * as long as they extend the Enemy base class.
  */
 public class EnemyFactory {
-    private Random random = new Random();
+    private final Random random;
+
+    public EnemyFactory(Random random) {
+        this.random = random;
+    }
 
     public Enemy createRandomEnemy() {
-        int type = random.nextInt(3); // 0 for Goblin, 1 for Ghost, 2 for StoneMan
-        if (type == 0) {
-            return new Goblin();
-        } else if (type == 1) {
-            return new Ghost();
-        } else if (type == 2) {
-            return new StoneMan();
-        } else {
-            return new Goblin(); // Default case
+        int type = random.nextInt(3);
+        switch (type) {
+            case 0:
+                return new Goblin();
+            case 1:
+                return new Ghost();
+            case 2:
+                return new StoneMan();
+            default: // This case should not be reached with nextInt(3)
+                return new Goblin();
         }
     }
 }

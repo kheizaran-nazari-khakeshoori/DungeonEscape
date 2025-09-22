@@ -19,9 +19,6 @@ public class ActiveEffect implements Effect {
         }
         player.heal(healingPerTurn);
         remainingDuration--;
-        if (isFinished()) {
-            System.out.println("The effect of '" + name + "' has worn off.");
-        }
     }
 
     @Override

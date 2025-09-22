@@ -14,13 +14,6 @@ public class Inventory {
         items.remove(item);
     }
 
-    public void showInventory() {
-        System.out.println("Inventory:");
-        for (Item item : items) {
-            System.out.println("- " + item.getName());
-        }
-    }
-
     // Return a copy of the items list for safe access
     public List<Item> getItems() {
         return new ArrayList<>(items);

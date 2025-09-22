@@ -1,18 +1,25 @@
 package model;
 
 public class StoneMan extends Enemy {
+
     public StoneMan() {
-        super("StoneMan", 100, 20);
+        // Name, Health, Base Damage, Image Path
+        super("StoneMan", 80, 15, "images/enemies/StoneMan.png");
+
+        // Stone Golems are resistant to sharp weapons but weak to crushing blows.
+        resistances.put(DamageType.SLASHING, 0.5); // Takes half damage
+        resistances.put(DamageType.PIERCING, 0.25); // Takes quarter damage
+        resistances.put(DamageType.BLUNT, 1.75);    // Takes extra damage
     }
 
     @Override
     public String attack(Player player) {
-        player.takeDamage(getDamage());
-        return getName() + " crushes " + player.getName() + " with a rock for " + getDamage() + " damage!";
+        player.takeDamage(this.baseDamage);
+        return this.name + " slams you for " + this.baseDamage + " heavy damage.";
     }
 
     @Override
-    public void move() {
-        System.out.println(getName() + " lumbers slowly forward.");
+    public String getHint() {
+        return "Hint: Its body is made of solid rock. Sharp weapons may glance off it.";
     }
 }

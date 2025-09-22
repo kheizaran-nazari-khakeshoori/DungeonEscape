@@ -10,11 +10,11 @@ public class Level {
     }
 
     public void load() throws LevelLoadException {
-        System.out.println("Attempting to load level: " + name);
+        // In a real game, this would load data from a file.
+        // For now, it just simulates the process.
         // Simulate a loading error for demonstration purposes
         if (name.equalsIgnoreCase("Broken Level")) {
             throw new LevelLoadException("Failed to load 'Broken Level': Corrupted data or missing assets.");
         }
-        System.out.println("Level '" + name + "' loaded successfully.");
     }
 }

@@ -8,15 +8,20 @@ import exceptions.InvalidMoveException;
 
 public class Player {
     private String name;
-    private static final int MAX_HEALTH = 100;
+    private int maxHealth;
     private int health;
     private Inventory inventory;
     private List<Effect> activeEffects;
     private Weapon equippedWeapon;
 
     public Player(String name) {
+        this(name, 100); // Default to 100 health
+    }
+
+    public Player(String name, int maxHealth) {
         this.name = name;
-        this.health = MAX_HEALTH;
+        this.maxHealth = maxHealth;
+        this.health = this.maxHealth;
         this.inventory = new Inventory();
         this.activeEffects = new ArrayList<>();
         this.equippedWeapon = null;
@@ -28,6 +33,10 @@ public class Player {
 
     public int getHealth() {
         return health;
+    }
+
+    public int getMaxHealth() {
+        return maxHealth;
     }
 
     public Inventory getInventory() {
@@ -42,25 +51,11 @@ public class Player {
     public void heal(int amount) {
         this.health += amount;
         // Enforce the max health rule here, strengthening encapsulation
-        if (this.health > MAX_HEALTH) this.health = MAX_HEALTH;
+        if (this.health > this.maxHealth) this.health = this.maxHealth;
     }
 
     public boolean isAlive() {
         return health > 0;
-    }
-
-    public void showStatus() {
-        System.out.println(name + " | Health: " + health + "/" + MAX_HEALTH);
-        if (equippedWeapon != null) {
-            System.out.println("Equipped: " + equippedWeapon.getName() + " (Durability: " +
-                    equippedWeapon.getDurability() + ")");
-        } else {
-            System.out.println("Equipped: Fists");
-        }
-    }
-
-    public void showInventory() {
-        inventory.showInventory();
     }
 
     public void pickItem(Item item) {
@@ -84,17 +79,22 @@ public class Player {
     // Overloaded attack method for special moves or bonuses (Overloading Polymorphism)
     public String attack(Enemy enemy, int bonusDamage) {
         if (equippedWeapon != null) {
-            int totalDamage = equippedWeapon.getDamage() + bonusDamage;
-            enemy.takeDamage(totalDamage);
+            int baseDamage = equippedWeapon.getDamage() + bonusDamage;
+            
+            // The takeDamage method now returns a string about effectiveness
+            String effectivenessMessage = enemy.takeDamage(baseDamage, equippedWeapon.getDamageType());
+            
             equippedWeapon.decreaseDurability();
 
             String result = name + " attacks " + enemy.getName() + " with " + equippedWeapon.getName() +
-                    " for " + totalDamage + " damage" + (bonusDamage > 0 ? " (" + bonusDamage + " bonus)!" : "!");
+                    " for " + baseDamage + " damage! " + effectivenessMessage;
+            if (bonusDamage > 0) result += " (" + bonusDamage + " bonus)!";
 
             if (equippedWeapon.getDurability() <= 0) {
                 inventory.removeItem(equippedWeapon);
-                equippedWeapon = null; // Unequip the broken weapon
-                result += "\n" + "Your weapon broke!";
+                String brokenWeaponName = equippedWeapon.getName();
+                setEquippedWeapon(null); // Unequip the broken weapon
+                result += "\nYour " + brokenWeaponName + " broke!";
             }
             return result;
         }
@@ -105,14 +105,7 @@ public class Player {
     public void useItem(String itemName) throws InvalidMoveException {
         Item item = inventory.findItem(itemName);
 
-        if (item != null) {
-            item.use(this);  // Polymorphism: let the item decide what 'use' means
-
-            // If the item reports that it is consumable, remove it after use.
-            if (item.isConsumable()) {
-                inventory.removeItem(item);
-            }
-        } else {
+        if (item == null) {
             throw new InvalidMoveException("Item '" + itemName + "' is not in inventory!");
         }
     }
