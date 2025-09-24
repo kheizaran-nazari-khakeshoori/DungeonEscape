@@ -103,10 +103,17 @@ public class Player {
 
     // Use item by name; throws exception if item not in inventory
     public void useItem(String itemName) throws InvalidMoveException {
-        Item item = inventory.findItem(itemName);
-
+        Item item = getInventory().findItem(itemName);
         if (item == null) {
             throw new InvalidMoveException("Item '" + itemName + "' is not in inventory!");
+        }
+
+        // Let the item affect the player (Polymorphism)
+        item.use(this);
+
+        // If the item is consumable, the player removes it from their own inventory.
+        if (item.isConsumable()) {
+            getInventory().removeItem(item);
         }
     }
 
@@ -114,18 +121,36 @@ public class Player {
         activeEffects.add(effect);
     }
 
-    public void applyTurnEffects() {
-        if (activeEffects.isEmpty()) {
-            return;
-        }
+    public boolean hasEffect(String effectName) {
+        return activeEffects.stream().anyMatch(effect -> effect.getName().equals(effectName));
+    }
 
+    public void removeEffect(String effectName) {
+        activeEffects.removeIf(effect -> effect.getName().equals(effectName));
+    }
+
+    public String getTurnEffectsResult() {
+        if (activeEffects.isEmpty()) {
+            return "";
+        }
+        
+        StringBuilder effectsResult = new StringBuilder();
         Iterator<Effect> iterator = activeEffects.iterator();
         while (iterator.hasNext()) {
             Effect effect = iterator.next();
-            effect.apply(this);
+            String result = effect.apply(this); // Get result message from effect
+            if (result != null && !result.isEmpty()) {
+                if (effectsResult.length() > 0) effectsResult.append("\n");
+                effectsResult.append(result);
+            }
             if (effect.isFinished()) {
                 iterator.remove();
             }
         }
+        return effectsResult.toString();
+    }
+
+    public void applyTurnEffects() {
+        getTurnEffectsResult(); // We just call the new method but don't need its return value here
     }
 }

@@ -13,16 +13,22 @@ public class ActiveEffect implements Effect {
 
     // Applies the effect for one turn
     @Override
-    public void apply(Player player) {
+    public String apply(Player player) {
         if (isFinished()) {
-            return;
+            return "";
         }
         player.heal(healingPerTurn);
         remainingDuration--;
+        return "You regenerate " + healingPerTurn + " health.";
     }
 
     @Override
     public boolean isFinished() {
         return remainingDuration <= 0;
+    }
+
+    @Override
+    public String getName() {
+        return name;
     }
 }

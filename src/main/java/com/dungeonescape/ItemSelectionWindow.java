@@ -1,11 +1,31 @@
 package com.dungeonescape;
 
-import model.*;
-
-import javax.swing.*;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.GridLayout;
+import java.awt.Image;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.swing.BorderFactory;
+import javax.swing.ButtonGroup;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import javax.swing.SwingConstants;
+
+import model.Antidote;
+import model.DamageType;
+import model.InvisibilityPotion;
+import model.Item;
+import model.Player;
+import model.Potion;
+import model.StaminaElixir;
+import model.Weapon;
 import view.GameWindow;
 
 public class ItemSelectionWindow extends JFrame {
@@ -83,9 +103,10 @@ public class ItemSelectionWindow extends JFrame {
 
     private List<Potion> createAvailablePotions() {
         List<Potion> potions = new ArrayList<>();
-        potions.add(new Potion("Health Potion", "A swirling red liquid that restores 25 health.", 25, 1, "images/potions/ManaPotion.png")); // Assuming ManaPotion.png is your health potion image
-        potions.add(new Potion("Stamina Elixir", "A potent green elixir that restores a large amount of health (50).", 50, 1, "images/potions/StaminaElixir.png"));
-        potions.add(new Potion("Antidote", "A chalky fluid that cures poison, but provides no direct healing.", 0, 1, "images/potions/Antidote..png"));
+        potions.add(new Potion("Health Potion", "A swirling red liquid that restores 25 health.", 25, 1, "images/potions/ManaPotion.png"));
+        potions.add(new StaminaElixir("Stamina Elixir", "Restores 20 health and grants regeneration for 3 turns.", 20, "images/potions/StaminaElixir.png"));
+        potions.add(new InvisibilityPotion("Invisibility Potion", "Guarantees a successful escape from your next fight.", "images/potions/InvisibilityPotion.png"));
+        potions.add(new Antidote("Antidote", "A chalky fluid that cures poison.", "images/potions/Antidote..png"));
         return potions;
     }
 
@@ -122,9 +143,18 @@ public class ItemSelectionWindow extends JFrame {
         if (item instanceof Weapon) {
             Weapon w = (Weapon) item;
             statsText = "<b>Dmg: " + w.getDamage() + " | Dura: " + w.getDurability() + "</b>";
-        } else {
-            Potion p = (Potion) item;
-            statsText = "<b>Heals: " + p.getHealAmount() + " HP</b>";
+        } else if (item instanceof InvisibilityPotion) {
+            statsText = "<b>Guarantees Flee</b>";
+        } else { // Covers Antidote and regular Potions
+            if (item instanceof Antidote) {
+                statsText = "<b>Cures Poison</b>";
+            } else if (item instanceof StaminaElixir) {
+                Potion p = (Potion) item;
+                statsText = "<b>Heals: " + p.getHealAmount() + " + Regen</b>";
+            } else {
+                Potion p = (Potion) item;
+                statsText = "<b>Heals: " + p.getHealAmount() + " HP</b>";
+            }
         }
         String fullDescription = "<html><div style='text-align: center;'>" + descriptionText + "<br>" + statsText + "</div></html>";
         JLabel descLabel = new JLabel(fullDescription, SwingConstants.CENTER);

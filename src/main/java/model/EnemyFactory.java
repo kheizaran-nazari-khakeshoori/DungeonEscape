@@ -3,6 +3,7 @@ package model;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
+
 import utils.DiceRoller;
 
 /**
@@ -21,7 +22,11 @@ public class EnemyFactory {
         enemySuppliers.add(Ghost::new);
         enemySuppliers.add(StoneMan::new);
         enemySuppliers.add(SkeletonWarrior::new);
-        // Example for later: enemySuppliers.add(SlimeBlob::new);
+        // TODO: Add your other 4 enemy classes here. Replace the placeholder names.
+        // enemySuppliers.add(YourEnemyClass1::new);
+        // enemySuppliers.add(YourEnemyClass2::new);
+        // enemySuppliers.add(YourEnemyClass3::new);
+        // enemySuppliers.add(YourEnemyClass4::new);
     }
 
     public Enemy createRandomEnemy() {

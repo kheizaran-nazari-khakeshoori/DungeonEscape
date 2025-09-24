@@ -1,5 +1,7 @@
 package model;
 
+import java.util.Random;
+
 public class Goblin extends Enemy {
 
     public Goblin() {
@@ -10,8 +12,15 @@ public class Goblin extends Enemy {
 
     @Override
     public String attack(Player player) {
+        String result = this.name + " attacks you for " + this.baseDamage + " damage.";
         player.takeDamage(this.baseDamage);
-        return this.name + " attacks you for " + this.baseDamage + " damage.";
+
+        // 25% chance to apply poison
+        if (new Random().nextInt(4) == 0) {
+            player.addEffect(new PoisonEffect(3, 3)); // 3 damage for 3 turns
+            result += "\nYou have been poisoned!";
+        }
+        return result;
     }
 
     @Override
