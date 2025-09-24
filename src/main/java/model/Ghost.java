@@ -11,6 +11,7 @@ public class Ghost extends Enemy {
         // Ghosts are resistant to physical attacks but weak to holy magic.
         resistances.put(DamageType.SLASHING, 0.5); // Takes half damage
         resistances.put(DamageType.PIERCING, 0.5); // Takes half damage
+
         resistances.put(DamageType.HOLY, 2.0);      // Takes double damage
     }
 

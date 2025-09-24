@@ -10,6 +10,7 @@ public class RuleEngine {
     // --- Encounter Rules ---
     public double getEnemyChance() { return 0.7; } // 70% chance for an enemy
     public double getTrapChance() { return 0.3; } // 30% chance for a trap
+    public double getShopChance() { return 0.1; } // 10% chance for a shop (adjust as needed)
 
     // --- Combat Rules ---
     public double getFleeChance() { return 0.5; } // 50% chance to flee successfully

@@ -8,6 +8,7 @@ public class SkeletonWarrior extends Enemy {
         // Name, Health, Base Damage, Image Path
         super("Skeleton Warrior", 50, 10, "images/enemies/SkeletonWarrior.png");
 
+
         // Skeletons are often weak to blunt damage and resistant to piercing.
         resistances.put(DamageType.BLUNT, 1.5);
         resistances.put(DamageType.PIERCING, 0.75);

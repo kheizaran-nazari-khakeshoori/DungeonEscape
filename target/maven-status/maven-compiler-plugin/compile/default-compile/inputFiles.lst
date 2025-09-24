@@ -9,6 +9,7 @@
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/Weapon.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/controller/GameController.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/exceptions/LevelLoadException.java
+/home/kheizaran/Github/DungeonEscape/src/main/java/view/ShopDialog.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/view/HUDPanel.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/com/dungeonescape/Game.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/Elfo.java
@@ -21,11 +22,14 @@
 /home/kheizaran/Github/DungeonEscape/src/main/java/exceptions/InvalidMoveException.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/Goblin.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/utils/Game.java
+/home/kheizaran/Github/DungeonEscape/src/main/java/model/Shop.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/controller/LevelManager.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/DamageType.java
+/home/kheizaran/Github/DungeonEscape/src/main/java/com/dungeonescape/Shop.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/view/LogPanel.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/SpikeTrap.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/Lucy.java
+/home/kheizaran/Github/DungeonEscape/src/main/java/model/ShopEncounter.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/view/InventoryPanel.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/PoisonEffect.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/ShadowAssassin.java

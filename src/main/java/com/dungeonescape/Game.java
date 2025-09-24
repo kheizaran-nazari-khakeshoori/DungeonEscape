@@ -1,7 +1,6 @@
 package com.dungeonescape;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,10 +14,20 @@ import model.Bean;
 import model.Elfo;
 import model.Enemy;
 import model.EnemyFactory;
+import model.Ghost;
+import model.Goblin;
 import model.InvisibilityEffect;
 import model.Item;
+import model.Level;
 import model.Lucy;
+import model.MimicChest;
 import model.Player;
+import model.PoisonSpider;
+import model.ShadowAssassin;
+import model.ShopEncounter;
+import model.SkeletonWarrior;
+import model.SlimeBlob;
+import model.StoneMan;
 import model.Trap;
 import model.TrapFactory;
 import model.Weapon;
@@ -30,6 +39,7 @@ import view.HUDPanel;
 import view.InventoryPanel;
 import view.LogPanel;
 import view.PartyPanel;
+import view.ShopDialog;
 
 /**
  * The main controller for the game, managing the game state and main loop.
@@ -39,12 +49,14 @@ public class Game {
     private Player activePlayer;
     private final List<Player> party;
     private final Map<String, Integer> enemyEncounterCount;
-    private List<Supplier<Enemy>> encounterDeck;
+    private List<Supplier<Enemy>> currentEncounterDeck;
     private EnemyFactory enemyFactory;
     private TrapFactory trapFactory;
     private DiceRoller dice;
     private RuleEngine ruleEngine;
     private Enemy currentEnemy;
+    private List<Level<Enemy>> gameLevels;
+    private int currentLevelIndex;
 
     // Views
     private final PartyPanel partyPanel;
@@ -80,7 +92,9 @@ public class Game {
         this.trapFactory = new TrapFactory(this.dice);
         this.enemyEncounterCount = new HashMap<>();
         this.ruleEngine = new RuleEngine();
-        this.encounterDeck = new ArrayList<>();
+        this.currentEncounterDeck = new ArrayList<>();
+        this.gameLevels = new ArrayList<>();
+        this.currentLevelIndex = 0;
 
         // Views
         this.partyPanel = partyPanel;
@@ -94,6 +108,7 @@ public class Game {
         this.dungeonPanel.door1Button.addActionListener(e -> chooseDoor(1));
         this.dungeonPanel.door2Button.addActionListener(e -> chooseDoor(2));
         this.controlPanel.addAttackListener(e -> performCombatRound());
+        this.controlPanel.addSpecialListener(e -> useSpecialAbility());
         this.controlPanel.addFleeListener(e -> fleeEncounter());
         this.controlPanel.addInventoryListener(e -> manageInventory());
         this.controlPanel.addExitListener(e -> System.exit(0));
@@ -106,8 +121,8 @@ public class Game {
      * Initializes the player with starting items and sets up the game state.
      */
     private void startGame() {
-        logPanel.addMessage("Welcome to Dungeon Escape! Your adventure begins.");
-        logPanel.addMessage("You enter a dark dungeon. Choose a door to proceed.");
+        logPanel.addMessage("Welcome to Dungeon Escape!");
+        initializeLevels();
 
         // Find the weapon the player chose during setup and equip it.
         Item startingWeapon = activePlayer.getInventory().getItems().stream()
@@ -123,19 +138,41 @@ public class Game {
                 logPanel.addMessage("Error equipping starting weapon: " + e.getMessage());
             }
         }
-        resetAndShuffleEncounterDeck();
+        startNextLevel();
+    }
+
+    // Public getter for activePlayer, needed by ShopDialog
+    public Player getActivePlayer() {
+        return activePlayer;
+    }
+    // Public getter for logPanel, needed by ShopDialog
+    public LogPanel getLogPanel() {
+        return logPanel;
+    }
+    /**
+     * Creates the sequence of levels for the game, defining the progression.
+     */
+    private void initializeLevels() {
+        gameLevels = new ArrayList<>();
+        // Level: Name, Background Image Path, List of Enemies
+        // Level 1: The Goblin Warrens - Weaker enemies
+        gameLevels.add(new Level<>("The Goblin Warrens", "images/ui/TwoDoors.png", List.of(Goblin::new, Goblin::new, SkeletonWarrior::new)));
+        // Level 2: The Haunted Halls - More spectral enemies
+        gameLevels.add(new Level<>("The Haunted Halls", "images/ui/HauntedHalls.png", List.of(SkeletonWarrior::new, Ghost::new, Ghost::new, ShadowAssassin::new)));
+        // Level 3: The Creature Caves - Tougher, more exotic monsters
+        gameLevels.add(new Level<>("The Creature Caves", "images/ui/CreatureCaves.png", List.of(PoisonSpider::new, SlimeBlob::new, StoneMan::new, MimicChest::new)));
+        // In the future, you could add a final level with a unique Boss.
+    }
+
+    private void startNextLevel() {
+        Level<Enemy> level = gameLevels.get(currentLevelIndex);
+        dungeonPanel.loadBackgroundImage(level.getBackgroundImagePath());
+        logPanel.addMessage("\n--- You have entered " + level.getName() + " ---");
+        this.currentEncounterDeck = level.getShuffledDeck(dice);
         setDoorMode();
     }
 
-    /**
-     * Refills the encounter deck with all possible enemies and shuffles it.
-     */
-    private void resetAndShuffleEncounterDeck() {
-        this.encounterDeck = enemyFactory.getEnemySuppliers();
-        Collections.shuffle(this.encounterDeck, this.dice.getRandom());
-    }
-
-    private void updateGUI() {
+    public void updateGUI() {
         inventoryPanel.updateInventory(activePlayer);
         hudPanel.updateStatus(activePlayer);
         hudPanel.updateEnemyStatus(currentEnemy);
@@ -160,24 +197,35 @@ public class Game {
         String doorName = (doorNumber == 1) ? "left" : "right";
         logPanel.addMessage("\nYou open the " + doorName + " door...");
 
-        // Decide what's behind the door using the RuleEngine
-        if (dice.getRandom().nextDouble() < ruleEngine.getEnemyChance()) {
-            if (encounterDeck.isEmpty()) {
-                logPanel.addMessage("You feel a shift in the dungeon's malevolent energy...");
-                resetAndShuffleEncounterDeck();
+        // --- Corrected Encounter Logic ---
+        // Roll the dice ONCE to determine the outcome.
+        double encounterRoll = dice.getRandom().nextDouble();
+        double enemyChance = ruleEngine.getEnemyChance();
+        double shopChance = ruleEngine.getShopChance();
+
+        if (encounterRoll < enemyChance) { // e.g., 0.0 to 0.7
+            if (currentEncounterDeck.isEmpty()) {
+                logPanel.addMessage("You've cleared this section of the dungeon!");
+                currentLevelIndex++;
+                if (currentLevelIndex >= gameLevels.size()) {
+                    winGame(); // Player has beaten all levels
+                } else {
+                    startNextLevel();
+                }
+                return;
             }
 
             // Get the next enemy from our shuffled "deck"
-            Supplier<Enemy> enemySupplier = encounterDeck.remove(0);
+            Supplier<Enemy> enemySupplier = currentEncounterDeck.remove(0);
             Enemy enemy = enemySupplier.get();
 
             // If we are fleeing and the next enemy is the same type, try to swap it
             // for the next one in the deck to improve variety.
-            if (enemyToAvoid != null && enemy.getName().equals(enemyToAvoid) && !encounterDeck.isEmpty()) {
+            if (enemyToAvoid != null && enemy.getName().equals(enemyToAvoid) && !currentEncounterDeck.isEmpty()) {
                 logPanel.addMessage("...but you manage to dodge into a different corridor!");
-                Supplier<Enemy> nextSupplier = encounterDeck.remove(0);
+                Supplier<Enemy> nextSupplier = currentEncounterDeck.remove(0);
                 // Put the avoided enemy back at the end of the deck
-                encounterDeck.add(enemySupplier);
+                currentEncounterDeck.add(enemySupplier);
                 enemy = nextSupplier.get();
             }
             
@@ -191,8 +239,14 @@ public class Game {
             }
 
             enterCombat(enemy);
-        } else { // It's a trap
+        } else if (encounterRoll < enemyChance + shopChance) { // e.g., 0.7 to 0.8
+            handleShopEncounter();
+        } else if (encounterRoll < enemyChance + shopChance + ruleEngine.getTrapChance()) { // e.g., 0.8 to 1.0
             handleTrapEncounter();
+        } else {
+            // This is the "nothing happens" case.
+            logPanel.addMessage("The room is empty. You proceed to the next choice of doors.");
+            setDoorMode();
         }
     }
 
@@ -204,7 +258,7 @@ public class Game {
         int choice = JOptionPane.showConfirmDialog(
             null,
             "A " + trap.getName() + "!\nAttempt to disarm/avoid it? (Chance: " + disarmChancePercent + "%)",
-            "Trap Detected!",
+            "It's a Trap!",
             JOptionPane.YES_NO_OPTION
         );
 
@@ -227,6 +281,14 @@ public class Game {
                 setDoorMode();
             }
         }
+    }
+
+    private void handleShopEncounter() {
+        ShopEncounter shopEncounter = new ShopEncounter();
+        logPanel.addMessage(shopEncounter.getEnterMessage());
+
+        // Open the shop UI
+        new ShopDialog(this, shopEncounter).setVisible(true);
     }
 
     private Item generateLoot() {
@@ -254,6 +316,7 @@ public class Game {
         dungeonPanel.door2Button.setVisible(false);
         controlPanel.setAttackButtonVisible(true);
         controlPanel.setFleeButtonVisible(true);
+        controlPanel.setSpecialButtonVisible(true);
     }
 
     private void setDoorMode() {
@@ -263,6 +326,7 @@ public class Game {
         dungeonPanel.door2Button.setVisible(true);
         controlPanel.setAttackButtonVisible(false);
         controlPanel.setFleeButtonVisible(false);
+        controlPanel.setSpecialButtonVisible(false);
         updateGUI();
     }
 
@@ -272,7 +336,7 @@ public class Game {
         }
 
         // Player's turn
-        String turnEffectsResult = activePlayer.getTurnEffectsResult();
+        String turnEffectsResult = activePlayer.applyTurnEffects(); // Renamed method in Player
         if (!turnEffectsResult.isEmpty()) {
             logPanel.addMessage(turnEffectsResult);
         }
@@ -291,21 +355,7 @@ public class Game {
 
         // Check if enemy is defeated
         if (!currentEnemy.isAlive()) {
-            logPanel.addMessage("You defeated the " + currentEnemy.getName() + "!");
-
-            // Update encounter count
-            String enemyName = currentEnemy.getName();
-            int newCount = enemyEncounterCount.getOrDefault(enemyName, 0) + 1;
-            enemyEncounterCount.put(enemyName, newCount);
-
-            // Award loot
-            Item loot = generateLoot();
-            if (loot != null) {
-                activePlayer.pickItem(loot);
-                logPanel.addMessage("The enemy dropped a " + loot.getName() + "!");
-            }
-
-            setDoorMode();
+            winCombat();
             return;
         }
 
@@ -319,6 +369,55 @@ public class Game {
         }
 
         updateGUI();
+    }
+
+    private void useSpecialAbility() {
+        if (currentEnemy == null || !activePlayer.isAlive()) {
+            return;
+        }
+
+        // Player uses their special ability
+        String abilityResult = activePlayer.useSpecialAbility(currentEnemy, dice);
+        logPanel.addMessage(abilityResult);
+
+        // Check if the ability defeated the enemy or the player
+        if (!currentEnemy.isAlive()) {
+            winCombat();
+        } else if (!activePlayer.isAlive()) {
+            endGame();
+        } else {
+            // If the fight continues, the enemy gets its turn
+            enemyTurn();
+        }
+        // Update the GUI to reflect any changes (like Lucy's health drop or Bean's heal)
+        updateGUI();
+    }
+
+    private void winCombat() {
+        logPanel.addMessage("You defeated the " + currentEnemy.getName() + "!");
+
+        // Update encounter count
+        String enemyName = currentEnemy.getName();
+        int newCount = enemyEncounterCount.getOrDefault(enemyName, 0) + 1;
+        enemyEncounterCount.put(enemyName, newCount);
+
+        // Award loot
+        Item loot = generateLoot();
+        if (loot != null) {
+            activePlayer.pickItem(loot);
+            logPanel.addMessage("The enemy dropped a " + loot.getName() + "!");
+        }
+
+        // Give the player some gold for winning the fight
+        activePlayer.addGold(currentEnemy.getGoldValue());
+        logPanel.addMessage("You found " + currentEnemy.getGoldValue() + " gold!");
+
+        // Check if the player died from a special ability (like Lucy's)
+        if (!activePlayer.isAlive()) {
+            endGame();
+        } else {
+            setDoorMode();
+        }
     }
 
     private void fleeEncounter() {
@@ -363,9 +462,7 @@ public class Game {
         // Disable all buttons
         dungeonPanel.door1Button.setVisible(false);
         dungeonPanel.door2Button.setVisible(false);
-        controlPanel.setAttackButtonEnabled(false);
-        controlPanel.setFleeButtonEnabled(false);
-        controlPanel.setInventoryButtonEnabled(false);
+        controlPanel.setAllButtonsEnabled(false);
 
         // Display a game over image or message
         try {
@@ -373,6 +470,16 @@ public class Game {
         } catch (Exception e) {
             logPanel.addMessage("[SYSTEM] Warning: Could not load GameOver image.");
         }
+    }
+
+    private void winGame() {
+        logPanel.addMessage("\nCONGRATULATIONS! You have escaped the dungeon!");
+        try {
+            dungeonPanel.displayImage("images/ui/Victory.png"); // Assuming you have a victory image
+        } catch (Exception e) {
+            logPanel.addMessage("[SYSTEM] Warning: Could not load Victory image.");
+        }
+        controlPanel.setAllButtonsEnabled(false);
     }
 
     /**
@@ -401,7 +508,7 @@ public class Game {
     }
 
     /**
-     * This private method is the single point of control for using an item.
+     * This method is the single point of control for using an item.
      * It updates the model and then updates the view.
      */
     private void processUseItem(String itemName) throws InvalidMoveException {

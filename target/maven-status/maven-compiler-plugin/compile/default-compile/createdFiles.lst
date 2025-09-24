@@ -14,6 +14,8 @@ model/Effect.class
 com/dungeonescape/Main.class
 model/Goblin.class
 model/SlimeBlob.class
+view/ShopDialog.class
+view/ShopDialog$1.class
 view/PartyPanel.class
 com/dungeonescape/Game.class
 view/CombatDialog.class
@@ -30,6 +32,7 @@ view/PlayerSelectionWindow.class
 model/Item.class
 model/Bean.class
 model/ShadowAssassin.class
+model/Shop.class
 controller/LevelManager.class
 model/Elfo.class
 controller/GameController.class
@@ -49,6 +52,7 @@ model/Lucy.class
 utils/DiceRoller.class
 model/PoisonEffect.class
 model/PoisonSpider.class
+model/ShopEncounter.class
 model/Trap.class
 model/SkeletonWarrior.class
 model/InvisibilityPotion.class

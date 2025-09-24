@@ -12,6 +12,7 @@ public abstract class Enemy {
     protected int maxHealth;
     protected int baseDamage;
     protected String imagePath;
+    protected int goldValue; // How much gold the enemy is worth
     // Map of DamageType to a multiplier (e.g., 2.0 for weakness, 0.5 for resistance)
     protected Map<DamageType, Double> resistances = new HashMap<>();
 
@@ -20,6 +21,7 @@ public abstract class Enemy {
         this.health = health;
         this.maxHealth = health;
         this.baseDamage = baseDamage;
+        this.goldValue = baseDamage * 2; // The gold value is a function of damage.
         this.imagePath = imagePath;
     }
 
@@ -27,6 +29,9 @@ public abstract class Enemy {
     public int getHealth() { return health; }
     public int getMaxHealth() { return maxHealth; }
     public String getImagePath() { return imagePath; }
+
+    public int getGoldValue() { return goldValue; }
+
     public boolean isAlive() { return health > 0; }
 
     /**

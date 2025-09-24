@@ -14,6 +14,7 @@ public abstract class Player {
     private Inventory inventory;
     private List<Effect> activeEffects;
     private Weapon equippedWeapon;
+    private int gold; // The amount of gold the player has
 
     public Player(String name) {
         this(name, 100); // Default to 100 health
@@ -26,6 +27,7 @@ public abstract class Player {
         this.inventory = new Inventory();
         this.activeEffects = new ArrayList<>();
         this.equippedWeapon = null;
+        this.gold = 0; // Starting gold
     }
 
     public String getName() {
@@ -34,6 +36,15 @@ public abstract class Player {
 
     public int getHealth() {
         return health;
+    }
+
+     // Gold related methods
+    public int getGold() {
+        return gold;
+    }
+    public void addGold(int amount) {
+        this.gold += amount;
+        if (this.gold < 0) this.gold = 0; // Prevent negative gold
     }
 
     public int getMaxHealth() {
@@ -151,8 +162,8 @@ public abstract class Player {
         return effectsResult.toString();
     }
 
-    public void applyTurnEffects() {
-        getTurnEffectsResult(); // We just call the new method but don't need its return value here
+    public String applyTurnEffects() { // Renamed and now returns the result string
+        return getTurnEffectsResult();
     }
 
     /**

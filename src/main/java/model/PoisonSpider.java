@@ -5,6 +5,7 @@ import utils.DiceRoller;
 public class PoisonSpider extends Enemy {
 
     public PoisonSpider() {
+
         // Name, Health, Base Damage, Image Path
         super("Poison Spider", 35, 6, "images/enemies/PoisonSpider.png");
     }

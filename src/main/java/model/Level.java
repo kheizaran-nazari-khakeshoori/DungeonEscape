@@ -16,14 +16,20 @@ import utils.DiceRoller;
 public class Level<T> {
     private String name;
     private List<Supplier<T>> encounterDeck;
+    private String backgroundImagePath;
 
-    public Level(String name, List<Supplier<T>> encounters) {
+    public Level(String name, String backgroundImagePath, List<Supplier<T>> encounters) {
         this.name = name;
+        this.backgroundImagePath = backgroundImagePath;
         this.encounterDeck = new ArrayList<>(encounters);
     }
 
     public String getName() {
         return name;
+    }
+    
+    public String getBackgroundImagePath() {
+        return backgroundImagePath;
     }
 
     /**

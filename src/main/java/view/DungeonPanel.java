@@ -42,7 +42,7 @@ public class DungeonPanel extends JPanel {
         loadBackgroundImage("images/ui/TwoDoors.png");
     }
 
-    private void loadBackgroundImage(String imagePath) {
+    public void loadBackgroundImage(String imagePath) {
         java.net.URL imageURL = getClass().getClassLoader().getResource(imagePath);
         if (imageURL != null) {
             this.backgroundImage = new ImageIcon(imageURL);

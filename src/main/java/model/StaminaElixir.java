@@ -2,8 +2,8 @@ package model;
 
 public class StaminaElixir extends Potion {
 
-    public StaminaElixir(String name, String description, int healAmount, String imagePath) {
-        super(name, description, healAmount, 1, imagePath);
+    public StaminaElixir(String name, String description, int healAmount, String imagePath, int cost) {
+        super(name, description, healAmount, 1, imagePath, cost);
     }
 
     @Override

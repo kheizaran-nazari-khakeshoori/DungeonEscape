@@ -5,6 +5,7 @@ import utils.DiceRoller;
 public class ShadowAssassin extends Enemy {
 
     public ShadowAssassin() {
+
         // Name, Health, Base Damage, Image Path
         super("Shadow Assassin", 55, 20, "images/enemies/ShadowAssassin.png");
     }

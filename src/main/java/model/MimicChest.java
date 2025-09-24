@@ -8,6 +8,7 @@ public class MimicChest extends Enemy {
         // Name, Health, Base Damage, Image Path
         super("Mimic Chest", 70, 18, "images/enemies/MimicChest.png");
 
+
         // Mimics are tough, maybe slightly resistant to being pierced
         resistances.put(DamageType.PIERCING, 0.8);
     }

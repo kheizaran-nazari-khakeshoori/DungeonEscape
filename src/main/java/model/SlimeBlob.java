@@ -8,6 +8,7 @@ public class SlimeBlob extends Enemy {
         // Name, Health, Base Damage, Image Path
         super("Slime Blob", 60, 9, "images/enemies/SlimeBlob.png");
 
+
         // Slimes are resistant to sharp things but weak to fire/magic
         resistances.put(DamageType.SLASHING, 0.5);
         resistances.put(DamageType.PIERCING, 0.5);

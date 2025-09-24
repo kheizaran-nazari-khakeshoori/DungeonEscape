@@ -8,6 +8,7 @@ public class StoneMan extends Enemy {
         // Name, Health, Base Damage, Image Path
         super("StoneMan", 80, 15, "images/enemies/StoneMan.png");
 
+
         // Stone Golems are resistant to sharp weapons but weak to crushing blows.
         resistances.put(DamageType.SLASHING, 0.5); // Takes half damage
         resistances.put(DamageType.PIERCING, 0.25); // Takes quarter damage

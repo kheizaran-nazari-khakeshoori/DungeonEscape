@@ -8,6 +8,7 @@ public class Goblin extends Enemy {
         // Name, Health, Base Damage, Image Path
         super("Goblin", 30, 8, "images/enemies/Goblin.png");
         // Goblins have no special resistances or weaknesses.
+
     }
 
     @Override
