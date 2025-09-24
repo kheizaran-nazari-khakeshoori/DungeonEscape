@@ -15,7 +15,6 @@ com/dungeonescape/Main.class
 model/Goblin.class
 model/SlimeBlob.class
 view/ShopDialog.class
-view/ShopDialog$1.class
 view/PartyPanel.class
 com/dungeonescape/Game.class
 view/CombatDialog.class

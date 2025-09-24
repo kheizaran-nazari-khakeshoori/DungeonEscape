@@ -241,7 +241,7 @@ public class Game {
             enterCombat(enemy);
         } else if (encounterRoll < enemyChance + shopChance) { // e.g., 0.7 to 0.8
             handleShopEncounter();
-        } else if (encounterRoll < enemyChance + shopChance + ruleEngine.getTrapChance()) { // e.g., 0.8 to 1.0
+        } else if (encounterRoll < enemyChance + shopChance + ruleEngine.getTrapChance()) { // e.g., 0.8 to 1.1 (or whatever the total is)
             handleTrapEncounter();
         } else {
             // This is the "nothing happens" case.
