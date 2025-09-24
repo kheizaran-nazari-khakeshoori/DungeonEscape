@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import exceptions.InvalidMoveException;
+import utils.DiceRoller;
 
 public class Player {
     private String name;
@@ -71,13 +72,13 @@ public class Player {
     }
 
     // Player attacks an enemy using the equipped weapon
-    public String attack(Enemy enemy) {
+    public String attack(Enemy enemy, DiceRoller dice) {
         // This standard attack calls the overloaded version with 0 bonus damage.
-        return attack(enemy, 0);
+        return attack(enemy, 0, dice);
     }
 
     // Overloaded attack method for special moves or bonuses (Overloading Polymorphism)
-    public String attack(Enemy enemy, int bonusDamage) {
+    public String attack(Enemy enemy, int bonusDamage, DiceRoller dice) {
         if (equippedWeapon != null) {
             int baseDamage = equippedWeapon.getDamage() + bonusDamage;
             
@@ -160,5 +161,13 @@ public class Player {
      */
     public double getTrapDisarmChance() {
         return 0.33; // Base 33% chance for a normal player
+    }
+
+    /**
+     * Gets the player's natural resistance to poison.
+     * @return A multiplier for incoming poison damage (e.g., 1.0 for full damage, 0.5 for half).
+     */
+    public double getPoisonResistance() {
+        return 1.0; // Default: takes full damage from poison.
     }
 }

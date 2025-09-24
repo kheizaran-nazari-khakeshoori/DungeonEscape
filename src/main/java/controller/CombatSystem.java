@@ -25,7 +25,7 @@ public class CombatSystem {
 
             int playerRoll = dice.roll(6); // roll a 6-sided dice
             if (playerRoll > 1) { // hit if roll > 1
-                player.attack(enemy);
+                player.attack(enemy, dice);
             } else {
                 System.out.println(player.getName() + " missed the attack!");
             }
@@ -38,7 +38,7 @@ public class CombatSystem {
             // Enemy turn
             int enemyRoll = dice.roll(6);
             if (enemyRoll > 1) {
-                enemy.attack(player);
+                enemy.attack(player, dice);
             } else {
                 System.out.println(enemy.getName() + " missed the attack!");
             }

@@ -20,6 +20,7 @@
 /home/kheizaran/Github/DungeonEscape/src/main/java/utils/ConfigLoader.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/exceptions/InvalidMoveException.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/Goblin.java
+/home/kheizaran/Github/DungeonEscape/src/main/java/utils/Game.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/controller/LevelManager.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/DamageType.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/view/LogPanel.java
@@ -30,6 +31,7 @@
 /home/kheizaran/Github/DungeonEscape/src/main/java/com/dungeonescape/Main.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/Trap.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/controller/CombatSystem.java
+/home/kheizaran/Github/DungeonEscape/src/main/java/utils/SoundManager.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/SkeletonWarrior.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/Antidote.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/Ghost.java

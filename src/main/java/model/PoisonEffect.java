@@ -15,9 +15,11 @@ public class PoisonEffect implements Effect {
         if (isFinished()) {
             return "";
         }
-        player.takeDamage(damagePerTurn);
+        // Apply poison damage, factoring in the player's natural resistance.
+        int actualDamage = (int) (damagePerTurn * player.getPoisonResistance());
+        player.takeDamage(actualDamage);
         remainingDuration--;
-        return "You take " + damagePerTurn + " poison damage.";
+        return "You take " + actualDamage + " poison damage.";
     }
 
     @Override

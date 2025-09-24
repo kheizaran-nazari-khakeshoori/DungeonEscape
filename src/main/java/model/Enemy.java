@@ -3,6 +3,8 @@ package model;
 import java.util.HashMap;
 import java.util.Map;
 
+import utils.DiceRoller;
+
 public abstract class Enemy {
     protected String name;
     protected int health;

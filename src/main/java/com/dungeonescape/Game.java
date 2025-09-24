@@ -190,16 +190,38 @@ public class Game {
 
             enterCombat(enemy);
         } else { // 8-10 is a trap
-            Trap trap = trapFactory.createRandomTrap();
-            logPanel.addMessage(trap.getTriggerMessage());
+            handleTrapEncounter();
+        }
+    }
+
+    private void handleTrapEncounter() {
+        Trap trap = trapFactory.createRandomTrap();
+        logPanel.addMessage(trap.getTriggerMessage());
+
+        int disarmChancePercent = (int) (activePlayer.getTrapDisarmChance() * 100);
+        int choice = JOptionPane.showConfirmDialog(
+            null,
+            "A " + trap.getName() + "!\nAttempt to disarm/avoid it? (Chance: " + disarmChancePercent + "%)",
+            "Trap Detected!",
+            JOptionPane.YES_NO_OPTION
+        );
+
+        boolean attemptDisarm = (choice == JOptionPane.YES_OPTION);
+
+        if (attemptDisarm && dice.getRandom().nextDouble() < activePlayer.getTrapDisarmChance()) {
+            // Success!
+            logPanel.addMessage("Success! You deftly avoid the " + trap.getName() + ".");
+            setDoorMode(); // Continue to the next room choice
+        } else {
+            // Failure or chose not to attempt
+            if (attemptDisarm) {
+                logPanel.addMessage("You failed to disarm the trap!");
+            }
             String result = trap.trigger(activePlayer);
             logPanel.addMessage(result);
-
-            // Check if the player survived the trap
             if (!activePlayer.isAlive()) {
                 endGame();
             } else {
-                // After a trap, reset to door selection mode.
                 setDoorMode();
             }
         }
@@ -256,7 +278,7 @@ public class Game {
             return;
         }
 
-        String playerAttackResult = activePlayer.attack(currentEnemy);
+        String playerAttackResult = activePlayer.attack(currentEnemy, dice);
 
         logPanel.addMessage(playerAttackResult);
 
