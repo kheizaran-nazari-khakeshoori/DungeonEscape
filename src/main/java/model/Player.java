@@ -7,7 +7,7 @@ import java.util.List;
 import exceptions.InvalidMoveException;
 import utils.DiceRoller;
 
-public class Player {
+public abstract class Player {
     private String name;
     private int maxHealth;
     private int health;
@@ -170,4 +170,12 @@ public class Player {
     public double getPoisonResistance() {
         return 1.0; // Default: takes full damage from poison.
     }
+
+    /**
+     * Abstract method for a character's unique special ability.
+     * Each subclass must provide its own implementation.
+     * @param enemy The target of the ability, if applicable.
+     * @param dice The dice roller for any random effects.
+     */
+    public abstract String useSpecialAbility(Enemy enemy, DiceRoller dice);
 }

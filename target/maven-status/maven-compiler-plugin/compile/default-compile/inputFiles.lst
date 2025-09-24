@@ -28,6 +28,7 @@
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/Lucy.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/view/InventoryPanel.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/PoisonEffect.java
+/home/kheizaran/Github/DungeonEscape/src/main/java/model/ShadowAssassin.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/com/dungeonescape/Main.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/Trap.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/controller/CombatSystem.java
@@ -37,9 +38,11 @@
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/Ghost.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/Potion.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/controller/RuleEngine.java
+/home/kheizaran/Github/DungeonEscape/src/main/java/model/PoisonSpider.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/view/GameWindow.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/view/DungeonPanel.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/ActiveEffect.java
+/home/kheizaran/Github/DungeonEscape/src/main/java/model/SlimeBlob.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/utils/RandomUtil.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/Bean.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/Effect.java
@@ -51,4 +54,5 @@
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/Item.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/TrapFactory.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/Player.java
+/home/kheizaran/Github/DungeonEscape/src/main/java/model/MimicChest.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/view/PlayerSelectionWindow.java

@@ -28,8 +28,8 @@ public class DungeonPanel extends JPanel {
         door2Button = new JButton("Enter Right");
 
         // Position the buttons over the doors (adjust coordinates as needed)
-        door1Button.setBounds(50, 90, 120, 180);
-        door2Button.setBounds(230, 90, 120, 180);
+        door1Button.setBounds(50, 60, 120, 180);
+        door2Button.setBounds(230, 60, 120, 180);
 
         // Make buttons transparent to show the door image underneath
         styleDoorButton(door1Button);

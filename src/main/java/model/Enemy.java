@@ -3,6 +3,7 @@ package model;
 import java.util.HashMap;
 import java.util.Map;
 
+import controller.RuleEngine;
 import utils.DiceRoller;
 
 public abstract class Enemy {
@@ -50,13 +51,14 @@ public abstract class Enemy {
 
     /**
      * Increases the enemy's stats based on an encounter level.
+     * Now uses the RuleEngine for scaling values.
      * @param level The number of times this enemy has been encountered before.
+     * @param rules The rule engine providing scaling factors.
      */
-    public void strengthen(int level) {
-        // Increase health by 20% and damage by 10% for each previous encounter
-        this.maxHealth = (int) (this.maxHealth * (1 + 0.2 * level));
+    public void strengthen(int level, RuleEngine rules) {
+        this.maxHealth = (int) (this.maxHealth * (1 + rules.getEnemyHealthScaling() * level));
         this.health = this.maxHealth;
-        this.baseDamage = (int) (this.baseDamage * (1 + 0.1 * level));
+        this.baseDamage = (int) (this.baseDamage * (1 + rules.getEnemyDamageScaling() * level));
     }
 
     // Each enemy must implement its own attack logic.

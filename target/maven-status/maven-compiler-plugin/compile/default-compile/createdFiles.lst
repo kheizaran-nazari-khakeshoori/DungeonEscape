@@ -7,11 +7,13 @@ model/SpikeTrap.class
 controller/RuleEngine.class
 model/ActiveEffect.class
 controller/CombatSystem.class
+model/MimicChest.class
 model/TrapFactory.class
 view/LogPanel.class
 model/Effect.class
 com/dungeonescape/Main.class
 model/Goblin.class
+model/SlimeBlob.class
 view/PartyPanel.class
 com/dungeonescape/Game.class
 view/CombatDialog.class
@@ -27,6 +29,7 @@ model/DamageType.class
 view/PlayerSelectionWindow.class
 model/Item.class
 model/Bean.class
+model/ShadowAssassin.class
 controller/LevelManager.class
 model/Elfo.class
 controller/GameController.class
@@ -45,6 +48,7 @@ view/ControlPanel.class
 model/Lucy.class
 utils/DiceRoller.class
 model/PoisonEffect.class
+model/PoisonSpider.class
 model/Trap.class
 model/SkeletonWarrior.class
 model/InvisibilityPotion.class

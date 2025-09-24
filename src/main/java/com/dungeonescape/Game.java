@@ -9,6 +9,7 @@ import java.util.function.Supplier;
 
 import javax.swing.JOptionPane;
 
+import controller.RuleEngine;
 import exceptions.InvalidMoveException;
 import model.Bean;
 import model.Elfo;
@@ -42,6 +43,7 @@ public class Game {
     private EnemyFactory enemyFactory;
     private TrapFactory trapFactory;
     private DiceRoller dice;
+    private RuleEngine ruleEngine;
     private Enemy currentEnemy;
 
     // Views
@@ -77,6 +79,7 @@ public class Game {
         this.enemyFactory = new EnemyFactory(this.dice);
         this.trapFactory = new TrapFactory(this.dice);
         this.enemyEncounterCount = new HashMap<>();
+        this.ruleEngine = new RuleEngine();
         this.encounterDeck = new ArrayList<>();
 
         // Views
@@ -157,9 +160,8 @@ public class Game {
         String doorName = (doorNumber == 1) ? "left" : "right";
         logPanel.addMessage("\nYou open the " + doorName + " door...");
 
-        // Decide what's behind the door: 70% enemy, 30% trap
-        int encounterType = dice.roll(10);
-        if (encounterType <= 7) { // 1-7 is an enemy
+        // Decide what's behind the door using the RuleEngine
+        if (dice.getRandom().nextDouble() < ruleEngine.getEnemyChance()) {
             if (encounterDeck.isEmpty()) {
                 logPanel.addMessage("You feel a shift in the dungeon's malevolent energy...");
                 resetAndShuffleEncounterDeck();
@@ -184,12 +186,12 @@ public class Game {
             // Strengthen enemy if it has been seen before
             int encounterLevel = enemyEncounterCount.getOrDefault(enemyName, 0);
             if (encounterLevel > 0) {
-                enemy.strengthen(encounterLevel);
+                enemy.strengthen(encounterLevel, this.ruleEngine);
                 logPanel.addMessage("This " + enemyName + " seems stronger than the last one!");
             }
 
             enterCombat(enemy);
-        } else { // 8-10 is a trap
+        } else { // It's a trap
             handleTrapEncounter();
         }
     }
@@ -239,7 +241,12 @@ public class Game {
         logPanel.addMessage(enemy.getHint()); // Display the hint
         setCombatMode();
         updateGUI();
-        dungeonPanel.displayImage(enemy.getImagePath());
+        try {
+            dungeonPanel.displayImage(enemy.getImagePath());
+        } catch (Exception e) {
+            // Gracefully handle missing image files instead of crashing.
+            logPanel.addMessage("[SYSTEM] Warning: Could not load image for " + enemy.getName());
+        }
     }
 
     private void setCombatMode() {
@@ -318,8 +325,8 @@ public class Game {
         if (currentEnemy == null) return;
 
         boolean guaranteedFlee = activePlayer.hasEffect(InvisibilityEffect.EFFECT_NAME);
-        // 50% chance to flee, or 100% if invisible
-        if (guaranteedFlee || dice.roll(2) == 1) {
+        // Use RuleEngine for flee chance
+        if (guaranteedFlee || dice.getRandom().nextDouble() < ruleEngine.getFleeChance()) {
             if (guaranteedFlee) {
                 logPanel.addMessage("You vanish from sight and easily escape!");
                 activePlayer.removeEffect(InvisibilityEffect.EFFECT_NAME); // Effect is consumed on use
@@ -361,7 +368,11 @@ public class Game {
         controlPanel.setInventoryButtonEnabled(false);
 
         // Display a game over image or message
-        dungeonPanel.displayImage("images/ui/GameOver.png"); // Assuming you have this image
+        try {
+            dungeonPanel.displayImage("images/ui/GameOver.png"); // Assuming you have this image
+        } catch (Exception e) {
+            logPanel.addMessage("[SYSTEM] Warning: Could not load GameOver image.");
+        }
     }
 
     /**

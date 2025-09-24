@@ -22,11 +22,11 @@ public class EnemyFactory {
         enemySuppliers.add(Ghost::new);
         enemySuppliers.add(StoneMan::new);
         enemySuppliers.add(SkeletonWarrior::new);
-        // TODO: Add your other 4 enemy classes here. Replace the placeholder names.
-        // enemySuppliers.add(YourEnemyClass1::new);
-        // enemySuppliers.add(YourEnemyClass2::new);
-        // enemySuppliers.add(YourEnemyClass3::new);
-        // enemySuppliers.add(YourEnemyClass4::new);
+        // Adding the rest of your custom enemies
+        enemySuppliers.add(MimicChest::new);
+        enemySuppliers.add(PoisonSpider::new);
+        enemySuppliers.add(ShadowAssassin::new);
+        enemySuppliers.add(SlimeBlob::new);
     }
 
     public Enemy createRandomEnemy() {
