@@ -1,5 +1,7 @@
 package model;
 
+import utils.DiceRoller;
+
 public class SkeletonWarrior extends Enemy {
 
     public SkeletonWarrior() {
@@ -12,7 +14,7 @@ public class SkeletonWarrior extends Enemy {
     }
 
     @Override
-    public String attack(Player player) {
+    public String attack(Player player, DiceRoller dice) {
         player.takeDamage(this.baseDamage);
         return this.name + " strikes you with its rusty sword for " + this.baseDamage + " damage.";
     }

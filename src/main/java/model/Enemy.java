@@ -58,7 +58,7 @@ public abstract class Enemy {
     }
 
     // Each enemy must implement its own attack logic.
-    public abstract String attack(Player player);
+    public abstract String attack(Player player, DiceRoller dice);
 
     // Each enemy can provide a hint about its nature.
     public abstract String getHint();

@@ -1,5 +1,7 @@
 package model;
 
+import utils.DiceRoller;
+
 public class StoneMan extends Enemy {
 
     public StoneMan() {
@@ -13,7 +15,7 @@ public class StoneMan extends Enemy {
     }
 
     @Override
-    public String attack(Player player) {
+    public String attack(Player player, DiceRoller dice) {
         player.takeDamage(this.baseDamage);
         return this.name + " slams you for " + this.baseDamage + " heavy damage.";
     }

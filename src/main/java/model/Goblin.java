@@ -1,6 +1,6 @@
 package model;
 
-import java.util.Random;
+import utils.DiceRoller;
 
 public class Goblin extends Enemy {
 
@@ -11,12 +11,12 @@ public class Goblin extends Enemy {
     }
 
     @Override
-    public String attack(Player player) {
+    public String attack(Player player, DiceRoller dice) {
         String result = this.name + " attacks you for " + this.baseDamage + " damage.";
         player.takeDamage(this.baseDamage);
 
         // 25% chance to apply poison
-        if (new Random().nextInt(4) == 0) {
+        if (dice.roll(4) == 1) { // A 1-in-4 chance
             player.addEffect(new PoisonEffect(3, 3)); // 3 damage for 3 turns
             result += "\nYou have been poisoned!";
         }

@@ -199,8 +199,8 @@ public class Game {
             if (!activePlayer.isAlive()) {
                 endGame();
             } else {
-                // After a trap, the player can immediately proceed.
-                updateGUI();
+                // After a trap, reset to door selection mode.
+                setDoorMode();
             }
         }
     }
@@ -281,7 +281,7 @@ public class Game {
         }
 
         // Enemy's turn
-        String enemyAttackResult = currentEnemy.attack(activePlayer);
+        String enemyAttackResult = currentEnemy.attack(activePlayer, dice);
         logPanel.addMessage(enemyAttackResult);
 
         // Check if player is defeated
@@ -320,7 +320,7 @@ public class Game {
 
     private void enemyTurn() {
         if (currentEnemy == null || !currentEnemy.isAlive()) return;
-        String enemyAttackResult = currentEnemy.attack(activePlayer);
+        String enemyAttackResult = currentEnemy.attack(activePlayer, dice);
         logPanel.addMessage(enemyAttackResult);
         if (!activePlayer.isAlive()) {
             endGame();

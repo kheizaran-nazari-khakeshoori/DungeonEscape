@@ -153,4 +153,12 @@ public class Player {
     public void applyTurnEffects() {
         getTurnEffectsResult(); // We just call the new method but don't need its return value here
     }
+
+    /**
+     * Gets the player's chance to successfully disarm or avoid a trap.
+     * @return A value between 0.0 and 1.0 representing the percentage chance.
+     */
+    public double getTrapDisarmChance() {
+        return 0.33; // Base 33% chance for a normal player
+    }
 }

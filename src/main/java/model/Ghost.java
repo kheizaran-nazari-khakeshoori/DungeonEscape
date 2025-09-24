@@ -1,5 +1,7 @@
 package model;
 
+import utils.DiceRoller;
+
 public class Ghost extends Enemy {
 
     public Ghost() {
@@ -13,7 +15,7 @@ public class Ghost extends Enemy {
     }
 
     @Override
-    public String attack(Player player) {
+    public String attack(Player player, DiceRoller dice) {
         player.takeDamage(this.baseDamage);
         return this.name + " phases through you, dealing " + this.baseDamage + " chilling damage.";
     }
