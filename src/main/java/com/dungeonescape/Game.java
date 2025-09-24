@@ -291,6 +291,15 @@ public class Game {
         new ShopDialog(this, shopEncounter).setVisible(true);
     }
 
+    /**
+     * A public method that can be called by encounter dialogs (like the Shop)
+     * after they are closed to signal that the game should proceed.
+     */
+    public void postEncounterCleanup() {
+        logPanel.addMessage("You leave the area and continue your journey.");
+        setDoorMode();
+    }
+
     private Item generateLoot() {
         // TODO: Implement a more dynamic loot system.
         // For now, return null to prevent a potion from dropping after every fight.
@@ -305,9 +314,9 @@ public class Game {
         updateGUI();
         try {
             dungeonPanel.displayImage(enemy.getImagePath());
-        } catch (Exception e) {
+        } catch (Exception e) { // Catching a broad exception is okay for logging, but let's be more specific in the message.
             // Gracefully handle missing image files instead of crashing.
-            logPanel.addMessage("[SYSTEM] Warning: Could not load image for " + enemy.getName());
+            logPanel.addMessage("[SYSTEM] Warning: Could not load image for " + enemy.getName() + ". Error: " + e.getClass().getSimpleName());
         }
     }
 
@@ -512,23 +521,20 @@ public class Game {
      * It updates the model and then updates the view.
      */
     private void processUseItem(String itemName) throws InvalidMoveException {
+        // Find the item before it's potentially consumed by useItem().
+        // This is safe because useItem() would have thrown an exception if it wasn't found.
+        Item usedItem = activePlayer.getInventory().findItem(itemName);
+        if (usedItem == null) { // Should not happen if logic is correct, but good for safety.
+            throw new InvalidMoveException("Could not find item '" + itemName + "' to get use message.");
+        }
+
         // Delegate the entire "use item" logic to the Player class.
         activePlayer.useItem(itemName);
 
-        // Handle logging based on item type
-        // We still need to find the item once for logging purposes.
-        // Note: This is safe because useItem would have thrown an exception if it wasn't found.
-        Item usedItem = activePlayer.getInventory().findItem(itemName); // This will be null if it was consumed.
-
-        if (itemName.contains("Sword") || itemName.contains("Bow") || itemName.contains("Dagger") || itemName.contains("Staff") || itemName.contains("Axe") || itemName.contains("Crossbow")) { // A bit of a hack for logging equipped weapons
-            logPanel.addMessage(activePlayer.getName() + " equipped " + itemName + ".");
-        } else if (itemName.contains("Antidote")) {
-            logPanel.addMessage("You used the " + itemName + ". The poison subsides!");
-        } else if (itemName.contains("Invisibility")) {
-            logPanel.addMessage("You drink the " + itemName + ". You shimmer and turn invisible!");
-        } else {
-            logPanel.addMessage("Used " + itemName + ".");
-        }
+        // Polymorphism in action! We ask the item itself for its use message.
+        // The Game class no longer needs to know about specific item types.
+        // The 'usedItem' variable from the top of the method holds the correct reference.
+        logPanel.addMessage(usedItem.getUseMessage(activePlayer));
         updateGUI(); // Refresh the screen
     }
 }

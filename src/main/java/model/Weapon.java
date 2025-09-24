@@ -42,4 +42,14 @@ public class Weapon extends Item {
     public boolean isConsumable() {
         return false; // Weapons are not consumed when you 'use' (equip) them.
     }
+
+    @Override
+    public String getUseMessage(Player user) {
+        return user.getName() + " equipped " + getName() + ".";
+    }
+
+    @Override
+    public String getStatsString() {
+        return "<b>Dmg: " + getDamage() + " | Dura: " + getDurability() + "</b>";
+    }
 }

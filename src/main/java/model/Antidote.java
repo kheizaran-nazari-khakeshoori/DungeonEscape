@@ -11,4 +11,14 @@ public class Antidote extends Potion {
         // The specific action for an Antidote is to remove poison.
         player.removeEffect(PoisonEffect.EFFECT_NAME);
     }
+
+    @Override
+    public String getUseMessage(Player user) {
+        return "You used the " + getName() + ". The poison subsides!";
+    }
+
+    @Override
+    public String getStatsString() {
+        return "<b>Cures Poison</b>";
+    }
 }

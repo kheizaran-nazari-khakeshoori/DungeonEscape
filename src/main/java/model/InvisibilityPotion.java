@@ -11,4 +11,14 @@ public class InvisibilityPotion extends Potion {
         // The specific action is to apply the Invisibility effect for 2 turns.
         player.addEffect(new InvisibilityEffect(2));
     }
+
+    @Override
+    public String getUseMessage(Player user) {
+        return "You drink the " + getName() + ". You shimmer and turn invisible!";
+    }
+
+    @Override
+    public String getStatsString() {
+        return "<b>Guarantees Flee</b>";
+    }
 }

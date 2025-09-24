@@ -139,23 +139,7 @@ public class ItemSelectionWindow extends JFrame {
 
         // Use the new description field from the Item class, plus the stats.
         String descriptionText = item.getDescription();
-        String statsText;
-        if (item instanceof Weapon) {
-            Weapon w = (Weapon) item;
-            statsText = "<b>Dmg: " + w.getDamage() + " | Dura: " + w.getDurability() + "</b>";
-        } else if (item instanceof InvisibilityPotion) {
-            statsText = "<b>Guarantees Flee</b>";
-        } else { // Covers Antidote and regular Potions
-            if (item instanceof Antidote) {
-                statsText = "<b>Cures Poison</b>";
-            } else if (item instanceof StaminaElixir) {
-                Potion p = (Potion) item;
-                statsText = "<b>Heals: " + p.getHealAmount() + " + Regen</b>";
-            } else {
-                Potion p = (Potion) item;
-                statsText = "<b>Heals: " + p.getHealAmount() + " HP</b>";
-            }
-        }
+        String statsText = item.getStatsString(); // OCP in action!
         String fullDescription = "<html><div style='text-align: center;'>" + descriptionText + "<br>" + statsText + "</div></html>";
         JLabel descLabel = new JLabel(fullDescription, SwingConstants.CENTER);
 

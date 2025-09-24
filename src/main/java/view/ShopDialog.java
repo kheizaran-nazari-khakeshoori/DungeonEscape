@@ -5,6 +5,8 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Image;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -18,13 +20,8 @@ import javax.swing.SwingConstants;
 
 import com.dungeonescape.Game;
 
-import model.Antidote;
-import model.InvisibilityPotion;
 import model.Item;
-import model.Potion;
 import model.ShopEncounter;
-import model.StaminaElixir;
-import model.Weapon;
 
 public class ShopDialog extends JDialog {
     private final Game game;
@@ -57,6 +54,16 @@ public class ShopDialog extends JDialog {
         
         pack();
         setLocationRelativeTo(null); // Center the dialog
+
+        // CRITICAL FIX: Add a listener to handle what happens when the dialog is closed.
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosed(WindowEvent e) {
+                // This code runs AFTER the dialog is closed.
+                // It tells the main game to proceed to the next state.
+                game.postEncounterCleanup();
+            }
+        });
     }
 
     private void attemptPurchase(Item item) {
@@ -104,21 +111,7 @@ public class ShopDialog extends JDialog {
         }
 
         String descriptionText = item.getDescription();
-        String statsText;
-        if (item instanceof Weapon) {
-            Weapon w = (Weapon) item;
-            statsText = "<b>Dmg: " + w.getDamage() + " | Dura: " + w.getDurability() + "</b>";
-        } else if (item instanceof InvisibilityPotion) {
-            statsText = "<b>Guarantees Flee</b>";
-        } else if (item instanceof Antidote) {
-            statsText = "<b>Cures Poison</b>";
-        } else if (item instanceof StaminaElixir) {
-            Potion p = (Potion) item;
-            statsText = "<b>Heals: " + p.getHealAmount() + " + Regen</b>";
-        } else { // Regular Potion
-            Potion p = (Potion) item;
-            statsText = "<b>Heals: " + p.getHealAmount() + " HP</b>";
-        }
+        String statsText = item.getStatsString(); // OCP in action!
         String fullDescription = "<html><div style='text-align: center;'>" + descriptionText + "<br>" + statsText + "</div></html>";
         JLabel descLabel = new JLabel(fullDescription, SwingConstants.CENTER);
 

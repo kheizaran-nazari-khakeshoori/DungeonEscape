@@ -29,4 +29,14 @@ public class Potion extends Item {
         // Potions are used up after one use.
         return true;
     }
+
+    @Override
+    public String getUseMessage(Player user) {
+        return "Used " + getName() + ".";
+    }
+
+    @Override
+    public String getStatsString() {
+        return "<b>Heals: " + getHealAmount() + " HP</b>";
+    }
 }

@@ -40,4 +40,17 @@ public abstract class Item {
     public boolean isConsumable() {
         return false;
     }
+
+    /**
+     * Returns the message to be displayed in the log when the item is used.
+     * @param user The player who used the item.
+     * @return A string describing the result of using the item.
+     */
+    public abstract String getUseMessage(Player user);
+
+    /**
+     * Returns a string summarizing the item's key stats for display in the UI.
+     * @return An HTML-formatted string of the item's stats.
+     */
+    public abstract String getStatsString();
 }
