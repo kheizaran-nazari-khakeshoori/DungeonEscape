@@ -5,8 +5,6 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Image;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -26,7 +24,6 @@ import model.ShopEncounter;
 public class ShopDialog extends JDialog {
     private final Game game;
     private final ShopEncounter shopEncounter;
-    private final JLabel goldLabel;
     private final JPanel itemsPanel;
 
     public ShopDialog(Game game, ShopEncounter shopEncounter) {
@@ -36,34 +33,16 @@ public class ShopDialog extends JDialog {
 
         setLayout(new BorderLayout(10, 10));
         setSize(800, 600);
-
-        // Gold Display Panel
-        JPanel topPanel = new JPanel(new BorderLayout());
-        topPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 0, 10));
-        goldLabel = new JLabel("Your Gold: " + game.getActivePlayer().getGold(), SwingConstants.RIGHT);
-        goldLabel.setFont(new Font("Serif", Font.BOLD, 18));
-        topPanel.add(goldLabel, BorderLayout.EAST);
+        ((JPanel) getContentPane()).setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         // Items Panel
         itemsPanel = new JPanel(new GridLayout(0, 3, 10, 10)); // 3 columns
-        itemsPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         refreshShopItems();
 
-        add(topPanel, BorderLayout.NORTH);
         add(new JScrollPane(itemsPanel), BorderLayout.CENTER);
         
         pack();
         setLocationRelativeTo(null); // Center the dialog
-
-        // CRITICAL FIX: Add a listener to handle what happens when the dialog is closed.
-        addWindowListener(new WindowAdapter() {
-            @Override
-            public void windowClosed(WindowEvent e) {
-                // This code runs AFTER the dialog is closed.
-                // It tells the main game to proceed to the next state.
-                game.postEncounterCleanup();
-            }
-        });
     }
 
     private void attemptPurchase(Item item) {
@@ -89,7 +68,6 @@ public class ShopDialog extends JDialog {
         // Re-validate and repaint the panel to show the new cards
         itemsPanel.revalidate();
         itemsPanel.repaint();
-        goldLabel.setText("Your Gold: " + game.getActivePlayer().getGold());
     }
 
     private JPanel createShopItemCard(Item item) {

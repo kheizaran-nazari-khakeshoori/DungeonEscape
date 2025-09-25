@@ -55,6 +55,7 @@ public class Game {
     private DiceRoller dice;
     private RuleEngine ruleEngine;
     private Enemy currentEnemy;
+    private ShopEncounter shopEncounter;
     private List<Level<Enemy>> gameLevels;
     private int currentLevelIndex;
 
@@ -94,6 +95,7 @@ public class Game {
         this.ruleEngine = new RuleEngine();
         this.currentEncounterDeck = new ArrayList<>();
         this.gameLevels = new ArrayList<>();
+        this.shopEncounter = new ShopEncounter(); // Create a single shop instance for the game
         this.currentLevelIndex = 0;
 
         // Views
@@ -111,6 +113,7 @@ public class Game {
         this.controlPanel.addSpecialListener(e -> useSpecialAbility());
         this.controlPanel.addFleeListener(e -> fleeEncounter());
         this.controlPanel.addInventoryListener(e -> manageInventory());
+        this.controlPanel.addShopListener(e -> openShop());
         this.controlPanel.addExitListener(e -> System.exit(0));
 
         // Start the game
@@ -139,6 +142,7 @@ public class Game {
             }
         }
         startNextLevel();
+        
     }
 
     // Public getter for activePlayer, needed by ShopDialog
@@ -201,7 +205,6 @@ public class Game {
         // Roll the dice ONCE to determine the outcome.
         double encounterRoll = dice.getRandom().nextDouble();
         double enemyChance = ruleEngine.getEnemyChance();
-        double shopChance = ruleEngine.getShopChance();
 
         if (encounterRoll < enemyChance) { // e.g., 0.0 to 0.7
             if (currentEncounterDeck.isEmpty()) {
@@ -239,9 +242,7 @@ public class Game {
             }
 
             enterCombat(enemy);
-        } else if (encounterRoll < enemyChance + shopChance) { // e.g., 0.7 to 0.8
-            handleShopEncounter();
-        } else if (encounterRoll < enemyChance + shopChance + ruleEngine.getTrapChance()) { // e.g., 0.8 to 1.1 (or whatever the total is)
+        } else if (encounterRoll < enemyChance + ruleEngine.getTrapChance()) { // e.g., 0.65 to 0.80
             handleTrapEncounter();
         } else {
             // This is the "nothing happens" case.
@@ -283,21 +284,16 @@ public class Game {
         }
     }
 
-    private void handleShopEncounter() {
-        ShopEncounter shopEncounter = new ShopEncounter();
+    private void openShop() {
+        if (currentEnemy != null) return; // Can't open shop during combat
         logPanel.addMessage(shopEncounter.getEnterMessage());
 
         // Open the shop UI
-        new ShopDialog(this, shopEncounter).setVisible(true);
-    }
-
-    /**
-     * A public method that can be called by encounter dialogs (like the Shop)
-     * after they are closed to signal that the game should proceed.
-     */
-    public void postEncounterCleanup() {
-        logPanel.addMessage("You leave the area and continue your journey.");
-        setDoorMode();
+        ShopDialog shopDialog = new ShopDialog(this, shopEncounter);
+        shopDialog.setVisible(true);
+        // The game is modal, so it will pause here until the dialog is closed.
+        logPanel.addMessage("You leave the shop.");
+        updateGUI(); // Refresh GUI in case gold or items changed
     }
 
     private Item generateLoot() {
@@ -326,6 +322,7 @@ public class Game {
         controlPanel.setAttackButtonVisible(true);
         controlPanel.setFleeButtonVisible(true);
         controlPanel.setSpecialButtonVisible(true);
+        controlPanel.setShopButtonVisible(false);
     }
 
     private void setDoorMode() {
@@ -336,6 +333,7 @@ public class Game {
         controlPanel.setAttackButtonVisible(false);
         controlPanel.setFleeButtonVisible(false);
         controlPanel.setSpecialButtonVisible(false);
+        controlPanel.setShopButtonVisible(true);
         updateGUI();
     }
 

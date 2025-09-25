@@ -1,15 +1,24 @@
 package view;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.GridLayout;
+
+import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JProgressBar;
+
 import model.Enemy;
 import model.Player;
-
-import javax.swing.*;
-import java.awt.*;
 
 public class HUDPanel extends JPanel {
     // Player components
     private final JLabel playerNameLabel;
     private final JProgressBar playerHealthBar;
+    private final JLabel goldLabel;
 
     // Enemy components
     private final JLabel enemyNameLabel;
@@ -21,12 +30,23 @@ public class HUDPanel extends JPanel {
         setBorder(BorderFactory.createTitledBorder("Status"));
 
         // --- Player Panel ---
-        JPanel playerPanel = new JPanel(new BorderLayout(10, 0));
+        JPanel playerPanel = new JPanel(new BorderLayout(10, 5));
+
+        // Create a sub-panel for the labels to stack vertically
+        JPanel playerInfoPanel = new JPanel();
+        playerInfoPanel.setLayout(new BoxLayout(playerInfoPanel, BoxLayout.Y_AXIS));
+
         playerNameLabel = new JLabel();
         playerNameLabel.setFont(new Font("SansSerif", Font.BOLD, 14));
+        goldLabel = new JLabel("Gold: 0");
+        goldLabel.setFont(new Font("SansSerif", Font.BOLD, 12));
+        goldLabel.setForeground(new Color(218, 165, 32)); // Gold color
+        playerInfoPanel.add(playerNameLabel);
+        playerInfoPanel.add(goldLabel);
+
         playerHealthBar = new JProgressBar();
         playerHealthBar.setStringPainted(true);
-        playerPanel.add(playerNameLabel, BorderLayout.WEST);
+        playerPanel.add(playerInfoPanel, BorderLayout.WEST);
         playerPanel.add(playerHealthBar, BorderLayout.CENTER);
 
         // --- Enemy Panel ---
@@ -48,6 +68,8 @@ public class HUDPanel extends JPanel {
             playerHealthBar.setMaximum(player.getMaxHealth());
             playerHealthBar.setValue(player.getHealth());
             playerHealthBar.setString(player.getHealth() + " / " + player.getMaxHealth());
+            setHealthBarColor(playerHealthBar);
+            goldLabel.setText("Gold: " + player.getGold());
         }
     }
 
@@ -59,6 +81,18 @@ public class HUDPanel extends JPanel {
             enemyHealthBar.setMaximum(enemy.getMaxHealth());
             enemyHealthBar.setValue(enemy.getHealth());
             enemyHealthBar.setString(enemy.getHealth() + " / " + enemy.getMaxHealth());
+            setHealthBarColor(enemyHealthBar);
+        }
+    }
+
+    private void setHealthBarColor(JProgressBar healthBar) {
+        double percentage = (double) healthBar.getValue() / healthBar.getMaximum();
+        if (percentage <= 0.25) {
+            healthBar.setForeground(new Color(200, 0, 0)); // Red
+        } else if (percentage <= 0.5) {
+            healthBar.setForeground(new Color(220, 220, 0)); // Yellow
+        } else {
+            healthBar.setForeground(new Color(0, 200, 0)); // Green
         }
     }
 }
