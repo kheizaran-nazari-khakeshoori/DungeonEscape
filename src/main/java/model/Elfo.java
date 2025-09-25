@@ -26,6 +26,7 @@ public class Elfo extends Player {
     public String useSpecialAbility(Enemy enemy, DiceRoller dice) {
         int bonusDamage = 10;
         // In a more complex system, this could bypass enemy evasion. For now, it's a reliable damage boost.
+        putSpecialAbilityOnCooldown(); // Put the ability on cooldown
         return "Elfo takes a moment to aim carefully...\n" + this.attack(enemy, bonusDamage, dice);
     }
 }

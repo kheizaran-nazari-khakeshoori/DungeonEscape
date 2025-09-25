@@ -47,21 +47,23 @@ public class ShopDialog extends JDialog {
 
     private void attemptPurchase(Item item) {
         int itemCost = item.getCost();
-        boolean purchaseSuccessful = shopEncounter.purchaseItem(game.getActivePlayer(), item.getName());
-
-        if (purchaseSuccessful) {
+        if (game.getActivePlayer().getGold() >= itemCost) {
+            // Player can afford it
+            game.getActivePlayer().addGold(-itemCost); // Deduct gold
+            game.getActivePlayer().pickItem(item); // Add item to inventory
             game.getLogPanel().addMessage("You bought " + item.getName() + " for " + itemCost + " gold.");
             // Refresh display to show updated inventory and gold
             refreshShopItems();
             game.updateGUI(); // Update all panels
         } else {
+            // Player cannot afford it
             game.getLogPanel().addMessage("Not enough gold to buy " + item.getName() + ".");
         }
     }
     
     private void refreshShopItems() {
         itemsPanel.removeAll(); // Clear old items before refreshing
-        for (Item item : shopEncounter.getShop().getInventory()) {
+        for (Item item : shopEncounter.getAvailableItems()) {
             JPanel card = createShopItemCard(item);
             itemsPanel.add(card);
         }

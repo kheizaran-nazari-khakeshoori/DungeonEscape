@@ -31,7 +31,6 @@ view/PlayerSelectionWindow.class
 model/Item.class
 model/Bean.class
 model/ShadowAssassin.class
-model/Shop.class
 controller/LevelManager.class
 model/Elfo.class
 controller/GameController.class

@@ -15,6 +15,9 @@ public abstract class Player {
     private List<Effect> activeEffects;
     private Weapon equippedWeapon;
     private int gold; // The amount of gold the player has
+    // Cooldown fields
+    protected int specialAbilityCooldownTurns;
+    protected int currentSpecialAbilityCooldown;
 
     public Player(String name) {
         this(name, 100); // Default to 100 health
@@ -28,6 +31,8 @@ public abstract class Player {
         this.activeEffects = new ArrayList<>();
         this.equippedWeapon = null;
         this.gold = 0; // Starting gold
+        this.specialAbilityCooldownTurns = 3; // Default cooldown of 3 turns
+        this.currentSpecialAbilityCooldown = 0; // Starts ready to use
     }
 
     public String getName() {
@@ -189,4 +194,30 @@ public abstract class Player {
      * @param dice The dice roller for any random effects.
      */
     public abstract String useSpecialAbility(Enemy enemy, DiceRoller dice);
+
+    // --- Cooldown Methods ---
+
+    /**
+     * Checks if the special ability can be used.
+     * @return true if the cooldown is 0, false otherwise.
+     */
+    public boolean isSpecialAbilityReady() {
+        return currentSpecialAbilityCooldown == 0;
+    }
+
+    /**
+     * Reduces the current cooldown by one turn. Called at the start of a player's turn.
+     */
+    public void tickCooldowns() {
+        if (currentSpecialAbilityCooldown > 0) {
+            currentSpecialAbilityCooldown--;
+        }
+    }
+
+    public int getCurrentSpecialAbilityCooldown() {
+        return currentSpecialAbilityCooldown;
+    }
+
+    // This should be called by subclasses within their useSpecialAbility implementation.
+    protected void putSpecialAbilityOnCooldown() { this.currentSpecialAbilityCooldown = this.specialAbilityCooldownTurns; }
 }

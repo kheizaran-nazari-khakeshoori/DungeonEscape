@@ -114,7 +114,6 @@ public class Game {
         this.controlPanel.addFleeListener(e -> fleeEncounter());
         this.controlPanel.addInventoryListener(e -> manageInventory());
         this.controlPanel.addContinueListener(e -> setDoorMode());
-        this.controlPanel.addContinueListener(e -> setDoorMode());
         this.controlPanel.addShopListener(e -> openShop());
         this.controlPanel.addExitListener(e -> System.exit(0));
 
@@ -247,18 +246,31 @@ public class Game {
         } else if (encounterRoll < enemyChance + ruleEngine.getTrapChance()) { // e.g., 0.65 to 0.80
             handleTrapEncounter();
         } else {
-            // This is the "nothing happens" case.
+            // This is the "lucky empty room" case.
             try {
                 dungeonPanel.displayImage("images/ui/EmptyRoom.png");
             } catch (Exception e) {
                 logPanel.addMessage("[SYSTEM] Warning: Could not load image for Empty Room. Error: " + e.getClass().getSimpleName());
             }
-            logPanel.addMessage("The room is empty. You proceed to the next choice of doors.");
+            logPanel.addMessage("The room is empty... but you spot something glinting in the corner!");
+            activePlayer.addGold(10);
+            logPanel.addMessage("You found 10 gold!");
+            updateGUI(); // To show the new gold amount
             setPostEncounterMode(); // Show image before doors reappear
         }
     }
 
     private void handleTrapEncounter() {
+        logPanel.addMessage("The stress of finding a trap takes a toll on you...");
+        activePlayer.takeDamage(5);
+        logPanel.addMessage("You lose 5 HP!");
+        updateGUI();
+
+        if (!activePlayer.isAlive()) {
+            endGame();
+            return;
+        }
+
         try {
             dungeonPanel.displayImage("images/ui/Trap.png");
         } catch (Exception e) {
@@ -336,6 +348,8 @@ public class Game {
         controlPanel.setAttackButtonVisible(true);
         controlPanel.setFleeButtonVisible(true);
         controlPanel.setSpecialButtonVisible(true);
+        controlPanel.setSpecialButtonEnabled(activePlayer.isSpecialAbilityReady());
+        controlPanel.setSpecialButtonColor(activePlayer.isSpecialAbilityReady() ? java.awt.Color.CYAN : java.awt.Color.LIGHT_GRAY);
         controlPanel.setShopButtonVisible(false);
     }
 
@@ -371,6 +385,14 @@ public class Game {
         if (controlPanel.isContinueButtonVisible()) {
             return;
         }
+
+        // Tick down cooldowns at the start of the player's turn
+        activePlayer.tickCooldowns();
+
+        // Update the special button's enabled state and color based on cooldown
+        controlPanel.setSpecialButtonEnabled(activePlayer.isSpecialAbilityReady());
+        // Disable the special button if it's on cooldown
+        controlPanel.setSpecialButtonColor(activePlayer.isSpecialAbilityReady() ? java.awt.Color.CYAN : java.awt.Color.LIGHT_GRAY);
 
         // Player's turn
         String turnEffectsResult = activePlayer.applyTurnEffects(); // Renamed method in Player
@@ -413,9 +435,16 @@ public class Game {
             return;
         }
 
+        if (!activePlayer.isSpecialAbilityReady()) {
+            logPanel.addMessage("Your special ability is not ready yet! (" + activePlayer.getCurrentSpecialAbilityCooldown() + " turns remaining)");
+            return;
+        }
+
         // Player uses their special ability
         String abilityResult = activePlayer.useSpecialAbility(currentEnemy, dice);
         logPanel.addMessage(abilityResult);
+        controlPanel.setSpecialButtonEnabled(false); // It's now disabled
+        controlPanel.setSpecialButtonColor(java.awt.Color.LIGHT_GRAY); // And gray
 
         // Check if the ability defeated the enemy or the player
         if (!currentEnemy.isAlive()) {

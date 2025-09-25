@@ -20,6 +20,7 @@ public class Lucy extends Player {
         int selfDamage = 10;
         int bonusDamage = 20;
         this.takeDamage(selfDamage);
+        putSpecialAbilityOnCooldown(); // Put the ability on cooldown
         return "Lucy screams 'DO IT!' and recklessly attacks!\n" + this.attack(enemy, bonusDamage, dice);
     }
 }

@@ -24,6 +24,9 @@ public class ControlPanel extends JPanel {
         attackButton = new JButton("Attack!");
         fleeButton = new JButton("Flee!");
         specialButton = new JButton("Special");
+        specialButton.setOpaque(true); // Make sure background color is visible
+        specialButton.setBackground(java.awt.Color.CYAN); // Default to ready (blue)
+        specialButton.setBorderPainted(false); // Optional: remove border for cleaner look
         shopButton = new JButton("Shop"); // Initialize the shop button
         continueButton = new JButton("Continue"); // Initialize the continue button
         exitButton = new JButton("Exit Game");
@@ -56,6 +59,8 @@ public class ControlPanel extends JPanel {
     public void setInventoryButtonEnabled(boolean enabled) { inventoryButton.setEnabled(enabled); }
     public void setAttackButtonEnabled(boolean enabled) { attackButton.setEnabled(enabled); }
     public void setFleeButtonEnabled(boolean enabled) { fleeButton.setEnabled(enabled); }
+    public void setSpecialButtonEnabled(boolean enabled) { specialButton.setEnabled(enabled); }
+    public void setSpecialButtonColor(java.awt.Color color) { specialButton.setBackground(color); }
     public boolean isContinueButtonVisible() { return continueButton.isVisible(); } // New getter
 
     public void setAllButtonsEnabled(boolean enabled) {

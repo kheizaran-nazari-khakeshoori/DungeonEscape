@@ -26,6 +26,7 @@ public class Bean extends Player {
     public String useSpecialAbility(Enemy enemy, DiceRoller dice) {
         int healAmount = 15;
         this.heal(healAmount);
+        putSpecialAbilityOnCooldown(); // Put the ability on cooldown
         return "Bean scoffs and says, 'Is that all you've got?' She recovers " + healAmount + " health.";
     }
 }
