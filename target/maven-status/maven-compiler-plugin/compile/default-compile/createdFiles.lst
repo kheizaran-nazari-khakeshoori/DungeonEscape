@@ -1,4 +1,5 @@
 model/EnemyFactory.class
+view/DungeonPanel$ImagePanel.class
 model/Potion.class
 model/Antidote.class
 model/PoisonDartTrap.class

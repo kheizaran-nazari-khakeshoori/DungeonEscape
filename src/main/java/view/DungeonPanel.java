@@ -1,42 +1,52 @@
 package view;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.GridLayout;
 import java.awt.Image;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 
-public class DungeonPanel extends JPanel {
+public class DungeonPanel extends JLayeredPane { // Inherit from JLayeredPane
     private ImageIcon backgroundImage;
     private Image foregroundImage;
     public JButton door1Button;
     public JButton door2Button;
+    private ImagePanel imagePanel; // Panel to draw images
 
     public DungeonPanel() {
-        setLayout(null); // Use null layout for absolute positioning
         setBorder(BorderFactory.createTitledBorder("Dungeon Map"));
         setPreferredSize(new Dimension(400, 300));
 
-        // Create door buttons
+        // --- Button Panel Setup ---
+        // Create a panel for the buttons that will sit on top
+        JPanel buttonPanel = new JPanel(new GridLayout(1, 2)); // 1 row, 2 columns
+        buttonPanel.setOpaque(false); // Make it transparent
+
         door1Button = new JButton("Enter Left");
         door2Button = new JButton("Enter Right");
 
-        // Position the buttons over the doors (adjust coordinates as needed)
-        door1Button.setBounds(50, 60, 120, 180);
-        door2Button.setBounds(230, 60, 120, 180);
-
-        // Make buttons transparent to show the door image underneath
         styleDoorButton(door1Button);
         styleDoorButton(door2Button);
 
-        add(door1Button);
-        add(door2Button);
+        buttonPanel.add(door1Button);
+        buttonPanel.add(door2Button);
+
+        // Add the button panel to the top layer
+        add(buttonPanel, JLayeredPane.PALETTE_LAYER); // Use a higher layer for buttons
+
+        // Create and add the image drawing panel to the bottom layer
+        imagePanel = new ImagePanel();
+        imagePanel.setOpaque(true); // Ensure it paints its background
+        add(imagePanel, JLayeredPane.DEFAULT_LAYER); // Bottom layer for images
 
         // Load the default dungeon image
         loadBackgroundImage("images/ui/TwoDoors.png");
@@ -65,39 +75,59 @@ public class DungeonPanel extends JPanel {
 
     @Override
     protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        if (backgroundImage != null) {
-            // Draw the background image, scaled to fill the entire panel
-            g.drawImage(backgroundImage.getImage(), 0, 0, getWidth(), getHeight(), this);
-        } else {
-            // If background is missing, draw a prominent error message
-            g.setColor(Color.DARK_GRAY);
-            g.fillRect(0, 0, getWidth(), getHeight());
-            g.setColor(Color.RED);
-            g.setFont(new Font("SansSerif", Font.BOLD, 16));
-            g.drawString("BACKGROUND IMAGE NOT FOUND", getWidth() / 2 - 120, getHeight() / 2);
+        // JLayeredPane's paintComponent handles painting its children.
+        // We don't draw directly here anymore, the ImagePanel does it.
+        super.paintComponent(g); // Call super to ensure JLayeredPane's own background is painted
+    }
+
+    @Override
+    public void doLayout() {
+        // Ensure all child components fill the entire JLayeredPane
+        for (Component comp : getComponents()) {
+            comp.setBounds(0, 0, getWidth(), getHeight());
         }
-        if (foregroundImage != null) {
-            // Calculate the scaled dimensions while maintaining aspect ratio.
-            // This approach is better than getScaledInstance() as it's synchronous.
-            int padding = 30;
-            int maxWidth = getWidth() - padding;
-            int maxHeight = getHeight() - padding;
+        super.doLayout(); // Call super's doLayout to handle any internal layout management
+    }
 
-            int originalWidth = foregroundImage.getWidth(this);
-            int originalHeight = foregroundImage.getHeight(this);
+    // Inner class to handle image drawing
+    private class ImagePanel extends JPanel {
+        @Override
+        protected void paintComponent(Graphics g) {
+            super.paintComponent(g); // Paint background of this panel
+            // --- Image Drawing ---
+            if (backgroundImage != null) {
+                // Draw the background image, scaled to fill the entire panel
+                g.drawImage(backgroundImage.getImage(), 0, 0, getWidth(), getHeight(), this);
+            } else {
+                // If background is missing, draw a prominent error message
+                g.setColor(Color.DARK_GRAY);
+                g.fillRect(0, 0, getWidth(), getHeight());
+                g.setColor(Color.RED);
+                g.setFont(new Font("SansSerif", Font.BOLD, 16));
+                g.drawString("BACKGROUND IMAGE NOT FOUND", getWidth() / 2 - 120, getHeight() / 2);
+            }
+            if (foregroundImage != null) {
+                // Calculate the scaled dimensions while maintaining aspect ratio.
+                // This approach is better than getScaledInstance() as it's synchronous.
+                int padding = 30;
+                int maxWidth = getWidth() - padding;
+                int maxHeight = getHeight() - padding;
 
-            if (originalWidth > 0 && originalHeight > 0 && maxWidth > 0 && maxHeight > 0) {
-                double scale = Math.min((double) maxWidth / originalWidth, (double) maxHeight / originalHeight);
-                int newWidth = (int) (originalWidth * scale);
-                int newHeight = (int) (originalHeight * scale);
+                int originalWidth = foregroundImage.getWidth(this);
+                int originalHeight = foregroundImage.getHeight(this);
 
-                // Calculate centered position
-                int x = (getWidth() - newWidth) / 2;
-                int y = (getHeight() - newHeight) / 2;
+                if (originalWidth > 0 && originalHeight > 0 && maxWidth > 0 && maxHeight > 0) {
+                    double scale = Math.min((double) maxWidth / originalWidth, (double) maxHeight / originalHeight);
+                    int newWidth = (int) (originalWidth * scale);
+                    int newHeight = (int) (originalHeight * scale);
 
-                // Draw the image, letting drawImage handle the scaling and observing
-                g.drawImage(foregroundImage, x, y, newWidth, newHeight, this);
+                    // Calculate centered position
+                    int x = (getWidth() - newWidth) / 2;
+                    int y = (getHeight() - newHeight) / 2;
+
+                    // Draw the image, letting drawImage handle the scaling and observing
+                    g.drawImage(foregroundImage, x, y, newWidth, newHeight, this);
+                }
             }
         }
     }
@@ -106,7 +136,7 @@ public class DungeonPanel extends JPanel {
         if (imagePath == null || imagePath.isEmpty()) {
             System.err.println("Error: displayImage called with null or empty path.");
             this.foregroundImage = null;
-            repaint();
+            imagePanel.repaint(); // Repaint the image panel
             return;
         }
         java.net.URL imageURL = getClass().getClassLoader().getResource(imagePath);
@@ -118,11 +148,11 @@ public class DungeonPanel extends JPanel {
             System.err.println("Error: Could not find image resource at " + imagePath);
             this.foregroundImage = null;
         }
-        repaint();
+        imagePanel.repaint(); // Repaint the image panel
     }
 
     public void clearImage() {
         this.foregroundImage = null;
-        repaint();
+        imagePanel.repaint(); // Repaint the image panel
     }
 }
