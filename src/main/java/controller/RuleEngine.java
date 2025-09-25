@@ -8,9 +8,9 @@ package controller;
 public class RuleEngine {
 
     // --- Encounter Rules ---
-    public double getEnemyChance() { return 0.65; } // 65% chance for an enemy
+    public double getEnemyChance() { return 0.75; } // 75% chance for an enemy
     // Shop is no longer a random encounter.
-    public double getTrapChance() { return 0.15; } // 15% chance for a trap. (20% chance for an empty room)
+    public double getTrapChance() { return 0.15; } // 15% chance for a trap. (10% chance for an empty room)
 
     // --- Combat Rules ---
     public double getFleeChance() { return 0.5; } // 50% chance to flee successfully

@@ -113,6 +113,7 @@ public class Game {
         this.controlPanel.addSpecialListener(e -> useSpecialAbility());
         this.controlPanel.addFleeListener(e -> fleeEncounter());
         this.controlPanel.addInventoryListener(e -> manageInventory());
+        this.controlPanel.addContinueListener(e -> setDoorMode());
         this.controlPanel.addShopListener(e -> openShop());
         this.controlPanel.addExitListener(e -> System.exit(0));
 
