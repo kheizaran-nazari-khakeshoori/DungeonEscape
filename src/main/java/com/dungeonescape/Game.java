@@ -114,6 +114,7 @@ public class Game {
         this.controlPanel.addFleeListener(e -> fleeEncounter());
         this.controlPanel.addInventoryListener(e -> manageInventory());
         this.controlPanel.addContinueListener(e -> setDoorMode());
+        this.controlPanel.addContinueListener(e -> setDoorMode());
         this.controlPanel.addShopListener(e -> openShop());
         this.controlPanel.addExitListener(e -> System.exit(0));
 
@@ -247,12 +248,24 @@ public class Game {
             handleTrapEncounter();
         } else {
             // This is the "nothing happens" case.
+            try {
+                dungeonPanel.displayImage("images/ui/EmptyRoom.png");
+            } catch (Exception e) {
+                logPanel.addMessage("[SYSTEM] Warning: Could not load image for Empty Room. Error: " + e.getClass().getSimpleName());
+            }
             logPanel.addMessage("The room is empty. You proceed to the next choice of doors.");
-            setDoorMode();
+            setPostEncounterMode(); // Show image before doors reappear
         }
     }
 
     private void handleTrapEncounter() {
+        try {
+            dungeonPanel.displayImage("images/ui/Trap.png");
+        } catch (Exception e) {
+            // Gracefully handle missing image files instead of crashing.
+            logPanel.addMessage("[SYSTEM] Warning: Could not load image for Trap. Error: " + e.getClass().getSimpleName());
+        }
+
         Trap trap = trapFactory.createRandomTrap();
         logPanel.addMessage(trap.getTriggerMessage());
 
@@ -269,7 +282,7 @@ public class Game {
         if (attemptDisarm && dice.getRandom().nextDouble() < activePlayer.getTrapDisarmChance()) {
             // Success!
             logPanel.addMessage("Success! You deftly avoid the " + trap.getName() + ".");
-            setDoorMode(); // Continue to the next room choice
+            setPostEncounterMode(); // Show image before doors reappear
         } else {
             // Failure or chose not to attempt
             if (attemptDisarm) {
@@ -280,7 +293,7 @@ public class Game {
             if (!activePlayer.isAlive()) {
                 endGame();
             } else {
-                setDoorMode();
+                setPostEncounterMode();
             }
         }
     }
@@ -327,12 +340,23 @@ public class Game {
     }
 
     private void setDoorMode() {
+        setDoorMode(true); // By default, clear the image
+    }
+
+    /**
+     * Sets the UI to door selection mode.
+     * @param clearImage whether to clear the central image panel.
+     */
+    private void setDoorMode(boolean clearImage) {
         this.currentEnemy = null;
-        dungeonPanel.clearImage();
+        if (clearImage) {
+            dungeonPanel.clearImage();
+        }
         dungeonPanel.door1Button.setVisible(true);
         dungeonPanel.door2Button.setVisible(true);
         controlPanel.setAttackButtonVisible(false);
         controlPanel.setFleeButtonVisible(false);
+        controlPanel.setContinueButtonVisible(false);
         controlPanel.setSpecialButtonVisible(false);
         controlPanel.setShopButtonVisible(true);
         updateGUI();
@@ -340,6 +364,11 @@ public class Game {
 
     private void performCombatRound() {
         if (currentEnemy == null || !activePlayer.isAlive()) {
+            return;
+        }
+
+        // This is a new button for continuing after a non-combat encounter
+        if (controlPanel.isContinueButtonVisible()) {
             return;
         }
 
@@ -399,6 +428,21 @@ public class Game {
         }
         // Update the GUI to reflect any changes (like Lucy's health drop or Bean's heal)
         updateGUI();
+    }
+
+    /**
+     * Sets the UI to a state where the player has finished an encounter
+     * (like a trap or an empty room) and needs to click "Continue" to proceed.
+     * This allows the player to see the outcome and the associated image.
+     */
+    private void setPostEncounterMode() {
+        dungeonPanel.door1Button.setVisible(false);
+        dungeonPanel.door2Button.setVisible(false);
+        controlPanel.setAttackButtonVisible(false);
+        controlPanel.setFleeButtonVisible(false);
+        controlPanel.setSpecialButtonVisible(false);
+        controlPanel.setShopButtonVisible(false);
+        controlPanel.setContinueButtonVisible(true);
     }
 
     private void winCombat() {
