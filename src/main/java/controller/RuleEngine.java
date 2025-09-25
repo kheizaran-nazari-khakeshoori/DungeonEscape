@@ -1,32 +1,52 @@
 package controller;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * A centralized class to hold and manage game rules and constants.
  * This makes the game easily customizable, as all key values are in one place.
  * In a more advanced implementation, these values could be loaded from a configuration file.
  */
-public class RuleEngine {
+public class RuleEngine implements Cloneable {
 
-    // --- Encounter Rules ---
-    public double getEnemyChance() { return 0.75; } // 75% chance for an enemy
-    // Shop is no longer a random encounter.
-    public double getTrapChance() { return 0.15; } // 15% chance for a trap. (10% chance for an empty room)
+    // Using a Map allows for adding new rules without changing the class structure.
+    private Map<String, Double> rules = new HashMap<>();
 
-    // --- Combat Rules ---
-    public double getFleeChance() { return 0.5; } // 50% chance to flee successfully
+    // Rule Keys - Using constants prevents typos.
+    public static final String ENEMY_CHANCE = "ENEMY_CHANCE";
+    public static final String TRAP_CHANCE = "TRAP_CHANCE";
+    public static final String FLEE_CHANCE = "FLEE_CHANCE";
+    public static final String ENEMY_HEALTH_SCALING = "ENEMY_HEALTH_SCALING";
+    public static final String ENEMY_DAMAGE_SCALING = "ENEMY_DAMAGE_SCALING";
 
-    // --- Enemy Scaling Rules ---
-    /**
-     * @return The multiplier for an enemy's health increase per level. (e.g., 0.2 = +20%)
-     */
-    public double getEnemyHealthScaling() { return 0.2; }
-
-    /**
-     * @return The multiplier for an enemy's damage increase per level. (e.g., 0.1 = +10%)
-     */
-    public double getEnemyDamageScaling() { return 0.1; }
 
     public RuleEngine() {
         // In the future, this constructor could load rules from a file.
+        // --- Default Game Rules ---
+        rules.put(ENEMY_CHANCE, 0.75); // 75% chance for an enemy
+        rules.put(TRAP_CHANCE, 0.15); // 15% chance for a trap. (10% chance for an empty room)
+        rules.put(FLEE_CHANCE, 0.5); // 50% chance to flee successfully
+        rules.put(ENEMY_HEALTH_SCALING, 0.2); // +20% health per level
+        rules.put(ENEMY_DAMAGE_SCALING, 0.1); // +10% damage per level
+    }
+
+    public double getRule(String key) {
+        return rules.getOrDefault(key, 0.0);
+    }
+
+    public void setRule(String key, double value) {
+        rules.put(key, value);
+    }
+
+    @Override
+    public RuleEngine clone() {
+        try {
+            RuleEngine cloned = (RuleEngine) super.clone();
+            cloned.rules = new HashMap<>(this.rules);
+            return cloned;
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(); // Can't happen
+        }
     }
 }

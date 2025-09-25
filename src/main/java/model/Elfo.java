@@ -1,11 +1,14 @@
 package model;
 
+import controller.RuleEngine;
 import utils.DiceRoller;
 
 public class Elfo extends Player {
     public Elfo() {
         // An optimistic elf, not built for combat but surprisingly resilient.
         super("Elfo", 75);
+        // Elfo is nimble and better at fleeing. We can customize his rules.
+        this.ruleEngine.setRule(RuleEngine.FLEE_CHANCE, 0.75); // 75% flee chance for Elfo
     }
 
     /**

@@ -204,8 +204,8 @@ public class Game {
 
         // --- Corrected Encounter Logic ---
         // Roll the dice ONCE to determine the outcome.
-        double encounterRoll = dice.getRandom().nextDouble();
-        double enemyChance = ruleEngine.getEnemyChance();
+        double encounterRoll = dice.getRandom().nextDouble(); // Use the active player's rules
+        double enemyChance = activePlayer.getRuleEngine().getRule(RuleEngine.ENEMY_CHANCE);
 
         if (encounterRoll < enemyChance) { // e.g., 0.0 to 0.7
             if (currentEncounterDeck.isEmpty()) {
@@ -238,12 +238,12 @@ public class Game {
             // Strengthen enemy if it has been seen before
             int encounterLevel = enemyEncounterCount.getOrDefault(enemyName, 0);
             if (encounterLevel > 0) {
-                enemy.strengthen(encounterLevel, this.ruleEngine);
+                enemy.strengthen(encounterLevel, activePlayer.getRuleEngine()); // Use player's rules for scaling
                 logPanel.addMessage("This " + enemyName + " seems stronger than the last one!");
             }
 
             enterCombat(enemy);
-        } else if (encounterRoll < enemyChance + ruleEngine.getTrapChance()) { // e.g., 0.65 to 0.80
+        } else if (encounterRoll < enemyChance + activePlayer.getRuleEngine().getRule(RuleEngine.TRAP_CHANCE)) { // e.g., 0.75 to 0.90
             handleTrapEncounter();
         } else {
             // This is the "lucky empty room" case.
@@ -506,7 +506,7 @@ public class Game {
 
         boolean guaranteedFlee = activePlayer.hasEffect(InvisibilityEffect.EFFECT_NAME);
         // Use RuleEngine for flee chance
-        if (guaranteedFlee || dice.getRandom().nextDouble() < ruleEngine.getFleeChance()) {
+        if (guaranteedFlee || dice.getRandom().nextDouble() < activePlayer.getRuleEngine().getRule(RuleEngine.FLEE_CHANCE)) {
             if (guaranteedFlee) {
                 logPanel.addMessage("You vanish from sight and easily escape!");
                 activePlayer.removeEffect(InvisibilityEffect.EFFECT_NAME); // Effect is consumed on use

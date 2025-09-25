@@ -61,9 +61,9 @@ public abstract class Enemy {
      * @param rules The rule engine providing scaling factors.
      */
     public void strengthen(int level, RuleEngine rules) {
-        this.maxHealth = (int) (this.maxHealth * (1 + rules.getEnemyHealthScaling() * level));
+        this.maxHealth = (int) (this.maxHealth * (1 + rules.getRule(RuleEngine.ENEMY_HEALTH_SCALING) * level));
         this.health = this.maxHealth;
-        this.baseDamage = (int) (this.baseDamage * (1 + rules.getEnemyDamageScaling() * level));
+        this.baseDamage = (int) (this.baseDamage * (1 + rules.getRule(RuleEngine.ENEMY_DAMAGE_SCALING) * level));
     }
 
     // Each enemy must implement its own attack logic.

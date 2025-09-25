@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import controller.RuleEngine;
 import exceptions.InvalidMoveException;
 import utils.DiceRoller;
 
@@ -18,6 +19,7 @@ public abstract class Player {
     // Cooldown fields
     protected int specialAbilityCooldownTurns;
     protected int currentSpecialAbilityCooldown;
+    protected RuleEngine ruleEngine; // Each player can have their own set of rules
 
     public Player(String name) {
         this(name, 100); // Default to 100 health
@@ -33,6 +35,7 @@ public abstract class Player {
         this.gold = 0; // Starting gold
         this.specialAbilityCooldownTurns = 3; // Default cooldown of 3 turns
         this.currentSpecialAbilityCooldown = 0; // Starts ready to use
+        this.ruleEngine = new RuleEngine(); // Each player gets a default rule engine
     }
 
     public String getName() {
@@ -185,6 +188,10 @@ public abstract class Player {
      */
     public double getPoisonResistance() {
         return 1.0; // Default: takes full damage from poison.
+    }
+
+    public RuleEngine getRuleEngine() {
+        return ruleEngine;
     }
 
     /**
