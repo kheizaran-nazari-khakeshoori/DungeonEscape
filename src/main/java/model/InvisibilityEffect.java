@@ -1,6 +1,6 @@
 package model;
 
-public class InvisibilityEffect implements Effect {
+public class InvisibilityEffect implements Effect<Player> {
     public static final String EFFECT_NAME = "Invisibility";
     private int remainingDuration;
 

@@ -1,6 +1,6 @@
 package model;
 
-public class ActiveEffect implements Effect {
+public class ActiveEffect implements Effect<Player> {
     private String name;
     private int healingPerTurn;
     private int remainingDuration;

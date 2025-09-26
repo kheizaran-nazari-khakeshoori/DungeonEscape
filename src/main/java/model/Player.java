@@ -13,7 +13,7 @@ public abstract class Player {
     private int maxHealth;
     private int health;
     private Inventory inventory;
-    private List<Effect> activeEffects;
+    private final List<Effect<Player>> activeEffects;
     private Weapon equippedWeapon;
     private int gold; // The amount of gold the player has
     // Cooldown fields
@@ -137,7 +137,7 @@ public abstract class Player {
         }
     }
 
-    public void addEffect(Effect effect) {
+    public void addEffect(Effect<Player> effect) { // Now correctly typed
         activeEffects.add(effect);
     }
 
@@ -149,15 +149,15 @@ public abstract class Player {
         activeEffects.removeIf(effect -> effect.getName().equals(effectName));
     }
 
-    public String getTurnEffectsResult() {
+    public String applyTurnEffects() { // Renamed from getTurnEffectsResult for clarity
         if (activeEffects.isEmpty()) {
             return "";
         }
         
         StringBuilder effectsResult = new StringBuilder();
-        Iterator<Effect> iterator = activeEffects.iterator();
+        Iterator<Effect<Player>> iterator = activeEffects.iterator(); // Use the generic iterator
         while (iterator.hasNext()) {
-            Effect effect = iterator.next();
+            Effect<Player> effect = iterator.next();
             String result = effect.apply(this); // Get result message from effect
             if (result != null && !result.isEmpty()) {
                 if (effectsResult.length() > 0) effectsResult.append("\n");
@@ -168,10 +168,6 @@ public abstract class Player {
             }
         }
         return effectsResult.toString();
-    }
-
-    public String applyTurnEffects() { // Renamed and now returns the result string
-        return getTurnEffectsResult();
     }
 
     /**
