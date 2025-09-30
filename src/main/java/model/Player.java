@@ -129,6 +129,8 @@ public abstract class Player {
         }
 
         // Let the item affect the player (Polymorphism)
+        // POLYMORPHISM: The 'item' variable could be a Weapon, Potion, etc.
+        // The correct use() method is called at runtime.
         item.use(this);
 
         // If the item is consumable, the player removes it from their own inventory.

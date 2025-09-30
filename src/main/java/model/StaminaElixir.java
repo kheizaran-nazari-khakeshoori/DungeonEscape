@@ -8,7 +8,8 @@ public class StaminaElixir extends Potion {
 
     @Override
     public void use(Player player) {
-        // Provide the initial burst of healing
+        // First, apply the parent Potion's effect (the initial heal)
+        // by calling its 'use' method.
         super.use(player);
 
         // Add a regeneration effect: 5 health per turn for 3 turns

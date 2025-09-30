@@ -42,6 +42,9 @@ public abstract class Enemy {
      */
     public String takeDamage(int amount, DamageType type) {
         double multiplier = resistances.getOrDefault(type, 1.0);
+
+        // COERCION: The 'int' (amount) is implicitly converted to a 'double'
+        // to be multiplied by the 'double' (multiplier).
         int finalDamage = (int) (amount * multiplier);
         this.health -= finalDamage;
         if (this.health < 0) this.health = 0;
