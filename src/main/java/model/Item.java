@@ -4,7 +4,7 @@ public abstract class Item {
     private String name;
     protected String imagePath;
     protected String description;
-    protected int cost; // Cost of the item in gold
+    protected int cost; // Cost of the item in gold (for shop)
 
     public Item(String name, String description, String imagePath, int cost) {
         this.name = name;

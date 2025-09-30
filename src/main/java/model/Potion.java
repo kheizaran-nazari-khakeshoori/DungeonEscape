@@ -2,7 +2,7 @@ package model;
 
 public class Potion extends Item {
     private final int healAmount;
-    private int quantity; // Not currently used, but good for future features
+    private int quantity; 
     
     public Potion(String name, String description, int healAmount, int quantity, String imagePath, int cost) {
         super(name, description, imagePath, cost);

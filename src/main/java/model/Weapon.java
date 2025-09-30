@@ -12,9 +12,8 @@ public class Weapon extends Item {
         this.damageType = damageType;
     }
 
-    /**
-     * The 'use' action for a weapon is to equip it.
-     */
+    /* The 'use' action for a weapon is to equip it. */
+    
     @Override
     public void use(Player player) {
         player.setEquippedWeapon(this);
