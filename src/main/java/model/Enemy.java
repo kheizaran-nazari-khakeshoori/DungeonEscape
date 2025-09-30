@@ -1,7 +1,10 @@
 package model;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.function.Supplier;
 
 import controller.RuleEngine;
 import utils.DiceRoller;
@@ -15,6 +18,7 @@ public abstract class Enemy {
     protected int goldValue; // How much gold the enemy is worth
     // Map of DamageType to a multiplier (e.g., 2.0 for weakness, 0.5 for resistance)
     protected Map<DamageType, Double> resistances = new HashMap<>();
+    protected List<Supplier<Item>> lootTable = new ArrayList<>();
 
     public Enemy(String name, int health, int baseDamage, String imagePath) {
         this.name = name;
@@ -74,4 +78,18 @@ public abstract class Enemy {
 
     // Each enemy can provide a hint about its nature.
     public abstract String getHint();
+
+    /**
+     * Generates a loot item based on the enemy's loot table and randomness.
+     * @param dice The dice roller to determine if loot drops.
+     * @return An Item if one is dropped, otherwise null.
+     */
+    public Item dropLoot(DiceRoller dice) {
+        // Example: 33% chance to drop an item from the loot table.
+        if (!lootTable.isEmpty() && dice.roll(3) == 1) {
+            int lootIndex = dice.getRandom().nextInt(lootTable.size());
+            return lootTable.get(lootIndex).get();
+        }
+        return null;
+    }
 }

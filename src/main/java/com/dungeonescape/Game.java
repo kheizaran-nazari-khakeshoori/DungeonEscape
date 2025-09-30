@@ -323,9 +323,8 @@ public class Game {
     }
 
     private Item generateLoot() {
-        // TODO: Implement a more dynamic loot system.
-        // For now, return null to prevent a potion from dropping after every fight.
-        return null;
+        // The Game class doesn't need to know about specific loot, it just asks the enemy.
+        return currentEnemy.dropLoot(dice);
     }
 
     private void enterCombat(Enemy enemy) {
