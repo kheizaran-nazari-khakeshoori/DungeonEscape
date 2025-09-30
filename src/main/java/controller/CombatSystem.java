@@ -1,5 +1,6 @@
 package controller;
 
+import exceptions.InvalidMoveException;
 import model.Enemy;
 import model.Player;
 import utils.DiceRoller;
@@ -25,7 +26,13 @@ public class CombatSystem {
 
             int playerRoll = dice.roll(6); // roll a 6-sided dice
             if (playerRoll > 1) { // hit if roll > 1
-                player.attack(enemy, dice);
+                try {
+                    String attackResult = player.attack(enemy, dice);
+                    System.out.println(attackResult);
+                } catch (InvalidMoveException e) {
+                    // Handle the case where the player cannot attack (e.g., no weapon)
+                    System.out.println(player.getName() + " tries to attack but fails: " + e.getMessage());
+                }
             } else {
                 System.out.println(player.getName() + " missed the attack!");
             }

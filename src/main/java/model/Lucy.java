@@ -1,5 +1,6 @@
 package model;
 
+import exceptions.InvalidMoveException;
 import utils.DiceRoller;
 
 public class Lucy extends Player {
@@ -21,6 +22,11 @@ public class Lucy extends Player {
         int bonusDamage = 20;
         this.takeDamage(selfDamage);
         putSpecialAbilityOnCooldown(); // Put the ability on cooldown
-        return "Lucy screams 'DO IT!' and recklessly attacks!\n" + this.attack(enemy, bonusDamage, dice);
+        try {
+            return "Lucy screams 'DO IT!' and recklessly attacks!\n" + this.attack(enemy, bonusDamage, dice);
+        } catch (InvalidMoveException e) {
+            // If the attack fails, the self-damage still happened, but the attack part fizzles.
+            return "Lucy screams 'DO IT!' but fumbles, having no weapon to attack with!";
+        }
     }
 }

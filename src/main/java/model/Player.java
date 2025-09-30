@@ -91,13 +91,13 @@ public abstract class Player {
     }
 
     // Player attacks an enemy using the equipped weapon
-    public String attack(Enemy enemy, DiceRoller dice) {
+    public String attack(Enemy enemy, DiceRoller dice) throws InvalidMoveException {
         // This standard attack calls the overloaded version with 0 bonus damage.
         return attack(enemy, 0, dice);
     }
 
     // Overloaded attack method for special moves or bonuses (Overloading Polymorphism)
-    public String attack(Enemy enemy, int bonusDamage, DiceRoller dice) {
+    public String attack(Enemy enemy, int bonusDamage, DiceRoller dice) throws InvalidMoveException {
         if (equippedWeapon != null) {
             int baseDamage = equippedWeapon.getDamage() + bonusDamage;
             
@@ -117,8 +117,9 @@ public abstract class Player {
                 result += "\nYour " + brokenWeaponName + " broke!";
             }
             return result;
+        } else {
+            throw new InvalidMoveException("You have no weapon equipped to attack!");
         }
-        return name + " has no weapon equipped to attack!";
     }
 
     // Use item by name; throws exception if item not in inventory

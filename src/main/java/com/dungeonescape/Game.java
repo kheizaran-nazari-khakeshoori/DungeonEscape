@@ -408,9 +408,13 @@ public class Game {
             return;
         }
 
-        String playerAttackResult = activePlayer.attack(currentEnemy, dice);
-
-        logPanel.addMessage(playerAttackResult);
+        try {
+            String playerAttackResult = activePlayer.attack(currentEnemy, dice);
+            logPanel.addMessage(playerAttackResult);
+        } catch (InvalidMoveException e) {
+            // Handle the case where the player cannot attack (e.g., no weapon)
+            logPanel.addMessage("Cannot attack: " + e.getMessage());
+        }
 
         // Check if enemy is defeated
         if (!currentEnemy.isAlive()) {
