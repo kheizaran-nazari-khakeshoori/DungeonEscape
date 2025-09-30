@@ -13,8 +13,8 @@ public class Goblin extends Enemy {
 
     @Override
     public String attack(Player player, DiceRoller dice) {
-        String result = this.name + " attacks you for " + this.baseDamage + " damage.";
         player.takeDamage(this.baseDamage);
+        String result = this.name + " attacks you for " + this.baseDamage + " damage.";
 
         // 25% chance to apply poison
         if (dice.roll(4) == 1) { // A 1-in-4 chance
