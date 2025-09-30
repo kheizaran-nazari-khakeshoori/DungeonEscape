@@ -10,7 +10,7 @@ public class Antidote extends Potion {
     public void use(Player player) {
         // The specific action for an Antidote is to remove poison.
         super.use(player); // Call the parent Potion's use() method to handle the healing.
-        player.removeEffect(PoisonEffect.EFFECT_NAME);
+        player.removeEffectsOfType(PoisonTypeEffect.class);
     }
 
     @Override

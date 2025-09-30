@@ -1,4 +1,5 @@
 model/EnemyFactory.class
+model/GoblinPoisonEffect.class
 view/DungeonPanel$ImagePanel.class
 model/Potion.class
 model/Antidote.class
@@ -9,6 +10,7 @@ controller/RuleEngine.class
 model/ActiveEffect.class
 controller/CombatSystem.class
 model/MimicChest.class
+model/PoisonTypeEffect.class
 model/TrapFactory.class
 view/LogPanel.class
 model/Effect.class

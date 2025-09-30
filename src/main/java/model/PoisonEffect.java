@@ -1,6 +1,6 @@
 package model;
 
-public class PoisonEffect implements Effect<Player> {
+public class PoisonEffect implements PoisonTypeEffect { // Implement the marker interface
     public static final String EFFECT_NAME = "Poison";
     private int damagePerTurn;
     private int remainingDuration;

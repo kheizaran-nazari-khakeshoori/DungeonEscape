@@ -152,6 +152,15 @@ public abstract class Player {
         activeEffects.removeIf(effect -> effect.getName().equals(effectName));
     }
 
+    /**
+     * Removes all effects that are instances of a specific type.
+     * This is a powerful use of polymorphism.
+     * @param effectType The class of the effect to remove (e.g., PoisonTypeEffect.class).
+     */
+    public void removeEffectsOfType(Class<?> effectType) {
+        activeEffects.removeIf(effectType::isInstance);
+    }
+
     public String applyTurnEffects() { // Renamed from getTurnEffectsResult for clarity
         if (activeEffects.isEmpty()) {
             return "";

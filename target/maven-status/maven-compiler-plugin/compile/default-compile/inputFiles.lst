@@ -24,6 +24,7 @@
 /home/kheizaran/Github/DungeonEscape/src/main/java/utils/Game.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/Shop.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/controller/LevelManager.java
+/home/kheizaran/Github/DungeonEscape/src/main/java/model/GoblinPoisonEffect.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/DamageType.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/view/LogPanel.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/SpikeTrap.java
@@ -47,6 +48,7 @@
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/ActiveEffect.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/SlimeBlob.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/utils/RandomUtil.java
+/home/kheizaran/Github/DungeonEscape/src/main/java/model/PoisonTypeEffect.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/Bean.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/Effect.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/Level.java

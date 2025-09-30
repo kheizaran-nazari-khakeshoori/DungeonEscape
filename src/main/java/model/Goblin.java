@@ -16,10 +16,10 @@ public class Goblin extends Enemy {
         player.takeDamage(this.baseDamage);
         String result = this.name + " attacks you for " + this.baseDamage + " damage.";
 
-        // 25% chance to apply poison
+        // 25% chance to apply its unique, weaker poison.
         if (dice.roll(4) == 1) { // A 1-in-4 chance
-            player.addEffect(new PoisonEffect(3, 3)); // 3 damage for 3 turns
-            result += "\nYou have been poisoned!";
+            player.addEffect(new GoblinPoisonEffect(2, 2)); // 2 damage for 2 turns
+            result += "\nIts rusty blade leaves a festering wound. You've been poisoned!";
         }
         return result;
     }
