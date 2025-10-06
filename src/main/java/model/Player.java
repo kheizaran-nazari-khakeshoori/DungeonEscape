@@ -55,6 +55,19 @@ public abstract class Player {
         if (this.gold < 0) this.gold = 0; // Prevent negative gold
     }
 
+    /**
+     * Attempts to spend a certain amount of gold.
+     * @param amount The amount of gold to spend.
+     * @return true if the player had enough gold and it was spent, false otherwise.
+     */
+    public boolean spendGold(int amount) {
+        if (amount > 0 && this.gold >= amount) {
+            this.gold -= amount;
+            return true;
+        }
+        return false;
+    }
+
     public int getMaxHealth() {
         return maxHealth;
     }
