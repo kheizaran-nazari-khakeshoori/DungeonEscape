@@ -26,7 +26,9 @@ public class Bean extends Player {
     public String useSpecialAbility(Enemy enemy, DiceRoller dice) {
         int healAmount = 15;
         this.heal(healAmount);
+        // Add a defensive stance effect that lasts for 1 turn (the enemy's immediate counter-attack)
+        this.addEffect(new DefensiveStanceEffect(1));
         putSpecialAbilityOnCooldown(); // Put the ability on cooldown
-        return "Bean scoffs and says, 'Is that all you've got?' She recovers " + healAmount + " health.";
+        return "Bean scoffs, 'Is that all you've got?' She recovers " + healAmount + " health and braces for the next attack.";
     }
 }

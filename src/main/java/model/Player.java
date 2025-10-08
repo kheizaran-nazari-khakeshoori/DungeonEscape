@@ -77,7 +77,13 @@ public abstract class Player {
     }
 
     public void takeDamage(int amount) {
-        health -= amount;
+        int finalDamage = amount;
+        // Check for defensive effects
+        if (hasEffect(DefensiveStanceEffect.EFFECT_NAME)) {
+            finalDamage /= 2; // Take half damage
+        }
+
+        health -= finalDamage;
         if (health < 0) health = 0;
     }
 

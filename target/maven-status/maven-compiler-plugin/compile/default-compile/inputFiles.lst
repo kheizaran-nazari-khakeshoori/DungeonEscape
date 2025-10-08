@@ -7,10 +7,9 @@
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/Warrior.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/StaminaElixir.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/Weapon.java
-/home/kheizaran/Github/DungeonEscape/src/main/java/controller/GameController.java
-/home/kheizaran/Github/DungeonEscape/src/main/java/exceptions/LevelLoadException.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/view/ShopDialog.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/view/HUDPanel.java
+/home/kheizaran/Github/DungeonEscape/src/main/java/controller/CombatManager.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/com/dungeonescape/Game.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/Elfo.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/InvisibilityEffect.java
@@ -19,6 +18,7 @@
 /home/kheizaran/Github/DungeonEscape/src/main/java/utils/Logger.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/InvisibilityPotion.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/utils/ConfigLoader.java
+/home/kheizaran/Github/DungeonEscape/src/main/java/model/DefensiveStanceEffect.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/exceptions/InvalidMoveException.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/Goblin.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/utils/Game.java
@@ -35,7 +35,6 @@
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/ShadowAssassin.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/com/dungeonescape/Main.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/Trap.java
-/home/kheizaran/Github/DungeonEscape/src/main/java/controller/CombatSystem.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/utils/SoundManager.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/SkeletonWarrior.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/Antidote.java

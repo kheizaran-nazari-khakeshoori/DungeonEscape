@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
+import controller.CombatManager;
 
 import javax.swing.JOptionPane;
 
@@ -56,6 +57,7 @@ public class Game {
     private RuleEngine ruleEngine;
     private Enemy currentEnemy;
     private ShopEncounter shopEncounter;
+    private CombatManager combatManager; // New: Manages the current fight
     private List<Level<Enemy>> gameLevels;
     private int currentLevelIndex;
 
@@ -329,6 +331,7 @@ public class Game {
 
     private void enterCombat(Enemy enemy) {
         this.currentEnemy = enemy;
+        this.combatManager = new CombatManager(activePlayer, currentEnemy, dice); // Create a new combat manager
         logPanel.addMessage("\nA " + enemy.getName() + " (Lvl " + (enemyEncounterCount.getOrDefault(enemy.getName(), 0) + 1) + ") appears!");
         logPanel.addMessage(enemy.getHint()); // Display the hint
         setCombatMode();
@@ -362,6 +365,7 @@ public class Game {
      */
     private void setDoorMode(boolean clearImage) {
         this.currentEnemy = null;
+        this.combatManager = null; // No fight, so no combat manager
         if (clearImage) {
             dungeonPanel.clearImage();
         }
@@ -376,7 +380,7 @@ public class Game {
     }
 
     private void performCombatRound() {
-        if (currentEnemy == null || !activePlayer.isAlive()) {
+        if (combatManager == null || !activePlayer.isAlive()) {
             return;
         }
 
@@ -385,79 +389,45 @@ public class Game {
             return;
         }
 
-        // Tick down cooldowns at the start of the player's turn
-        activePlayer.tickCooldowns();
+        // Delegate all combat logic to the CombatManager
+        String combatLog = combatManager.performCombatRound();
+        logPanel.addMessage(combatLog);
 
-        // Update the special button's enabled state and color based on cooldown
-        controlPanel.setSpecialButtonEnabled(activePlayer.isSpecialAbilityReady());
-        // Disable the special button if it's on cooldown
-        controlPanel.setSpecialButtonColor(activePlayer.isSpecialAbilityReady() ? java.awt.Color.CYAN : java.awt.Color.LIGHT_GRAY);
-
-        // Player's turn
-        String turnEffectsResult = activePlayer.applyTurnEffects(); // Renamed method in Player
-        if (!turnEffectsResult.isEmpty()) {
-            logPanel.addMessage(turnEffectsResult);
-        }
-
-        // Check if player is still alive after effects like poison
-        // This is the critical fix: we must update the GUI and check for game over
-        // immediately after effects are applied.
+        // After the round, check the results
         if (!activePlayer.isAlive()) {
             endGame();
-            return;
-        }
-
-        try {
-            String playerAttackResult = activePlayer.attack(currentEnemy, dice);
-            logPanel.addMessage(playerAttackResult);
-        } catch (InvalidMoveException e) {
-            // Handle the case where the player cannot attack (e.g., no weapon)
-            logPanel.addMessage("Cannot attack: " + e.getMessage());
-        }
-
-        // Check if enemy is defeated
-        if (!currentEnemy.isAlive()) {
+            return; // Stop further execution
+        } else if (!currentEnemy.isAlive()) {
             winCombat();
-            return;
+            return; // Stop further execution
         }
 
-        // Enemy's turn
-        String enemyAttackResult = currentEnemy.attack(activePlayer, dice);
-        logPanel.addMessage(enemyAttackResult);
-
-        // Check if player is defeated
-        if (!activePlayer.isAlive()) {
-            endGame();
-        }
-
+        // Update the special button's state after the turn
+        controlPanel.setSpecialButtonEnabled(activePlayer.isSpecialAbilityReady());
+        controlPanel.setSpecialButtonColor(activePlayer.isSpecialAbilityReady() ? java.awt.Color.CYAN : java.awt.Color.LIGHT_GRAY);
         updateGUI();
     }
 
     private void useSpecialAbility() {
-        if (currentEnemy == null || !activePlayer.isAlive()) {
+        if (combatManager == null || !activePlayer.isAlive()) {
             return;
         }
 
-        if (!activePlayer.isSpecialAbilityReady()) {
-            logPanel.addMessage("Your special ability is not ready yet! (" + activePlayer.getCurrentSpecialAbilityCooldown() + " turns remaining)");
-            return;
-        }
-
-        // Player uses their special ability
-        String abilityResult = activePlayer.useSpecialAbility(currentEnemy, dice);
+        // Delegate to the CombatManager
+        String abilityResult = combatManager.useSpecialAbility();
         logPanel.addMessage(abilityResult);
-        controlPanel.setSpecialButtonEnabled(false); // It's now disabled
-        controlPanel.setSpecialButtonColor(java.awt.Color.LIGHT_GRAY); // And gray
 
-        // Check if the ability defeated the enemy or the player
-        if (!currentEnemy.isAlive()) {
-            winCombat();
-        } else if (!activePlayer.isAlive()) {
+        // Check results after the ability and potential enemy counter-attack
+        if (!activePlayer.isAlive()) {
             endGame();
-        } else {
-            // If the fight continues, the enemy gets its turn
-            enemyTurn();
+            return;
+        } else if (!currentEnemy.isAlive()) {
+            winCombat();
+            return;
         }
+
+        controlPanel.setSpecialButtonEnabled(activePlayer.isSpecialAbilityReady());
+        controlPanel.setSpecialButtonColor(activePlayer.isSpecialAbilityReady() ? java.awt.Color.CYAN : java.awt.Color.LIGHT_GRAY);
         // Update the GUI to reflect any changes (like Lucy's health drop or Bean's heal)
         updateGUI();
     }
@@ -505,39 +475,25 @@ public class Game {
     }
 
     private void fleeEncounter() {
-        if (currentEnemy == null) return;
+        if (combatManager == null) return;
 
-        boolean guaranteedFlee = activePlayer.hasEffect(InvisibilityEffect.EFFECT_NAME);
-        // Use RuleEngine for flee chance
-        if (guaranteedFlee || dice.getRandom().nextDouble() < activePlayer.getRuleEngine().getRule(RuleEngine.FLEE_CHANCE)) {
-            if (guaranteedFlee) {
-                logPanel.addMessage("You vanish from sight and easily escape!");
-                activePlayer.removeEffect(InvisibilityEffect.EFFECT_NAME); // Effect is consumed on use
-            } else {
-                logPanel.addMessage("You successfully flee from the battle and rush through another door...");
-            }
+        // Delegate flee logic to the CombatManager
+        CombatManager.FleeResult result = combatManager.attemptFlee();
+        logPanel.addMessage(result.logMessage);
 
+        if (result.success) {
             String fledEnemyName = currentEnemy.getName();
-            this.currentEnemy = null; // Clear the current combat
-
+            setDoorMode(false); // Go to door mode, but don't clear the enemy image yet
             // Simulate choosing another door, ensuring a different enemy appears.
             int nextDoor = dice.roll(2);
             chooseDoor(nextDoor, fledEnemyName);
         } else {
-            logPanel.addMessage("You try to flee, but the " + currentEnemy.getName() + " blocks your path!");
-            // Fleeing fails, so the enemy gets a free attack.
-            enemyTurn();
+            // Flee failed, check if player survived the enemy's attack
+            if (!activePlayer.isAlive()) {
+                endGame();
+            }
+            updateGUI();
         }
-    }
-
-    private void enemyTurn() {
-        if (currentEnemy == null || !currentEnemy.isAlive()) return;
-        String enemyAttackResult = currentEnemy.attack(activePlayer, dice);
-        logPanel.addMessage(enemyAttackResult);
-        if (!activePlayer.isAlive()) {
-            endGame();
-        }
-        updateGUI();
     }
 
     private void endGame() {

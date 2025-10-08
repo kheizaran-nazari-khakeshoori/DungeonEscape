@@ -1,6 +1,7 @@
 package com.dungeonescape;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
@@ -17,6 +18,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.SwingConstants;
+import javax.swing.border.TitledBorder;
 
 import model.Antidote;
 import model.DamageType;
@@ -46,7 +48,10 @@ public class ItemSelectionWindow extends JFrame {
 
         // --- WEAPON SELECTION ---
         JPanel weaponPanel = new JPanel(new GridLayout(0, 3, 10, 10)); // 3 columns, as many rows as needed
-        weaponPanel.setBorder(BorderFactory.createTitledBorder("Choose Your Weapon"));
+        // --- IMPROVEMENT: Add color to the border title ---
+        TitledBorder weaponBorder = BorderFactory.createTitledBorder("Choose Your Weapon");
+        weaponBorder.setTitleColor(new Color(0, 70, 200)); // A strong blue color
+        weaponPanel.setBorder(weaponBorder);
 
         List<Weapon> availableWeapons = createAvailableWeapons();
         ButtonGroup weaponGroup = new ButtonGroup();
@@ -57,7 +62,10 @@ public class ItemSelectionWindow extends JFrame {
 
         // --- POTION SELECTION ---
         JPanel potionPanel = new JPanel(new GridLayout(0, 3, 10, 10)); // 3 columns, as many rows as needed
-        potionPanel.setBorder(BorderFactory.createTitledBorder("Choose Your Potion"));
+        // --- IMPROVEMENT: Add color to the border title ---
+        TitledBorder potionBorder = BorderFactory.createTitledBorder("Choose Your Potion");
+        potionBorder.setTitleColor(new Color(120, 0, 180)); // A magical purple color
+        potionPanel.setBorder(potionBorder);
 
         List<Potion> availablePotions = createAvailablePotions();
         ButtonGroup potionGroup = new ButtonGroup();
@@ -103,7 +111,7 @@ public class ItemSelectionWindow extends JFrame {
 
     private List<Potion> createAvailablePotions() {
         List<Potion> potions = new ArrayList<>();
-        potions.add(new Potion("Health Potion", "A swirling red liquid that restores 25 health.", 25, 1, "images/potions/ManaPotion.png", 0));
+        potions.add(new Potion("Health Potion", "A swirling blue liquid that restores 25 health.", 25, 1, "images/potions/ManaPotion.png", 0));
         potions.add(new StaminaElixir("Stamina Elixir", "Restores 20 health and grants regeneration for 3 turns.", 20, "images/potions/StaminaElixir.png", 0));
         potions.add(new InvisibilityPotion("Invisibility Potion", "Guarantees a successful escape from your next fight.", "images/potions/InvisibilityPotion.png", 0));
         potions.add(new Antidote("Antidote", "A chalky fluid that cures poison.", "images/potions/Antidote.png", 0));
