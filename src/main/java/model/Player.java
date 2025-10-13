@@ -1,10 +1,10 @@
 package model;
-
+// standard java utility classes 
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.Iterator;  
 import java.util.List;
 
-import controller.RuleEngine;
+import controller.RuleEngine;  // important game's rule 
 import exceptions.InvalidMoveException;
 import utils.DiceRoller;
 
@@ -13,7 +13,7 @@ public abstract class Player {
     private int maxHealth;
     private int health;
     private Inventory inventory;
-    private final List<Effect<Player>> activeEffects;
+    private final List<Effect<Player>> activeEffects;// We declare a "List" to hold the effects.
     private Weapon equippedWeapon;
     private int gold; // The amount of gold the player has
     // Cooldown fields

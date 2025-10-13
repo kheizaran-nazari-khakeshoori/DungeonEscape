@@ -5,10 +5,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
-import controller.CombatManager;
 
 import javax.swing.JOptionPane;
 
+import controller.CombatManager;
 import controller.RuleEngine;
 import exceptions.InvalidMoveException;
 import model.Bean;
@@ -17,7 +17,6 @@ import model.Enemy;
 import model.EnemyFactory;
 import model.Ghost;
 import model.Goblin;
-import model.InvisibilityEffect;
 import model.Item;
 import model.Level;
 import model.Lucy;
@@ -71,24 +70,20 @@ public class Game {
 
     public Game(Player player, GameWindow gameWindow, PartyPanel partyPanel, DungeonPanel dungeonPanel, InventoryPanel inventoryPanel, LogPanel logPanel, ControlPanel controlPanel, HUDPanel hudPanel) {
         // Models
+        // The 'player' object passed in is the one chosen by the user, with starting items.
+        // We will use this instance as our active player.
+        this.activePlayer = player;
+
         this.party = new ArrayList<>();
-        this.party.add(new Elfo());
-        this.party.add(new Bean());
-        this.party.add(new Lucy());
-
-        // Find the player in the party that matches the class of the one selected
-        // in the previous screen. This ensures the activePlayer is the same instance
-        // as the one in the party list, which is important for the UI.
-        this.activePlayer = party.stream()
-                .filter(p -> p.getClass().equals(player.getClass()))
-                .findFirst()
-                .orElse(party.get(0)); // Fallback to the first player if not found
-
-        // CRITICAL FIX: Transfer the inventory from the temporary player object (which has
-        // the selected items) to the actual player instance being used in the game.
-        for (Item item : player.getInventory().getItems()) {
-            this.activePlayer.pickItem(item);
-        }
+        this.party.add(this.activePlayer); // Add the chosen player first.
+        
+        // Now add the other characters to the party if they aren't the active player.
+        if (!(activePlayer instanceof Elfo))
+            this.party.add(new Elfo());
+        if (!(activePlayer instanceof Bean))
+            this.party.add(new Bean());
+        if (!(activePlayer instanceof Lucy))
+            this.party.add(new Lucy());
 
         this.dice = new DiceRoller();
         this.enemyFactory = new EnemyFactory(this.dice);
