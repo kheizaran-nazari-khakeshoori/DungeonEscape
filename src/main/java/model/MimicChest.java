@@ -7,7 +7,7 @@ public class MimicChest extends Enemy {
         super("Mimic Chest", 70, 18, 80, "images/enemies/MimicChest.png", DamageType.PHYSICAL);
 
         // Mimics are tough, maybe slightly resistant to piercing
-        resistances.put(DamageType.PIERCING, 0.8);
+        addResistance(DamageType.PIERCING, 0.8);
     }
 
     @Override

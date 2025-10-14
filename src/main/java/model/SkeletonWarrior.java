@@ -7,8 +7,8 @@ public class SkeletonWarrior extends Enemy {
         super("Skeleton Warrior", 50, 10, 30, "images/enemies/SkeletonWarrior.png", model.DamageType.PHYSICAL);
 
         // Skeletons are often weak to blunt damage and resistant to piercing
-        weaknesses.put(DamageType.BLUNT, 1.5); // Weaknesses go in the weaknesses map
-        resistances.put(DamageType.PIERCING, 0.75);
+        addWeakness(DamageType.BLUNT, 1.5);
+        addResistance(DamageType.PIERCING, 0.75);
     }
 
     @Override

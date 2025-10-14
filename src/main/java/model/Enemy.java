@@ -16,8 +16,8 @@ public abstract class Enemy implements ICombatant, ILootable {
     protected String imagePath;
     protected DamageType damageType;
     private final List<Effect<Enemy>> activeEffects;
-    protected Map<DamageType, Double> weaknesses;
-    protected Map<DamageType, Double> resistances;
+    protected final Map<DamageType, Double> weaknesses;
+    protected final Map<DamageType, Double> resistances;
 
     public Enemy(String name, int maxHealth, int baseDamage, int goldValue, String imagePath, DamageType damageType) {
         this.name = name;
@@ -30,6 +30,25 @@ public abstract class Enemy implements ICombatant, ILootable {
         this.weaknesses = new HashMap<>();
         this.resistances = new HashMap<>();
          this.activeEffects = new ArrayList<>();
+    }
+
+    /**
+     * Protected method for subclasses to declare a weakness.
+     * This improves encapsulation by preventing direct map modification.
+     * @param type The DamageType the enemy is weak to.
+     * @param multiplier The damage multiplier (e.g., 1.5 for +50% damage).
+     */
+    protected void addWeakness(DamageType type, double multiplier) {
+        this.weaknesses.put(type, multiplier);
+    }
+
+    /**
+     * Protected method for subclasses to declare a resistance.
+     * @param type The DamageType the enemy is resistant to.
+     * @param multiplier The damage multiplier (e.g., 0.75 for 25% resistance).
+     */
+    protected void addResistance(DamageType type, double multiplier) {
+        this.resistances.put(type, multiplier);
     }
 
     @Override
@@ -62,10 +81,10 @@ public abstract class Enemy implements ICombatant, ILootable {
         double multiplier = 1.0;
         String effectiveness = "";
         if (weaknesses.containsKey(type)) {
-            multiplier = 1.5;
+            multiplier = weaknesses.get(type); // Use the value from the map
             effectiveness = "It's super effective!";
         } else if (resistances.containsKey(type)) {
-            multiplier = 0.5;
+            multiplier = resistances.get(type); // Use the value from the map
             effectiveness = "It's not very effective...";
         }
         int finalDamage = (int) (amount * multiplier);
@@ -113,12 +132,7 @@ public abstract class Enemy implements ICombatant, ILootable {
 
      @Override
     public String attack(ICombatant target, DiceRoller dice) throws exceptions.InvalidMoveException{
-        if (target instanceof Player) {
-            Player player = (Player) target;
-            player.takeDamage(this.baseDamage);
-            return this.name + " attacks " + player.getName() + " for " + this.baseDamage + " damage.";
-        }
-        // Generic attack for other ICombatant types
+        // Polymorphic attack: works for any ICombatant (Player, another Enemy, etc.)
         target.takeDamage(this.baseDamage);
         return this.name + " attacks " + target.getName() + " for " + this.baseDamage + " damage.";
     }

@@ -8,9 +8,9 @@ public class StoneMan extends Enemy {
         super("StoneMan", 80, 15, 50, "images/enemies/StoneMan.png", DamageType.BLUNT);
 
         // Stone Golems are resistant to sharp weapons but weak to blunt damage.
-        resistances.put(DamageType.SLASHING, 0.5);
-        resistances.put(DamageType.PIERCING, 0.25);
-        weaknesses.put(DamageType.BLUNT, 1.75);
+        addResistance(DamageType.SLASHING, 0.5);
+        addResistance(DamageType.PIERCING, 0.25);
+        addWeakness(DamageType.BLUNT, 1.75);
     }
 
     @Override
