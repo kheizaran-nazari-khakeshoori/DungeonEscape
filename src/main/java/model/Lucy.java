@@ -1,32 +1,33 @@
 package model;
 
-import exceptions.InvalidMoveException;
+import controller.RuleEngine;
 import utils.DiceRoller;
 
 public class Lucy extends Player {
     public Lucy() {
-        // Bean's personal demon. Fragile but packs a punch. Do it, do it, do it!
-        super("Lucy", 66);
+        // A character who hits hard but is a bit of a glass cannon.
+        super("Lucy", 85);
+        // Lucy is not great at fleeing.
+        this.ruleEngine.setRule(RuleEngine.FLEE_CHANCE, 0.25); // 25% flee chance
+    }
+
+    @Override
+    public double getTrapDisarmChance() {
+        return 0.20; // Lucy is not the most careful.
     }
 
     /**
-     * Lucy's special ability: A high-risk, high-reward attack that deals
-     * significant bonus damage but also damages Lucy.
-     * @param enemy The enemy to attack.
-     * @param dice The dice roller for game randomness.
-     * @return A string describing the result of the attack.
+     * Lucy's special ability: A powerful, reckless attack that deals massive damage
+     * but also causes some recoil damage to herself.
      */
     @Override
     public String useSpecialAbility(Enemy enemy, DiceRoller dice) {
-        int selfDamage = 10;
-        int bonusDamage = 20;
-        this.takeDamage(selfDamage);
-        putSpecialAbilityOnCooldown(); // Put the ability on cooldown
-        try {
-            return "Lucy screams 'DO IT!' and recklessly attacks!\n" + this.attack(enemy, bonusDamage, dice);
-        } catch (InvalidMoveException e) {
-            // If the attack fails, the self-damage still happened, but the attack part fizzles.
-            return "Lucy screams 'DO IT!' but fumbles, having no weapon to attack with!";
-        }
+        int damageDealt = 35;
+        int recoilDamage = 15;
+
+        String effectiveness = enemy.takeDamage(damageDealt, DamageType.PHYSICAL);
+        this.takeDamage(recoilDamage); // Lucy takes recoil damage
+        putSpecialAbilityOnCooldown();
+        return "Lucy unleashes a reckless flurry, dealing a massive " + damageDealt + " damage! " + effectiveness + "\nShe takes " + recoilDamage + " damage from the exertion.";
     }
 }

@@ -150,11 +150,17 @@ public class Game {
         uiManager.getLogPanel().addMessage("\nYou open the " + doorName + " door...");
         // Delegate encounter generation to DoorManager
         DoorManager.EncounterResult encounter = doorManager.generateEncounter(activePlayer, enemyToAvoid);
-        switch (encounter.type()) {
-            case ENEMY -> handleEnemyEncounter(encounter.enemy());
-            case TRAP -> handleTrapEncounter();
-            case EMPTY_ROOM -> handleEmptyRoom();
-            case LEVEL_COMPLETE -> handleLevelComplete();
+        
+        // Replacing the switch statement with an if-else block as requested.
+        var encounterType = encounter.type();
+        if (encounterType == DoorManager.EncounterType.ENEMY) {
+            handleEnemyEncounter(encounter.enemy());
+        } else if (encounterType == DoorManager.EncounterType.TRAP) {
+            handleTrapEncounter();
+        } else if (encounterType == DoorManager.EncounterType.EMPTY_ROOM) {
+            handleEmptyRoom();
+        } else if (encounterType == DoorManager.EncounterType.LEVEL_COMPLETE) {
+            handleLevelComplete();
         }
     }
 

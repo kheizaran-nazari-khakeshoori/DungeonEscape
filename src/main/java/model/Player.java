@@ -77,6 +77,7 @@ public abstract class Player implements ICombatant {
         return inventory;
     }
 
+    @Override
     public void takeDamage(int amount) {
         int finalDamage = amount;
         // Check for defensive effects
@@ -86,6 +87,12 @@ public abstract class Player implements ICombatant {
 
         health -= finalDamage;
         if (health < 0) health = 0;
+    }
+
+    @Override
+    public String takeDamage(int amount, DamageType type) {
+        takeDamage(amount); // Player doesn't have resistances, so just take normal damage.
+        return ""; // Return empty string as there's no effectiveness message.
     }
 
     public void heal(int amount) {
@@ -112,28 +119,17 @@ public abstract class Player implements ICombatant {
 
     @Override
     public String attack(ICombatant target, DiceRoller dice) throws InvalidMoveException {
-        if (!(target instanceof Enemy)) {
-            throw new InvalidMoveException("Players can only attack enemies.");
-        }
-        return attack((Enemy) target, 0, dice);
-    }
-
-    /**
-     * Overloaded attack method for special moves or bonuses (Overloading Polymorphism)
-     * @param enemy The target enemy
-     */
-    public String attack(Enemy enemy, int bonusDamage, DiceRoller dice) throws InvalidMoveException {
         if (equippedWeapon != null) {
-            int baseDamage = equippedWeapon.getDamage() + bonusDamage;
+            int baseDamage = equippedWeapon.getDamage();
             
             // The takeDamage method now returns a string about effectiveness
-            String effectivenessMessage = enemy.takeDamage(baseDamage, equippedWeapon.getDamageType());
+            // This is now truly polymorphic and works on ANY ICombatant.
+            String effectivenessMessage = target.takeDamage(baseDamage, equippedWeapon.getDamageType());
             
             equippedWeapon.decreaseDurability();
 
-            String result = name + " attacks " + enemy.getName() + " with " + equippedWeapon.getName() +
+            String result = name + " attacks " + target.getName() + " with " + equippedWeapon.getName() +
                     " for " + baseDamage + " damage! " + effectivenessMessage;
-            if (bonusDamage > 0) result += " (" + bonusDamage + " bonus)!";
 
             if (equippedWeapon.getDurability() <= 0) {
                 inventory.removeItem(equippedWeapon);

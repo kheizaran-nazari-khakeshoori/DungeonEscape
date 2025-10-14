@@ -52,7 +52,6 @@ model/Level.class
 controller/TrapManager$TrapResult.class
 model/Inventory.class
 model/DamageType.class
-com/dungeonescape/Game$1.class
 controller/DoorManager$EncounterResult.class
 model/Item.class
 model/ShadowAssassin.class

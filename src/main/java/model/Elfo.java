@@ -1,7 +1,6 @@
 package model;
 
 import controller.RuleEngine;
-import exceptions.InvalidMoveException;
 import utils.DiceRoller;
 
 public class Elfo extends Player {
@@ -28,14 +27,16 @@ public class Elfo extends Player {
      */
     @Override
     public String useSpecialAbility(Enemy enemy, DiceRoller dice) {
-        int bonusDamage = 10;
-        // In a more complex system, this could bypass enemy evasion. For now, it's a reliable damage boost.
-        putSpecialAbilityOnCooldown(); // Put the ability on cooldown
-        try {
-            return "Elfo takes a moment to aim carefully...\n" + this.attack(enemy, bonusDamage, dice);
-        } catch (InvalidMoveException e) {
-            // If the attack fails (e.g., no weapon), return a failure message.
+        if (getEquippedWeapon() == null) {
             return "Elfo tries to aim, but has nothing to shoot with!";
         }
+
+        int bonusDamage = 10;
+        String effectiveness = enemy.takeDamage(bonusDamage, DamageType.PIERCING); // Apply bonus damage directly
+
+        putSpecialAbilityOnCooldown(); // Put the ability on cooldown
+
+        return "Elfo takes a moment to aim carefully... and lands a precise shot for " +
+               bonusDamage + " bonus damage! " + effectiveness;
     }
 }

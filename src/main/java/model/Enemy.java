@@ -72,6 +72,7 @@ public abstract class Enemy implements ICombatant, ILootable {
     }
 
     @Override
+    // This method is required by the ICombatant interface.
     public void takeDamage(int amount) {
         this.health -= amount;
         if (this.health < 0) this.health = 0;

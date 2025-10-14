@@ -16,6 +16,7 @@ import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
 
 import com.dungeonescape.ItemSelectionWindow;
+
 import model.Bean;
 import model.Elfo;
 import model.Lucy;
