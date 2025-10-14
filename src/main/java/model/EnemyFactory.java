@@ -22,7 +22,7 @@ public class EnemyFactory {
         enemySuppliers.add(Ghost::new);
         enemySuppliers.add(StoneMan::new);
         enemySuppliers.add(SkeletonWarrior::new);
-        // Adding the rest of your custom enemies
+        // Adding the rest of my custom enemies
         enemySuppliers.add(MimicChest::new);
         enemySuppliers.add(PoisonSpider::new);
         enemySuppliers.add(ShadowAssassin::new);

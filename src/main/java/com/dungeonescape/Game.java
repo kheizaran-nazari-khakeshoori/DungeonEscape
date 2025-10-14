@@ -4,31 +4,23 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Supplier;
-
-import javax.swing.JOptionPane;
 
 import controller.CombatManager;
-import controller.RuleEngine;
+import controller.DoorManager;
+import controller.ItemManager;
+import controller.LevelManager;
+import controller.TrapManager;
+import controller.UIStateManager;
 import exceptions.InvalidMoveException;
 import model.Bean;
 import model.Elfo;
 import model.Enemy;
 import model.EnemyFactory;
-import model.Ghost;
-import model.Goblin;
 import model.Item;
 import model.Level;
 import model.Lucy;
-import model.MimicChest;
 import model.Player;
-import model.PoisonSpider;
-import model.ShadowAssassin;
 import model.ShopEncounter;
-import model.SkeletonWarrior;
-import model.SlimeBlob;
-import model.StoneMan;
-import model.Trap;
 import model.TrapFactory;
 import model.Weapon;
 import utils.DiceRoller;
@@ -42,335 +34,189 @@ import view.PartyPanel;
 import view.ShopDialog;
 
 /**
- * The main controller for the game, managing the game state and main loop.
+ * The main controller for the game, coordinating between managers.
  */
 public class Game {
-    // Models
+    // Core models
     private Player activePlayer;
     private final List<Player> party;
-    private final Map<String, Integer> enemyEncounterCount;
-    private List<Supplier<Enemy>> currentEncounterDeck;
-    private EnemyFactory enemyFactory;
-    private TrapFactory trapFactory;
-    private DiceRoller dice;
-    private RuleEngine ruleEngine;
     private Enemy currentEnemy;
-    private ShopEncounter shopEncounter;
-    private CombatManager combatManager; // New: Manages the current fight
-    private List<Level<Enemy>> gameLevels;
-    private int currentLevelIndex;
 
-    // Views
-    private final PartyPanel partyPanel;
-    private DungeonPanel dungeonPanel;
-    private InventoryPanel inventoryPanel;
-    private LogPanel logPanel;
-    private ControlPanel controlPanel;
-    private HUDPanel hudPanel;
+    // Managers (single responsibility classes)
+    private final DiceRoller dice;
+    private final DoorManager doorManager;
+    private final TrapManager trapManager;
+    private final LevelManager levelManager;
+    private final ItemManager itemManager;
+    private final UIStateManager uiManager;
+    private CombatManager combatManager;
+    private final ShopEncounter shopEncounter;
+
+    // Tracking
+    private final Map<String, Integer> enemyEncounterCount;
 
     public Game(Player player, GameWindow gameWindow, PartyPanel partyPanel, DungeonPanel dungeonPanel, InventoryPanel inventoryPanel, LogPanel logPanel, ControlPanel controlPanel, HUDPanel hudPanel) {
-        // Models
-        // The 'player' object passed in is the one chosen by the user, with starting items.
-        // We will use this instance as our active player.
+        // Initialize player and party
         this.activePlayer = player;
-
         this.party = new ArrayList<>();
-        this.party.add(this.activePlayer); // Add the chosen player first.
-        
-        // Now add the other characters to the party if they aren't the active player.
-        if (!(activePlayer instanceof Elfo))
-            this.party.add(new Elfo());
-        if (!(activePlayer instanceof Bean))
-            this.party.add(new Bean());
-        if (!(activePlayer instanceof Lucy))
-            this.party.add(new Lucy());
-
+        initializeParty();
+        // Initialize utilities
         this.dice = new DiceRoller();
-        this.enemyFactory = new EnemyFactory(this.dice);
-        this.trapFactory = new TrapFactory(this.dice);
         this.enemyEncounterCount = new HashMap<>();
-        this.ruleEngine = new RuleEngine();
-        this.currentEncounterDeck = new ArrayList<>();
-        this.gameLevels = new ArrayList<>();
-        this.shopEncounter = new ShopEncounter(); // Create a single shop instance for the game
-        this.currentLevelIndex = 0;
-
-        // Views
-        this.partyPanel = partyPanel;
-        this.dungeonPanel = dungeonPanel;
-        this.inventoryPanel = inventoryPanel;
-        this.logPanel = logPanel;
-        this.controlPanel = controlPanel;
-        this.hudPanel = hudPanel;
-
-        // Link controller to views by adding action listeners to buttons
-        this.dungeonPanel.door1Button.addActionListener(e -> chooseDoor(1));
-        this.dungeonPanel.door2Button.addActionListener(e -> chooseDoor(2));
-        this.controlPanel.addAttackListener(e -> performCombatRound());
-        this.controlPanel.addSpecialListener(e -> useSpecialAbility());
-        this.controlPanel.addFleeListener(e -> fleeEncounter());
-        this.controlPanel.addInventoryListener(e -> manageInventory());
-        this.controlPanel.addContinueListener(e -> setDoorMode());
-        this.controlPanel.addShopListener(e -> openShop());
-        this.controlPanel.addExitListener(e -> System.exit(0));
-
+        // Initialize managers
+        EnemyFactory enemyFactory = new EnemyFactory(dice);
+        TrapFactory trapFactory = new TrapFactory(dice);
+        this.doorManager = new DoorManager(dice, enemyFactory, enemyEncounterCount);
+        this.trapManager = new TrapManager(trapFactory, dice);
+        this.levelManager = new LevelManager(dice);
+        this.itemManager = new ItemManager();
+        this.uiManager = new UIStateManager(dungeonPanel, controlPanel, inventoryPanel,
+                                            hudPanel, partyPanel, logPanel);
+        this.shopEncounter = new ShopEncounter();
+        // Setup UI listeners
+        setupListeners(dungeonPanel, controlPanel);
         // Start the game
         startGame();
     }
 
-    /**
-     * Initializes the player with starting items and sets up the game state.
-     */
+    private void initializeParty() {
+        this.party.add(this.activePlayer);
+        if (!(activePlayer instanceof Elfo)) party.add(new Elfo());
+        if (!(activePlayer instanceof Bean)) party.add(new Bean());
+        if (!(activePlayer instanceof Lucy)) party.add(new Lucy());
+    }
+
+    private void setupListeners(DungeonPanel dungeonPanel, ControlPanel controlPanel) {
+        dungeonPanel.door1Button.addActionListener(e -> chooseDoor(1));
+        dungeonPanel.door2Button.addActionListener(e -> chooseDoor(2));
+        controlPanel.addAttackListener(e -> performCombatRound());
+        controlPanel.addSpecialListener(e -> useSpecialAbility());
+        controlPanel.addFleeListener(e -> fleeEncounter());
+        controlPanel.addInventoryListener(e -> manageInventory());
+        controlPanel.addContinueListener(e -> {
+            uiManager.setDoorMode();
+            updateGUI();
+        });
+        controlPanel.addShopListener(e -> openShop());
+        controlPanel.addExitListener(e -> System.exit(0));
+    }
+
     private void startGame() {
-        logPanel.addMessage("Welcome to Dungeon Escape!");
-        initializeLevels();
+        uiManager.getLogPanel().addMessage("Welcome to Dungeon Escape!");
+        equipStartingWeapon();
+        startNextLevel();
+    }
 
-        // Find the weapon the player chose during setup and equip it.
+    private void equipStartingWeapon() {
         Item startingWeapon = activePlayer.getInventory().getItems().stream()
-                .filter(item -> item instanceof Weapon)
-                .findFirst()
-                .orElse(null);
-
+            .filter(item -> item instanceof Weapon)
+            .findFirst()
+            .orElse(null);
         if (startingWeapon != null) {
             try {
-                // The processUseItem method for a weapon equips it.
-                processUseItem(startingWeapon.getName());
+                ItemManager.ItemUseResult result = itemManager.useItem(activePlayer, startingWeapon.getName());
+                uiManager.getLogPanel().addMessage(result.message());
             } catch (InvalidMoveException e) {
-                logPanel.addMessage("Error equipping starting weapon: " + e.getMessage());
+                uiManager.getLogPanel().addMessage("Error equipping starting weapon: " + e.getMessage());
             }
         }
-        startNextLevel();
-        
-    }
-
-    // Public getter for activePlayer, needed by ShopDialog
-    public Player getActivePlayer() {
-        return activePlayer;
-    }
-    // Public getter for logPanel, needed by ShopDialog
-    public LogPanel getLogPanel() {
-        return logPanel;
-    }
-    /**
-     * Creates the sequence of levels for the game, defining the progression.
-     */
-    private void initializeLevels() {
-        gameLevels = new ArrayList<>();
-        // Level: Name, Background Image Path, List of Enemies
-        // Level 1: The Goblin Warrens - Weaker enemies
-        gameLevels.add(new Level<>("The Goblin Warrens", "images/ui/TwoDoors.png", List.of(Goblin::new, Goblin::new, SkeletonWarrior::new)));
-        // Level 2: The Haunted Halls - More spectral enemies
-        gameLevels.add(new Level<>("The Haunted Halls", "images/ui/HauntedHalls.png", List.of(SkeletonWarrior::new, Ghost::new, Ghost::new, ShadowAssassin::new)));
-        // Level 3: The Creature Caves - Tougher, more exotic monsters
-        gameLevels.add(new Level<>("The Creature Caves", "images/ui/CreatureCaves.png", List.of(PoisonSpider::new, SlimeBlob::new, StoneMan::new, MimicChest::new)));
-        // In the future, you could add a final level with a unique Boss.
     }
 
     private void startNextLevel() {
-        Level<Enemy> level = gameLevels.get(currentLevelIndex);
-        dungeonPanel.loadBackgroundImage(level.getBackgroundImagePath());
-        logPanel.addMessage("\n--- You have entered " + level.getName() + " ---");
-        this.currentEncounterDeck = level.getShuffledDeck(dice);
-        setDoorMode();
+        Level<Enemy> level = levelManager.getCurrentLevel();
+        uiManager.loadBackgroundImage(level.getBackgroundImagePath());
+        uiManager.getLogPanel().addMessage("\n--- You have entered " + level.getName() + " ---");
+        doorManager.setCurrentEncounterDeck(levelManager.getShuffledEncounterDeck());
+        uiManager.setDoorMode();
+        updateGUI();
     }
 
-    public void updateGUI() {
-        inventoryPanel.updateInventory(activePlayer);
-        hudPanel.updateStatus(activePlayer);
-        hudPanel.updateEnemyStatus(currentEnemy);
-        partyPanel.updateParty(activePlayer, party);
+    public Player getActivePlayer() {
+        return activePlayer;
     }
 
-    /**
-     * Handles the logic for exploring, which can lead to finding an enemy, an item, or nothing.
-     */
-    private void chooseDoor(int doorNumber) { // Overloaded for simplicity
+    public LogPanel getLogPanel() {
+        return uiManager.getLogPanel();
+    }
+
+    private void chooseDoor(int doorNumber) {
         chooseDoor(doorNumber, null);
     }
 
-    /**
-     * Main logic for choosing a door, with an option to avoid a specific enemy type.
-     * @param doorNumber The door chosen (1 or 2).
-     * @param enemyToAvoid The name of an enemy to not generate, or null.
-     */
     private void chooseDoor(int doorNumber, String enemyToAvoid) {
         if (currentEnemy != null) return; // Can't open a door during combat
 
         String doorName = (doorNumber == 1) ? "left" : "right";
-        logPanel.addMessage("\nYou open the " + doorName + " door...");
-
-        // --- Corrected Encounter Logic ---
-        // Roll the dice ONCE to determine the outcome.
-        double encounterRoll = dice.getRandom().nextDouble(); // Use the active player's rules
-        double enemyChance = activePlayer.getRuleEngine().getRule(RuleEngine.ENEMY_CHANCE);
-
-        if (encounterRoll < enemyChance) { // e.g., 0.0 to 0.7
-            if (currentEncounterDeck.isEmpty()) {
-                logPanel.addMessage("You've cleared this section of the dungeon!");
-                currentLevelIndex++;
-                if (currentLevelIndex >= gameLevels.size()) {
-                    winGame(); // Player has beaten all levels
-                } else {
-                    startNextLevel();
-                }
-                return;
-            }
-
-            // Get the next enemy from our shuffled "deck"
-            Supplier<Enemy> enemySupplier = currentEncounterDeck.remove(0);
-            Enemy enemy = enemySupplier.get();
-
-            // If we are fleeing and the next enemy is the same type, try to swap it
-            // for the next one in the deck to improve variety.
-            if (enemyToAvoid != null && enemy.getName().equals(enemyToAvoid) && !currentEncounterDeck.isEmpty()) {
-                logPanel.addMessage("...but you manage to dodge into a different corridor!");
-                Supplier<Enemy> nextSupplier = currentEncounterDeck.remove(0);
-                // Put the avoided enemy back at the end of the deck
-                currentEncounterDeck.add(enemySupplier);
-                enemy = nextSupplier.get();
-            }
-            
-            String enemyName = enemy.getName();
-
-            // Strengthen enemy if it has been seen before
-            int encounterLevel = enemyEncounterCount.getOrDefault(enemyName, 0);
-            if (encounterLevel > 0) {
-                enemy.strengthen(encounterLevel, activePlayer.getRuleEngine()); // Use player's rules for scaling
-                logPanel.addMessage("This " + enemyName + " seems stronger than the last one!");
-            }
-
-            enterCombat(enemy);
-        } else if (encounterRoll < enemyChance + activePlayer.getRuleEngine().getRule(RuleEngine.TRAP_CHANCE)) { // e.g., 0.75 to 0.90
-            handleTrapEncounter();
-        } else {
-            // This is the "lucky empty room" case.
-            try {
-                dungeonPanel.displayImage("images/ui/EmptyRoom.png");
-            } catch (Exception e) {
-                logPanel.addMessage("[SYSTEM] Warning: Could not load image for Empty Room. Error: " + e.getClass().getSimpleName());
-            }
-            logPanel.addMessage("The room is empty... but you spot something glinting in the corner!");
-            activePlayer.addGold(10);
-            logPanel.addMessage("You found 10 gold!");
-            updateGUI(); // To show the new gold amount
-            setPostEncounterMode(); // Show image before doors reappear
+        uiManager.getLogPanel().addMessage("\nYou open the " + doorName + " door...");
+        // Delegate encounter generation to DoorManager
+        DoorManager.EncounterResult encounter = doorManager.generateEncounter(activePlayer, enemyToAvoid);
+        switch (encounter.type()) {
+            case ENEMY -> handleEnemyEncounter(encounter.enemy());
+            case TRAP -> handleTrapEncounter();
+            case EMPTY_ROOM -> handleEmptyRoom();
+            case LEVEL_COMPLETE -> handleLevelComplete();
         }
     }
 
+    private void handleEnemyEncounter(Enemy enemy) {
+        if (enemy.getName().equals(currentEnemy != null ? currentEnemy.getName() : "")) {
+            uiManager.getLogPanel().addMessage("...but you manage to dodge into a different corridor!");
+        }
+        enterCombat(enemy);
+    }
+
     private void handleTrapEncounter() {
-        logPanel.addMessage("The stress of finding a trap takes a toll on you...");
-        activePlayer.takeDamage(5);
-        logPanel.addMessage("You lose 5 HP!");
+        // Delegate to TrapManager
+        TrapManager.TrapResult result = trapManager.handleTrap(activePlayer);
+        uiManager.getLogPanel().addMessage(result.getAllMessages());
+        uiManager.displayImage(result.imagePath);
         updateGUI();
-
-        if (!activePlayer.isAlive()) {
+        if (result.playerDied) {
             endGame();
-            return;
-        }
-
-        try {
-            dungeonPanel.displayImage("images/ui/Trap.png");
-        } catch (Exception e) {
-            // Gracefully handle missing image files instead of crashing.
-            logPanel.addMessage("[SYSTEM] Warning: Could not load image for Trap. Error: " + e.getClass().getSimpleName());
-        }
-
-        Trap trap = trapFactory.createRandomTrap();
-        logPanel.addMessage(trap.getTriggerMessage());
-
-        int disarmChancePercent = (int) (activePlayer.getTrapDisarmChance() * 100);
-        int choice = JOptionPane.showConfirmDialog(
-            null,
-            "A " + trap.getName() + "!\nAttempt to disarm/avoid it? (Chance: " + disarmChancePercent + "%)",
-            "It's a Trap!",
-            JOptionPane.YES_NO_OPTION
-        );
-
-        boolean attemptDisarm = (choice == JOptionPane.YES_OPTION);
-
-        if (attemptDisarm && dice.getRandom().nextDouble() < activePlayer.getTrapDisarmChance()) {
-            // Success!
-            logPanel.addMessage("Success! You deftly avoid the " + trap.getName() + ".");
-            setPostEncounterMode(); // Show image before doors reappear
         } else {
-            // Failure or chose not to attempt
-            if (attemptDisarm) {
-                logPanel.addMessage("You failed to disarm the trap!");
-            }
-            String result = trap.trigger(activePlayer);
-            logPanel.addMessage(result);
-            if (!activePlayer.isAlive()) {
-                endGame();
-            } else {
-                setPostEncounterMode();
-            }
+            uiManager.setPostEncounterMode();
+        }
+    }
+
+    private void handleEmptyRoom() {
+        uiManager.displayImage("images/ui/EmptyRoom.png");
+        uiManager.getLogPanel().addMessage("The room is empty... but you spot something glinting in the corner!");
+        activePlayer.addGold(10);
+        uiManager.getLogPanel().addMessage("You found 10 gold!");
+        updateGUI();
+        uiManager.setPostEncounterMode();
+    }
+
+    private void handleLevelComplete() {
+        uiManager.getLogPanel().addMessage("You've cleared this section of the dungeon!");
+        if (levelManager.advanceToNextLevel()) {
+            startNextLevel();
+        } else {
+            winGame();
         }
     }
 
     private void openShop() {
         if (currentEnemy != null) return; // Can't open shop during combat
-        logPanel.addMessage(shopEncounter.getEnterMessage());
+        uiManager.getLogPanel().addMessage(shopEncounter.getEnterMessage());
 
         // Open the shop UI
         ShopDialog shopDialog = new ShopDialog(this, shopEncounter);
         shopDialog.setVisible(true);
         // The game is modal, so it will pause here until the dialog is closed.
-        logPanel.addMessage("You leave the shop.");
+        uiManager.getLogPanel().addMessage("You leave the shop.");
         updateGUI(); // Refresh GUI in case gold or items changed
-    }
-
-    private Item generateLoot() {
-        // The Game class doesn't need to know about specific loot, it just asks the enemy.
-        return currentEnemy.dropLoot(dice);
     }
 
     private void enterCombat(Enemy enemy) {
         this.currentEnemy = enemy;
         this.combatManager = new CombatManager(activePlayer, currentEnemy, dice); // Create a new combat manager
-        logPanel.addMessage("\nA " + enemy.getName() + " (Lvl " + (enemyEncounterCount.getOrDefault(enemy.getName(), 0) + 1) + ") appears!");
-        logPanel.addMessage(enemy.getHint()); // Display the hint
-        setCombatMode();
-        updateGUI();
-        try {
-            dungeonPanel.displayImage(enemy.getImagePath());
-        } catch (Exception e) { // Catching a broad exception is okay for logging, but let's be more specific in the message.
-            // Gracefully handle missing image files instead of crashing.
-            logPanel.addMessage("[SYSTEM] Warning: Could not load image for " + enemy.getName() + ". Error: " + e.getClass().getSimpleName());
-        }
-    }
-
-    private void setCombatMode() {
-        dungeonPanel.door1Button.setVisible(false);
-        dungeonPanel.door2Button.setVisible(false);
-        controlPanel.setAttackButtonVisible(true);
-        controlPanel.setFleeButtonVisible(true);
-        controlPanel.setSpecialButtonVisible(true);
-        controlPanel.setSpecialButtonEnabled(activePlayer.isSpecialAbilityReady());
-        controlPanel.setSpecialButtonColor(activePlayer.isSpecialAbilityReady() ? java.awt.Color.CYAN : java.awt.Color.LIGHT_GRAY);
-        controlPanel.setShopButtonVisible(false);
-    }
-
-    private void setDoorMode() {
-        setDoorMode(true); // By default, clear the image
-    }
-
-    /**
-     * Sets the UI to door selection mode.
-     * @param clearImage whether to clear the central image panel.
-     */
-    private void setDoorMode(boolean clearImage) {
-        this.currentEnemy = null;
-        this.combatManager = null; // No fight, so no combat manager
-        if (clearImage) {
-            dungeonPanel.clearImage();
-        }
-        dungeonPanel.door1Button.setVisible(true);
-        dungeonPanel.door2Button.setVisible(true);
-        controlPanel.setAttackButtonVisible(false);
-        controlPanel.setFleeButtonVisible(false);
-        controlPanel.setContinueButtonVisible(false);
-        controlPanel.setSpecialButtonVisible(false);
-        controlPanel.setShopButtonVisible(true);
+        String enemyName = enemy.getName();
+        int level = enemyEncounterCount.getOrDefault(enemyName, 0) + 1;
+        uiManager.getLogPanel().addMessage("\nA " + enemyName + " (Lvl " + level + ") appears!");
+        uiManager.getLogPanel().addMessage(enemy.getHint());
+        uiManager.setCombatMode(activePlayer);
+        uiManager.displayImage(enemy.getImagePath());
         updateGUI();
     }
 
@@ -378,29 +224,19 @@ public class Game {
         if (combatManager == null || !activePlayer.isAlive()) {
             return;
         }
-
-        // This is a new button for continuing after a non-combat encounter
-        if (controlPanel.isContinueButtonVisible()) {
-            return;
-        }
-
         // Delegate all combat logic to the CombatManager
         String combatLog = combatManager.performCombatRound();
-        logPanel.addMessage(combatLog);
+        uiManager.getLogPanel().addMessage(combatLog);
 
         // After the round, check the results
         if (!activePlayer.isAlive()) {
             endGame();
-            return; // Stop further execution
         } else if (!currentEnemy.isAlive()) {
             winCombat();
-            return; // Stop further execution
+        } else {
+            uiManager.updateSpecialAbilityButton(activePlayer);
+            updateGUI();
         }
-
-        // Update the special button's state after the turn
-        controlPanel.setSpecialButtonEnabled(activePlayer.isSpecialAbilityReady());
-        controlPanel.setSpecialButtonColor(activePlayer.isSpecialAbilityReady() ? java.awt.Color.CYAN : java.awt.Color.LIGHT_GRAY);
-        updateGUI();
     }
 
     private void useSpecialAbility() {
@@ -410,7 +246,7 @@ public class Game {
 
         // Delegate to the CombatManager
         String abilityResult = combatManager.useSpecialAbility();
-        logPanel.addMessage(abilityResult);
+        uiManager.getLogPanel().addMessage(abilityResult);
 
         // Check results after the ability and potential enemy counter-attack
         if (!activePlayer.isAlive()) {
@@ -419,53 +255,38 @@ public class Game {
         } else if (!currentEnemy.isAlive()) {
             winCombat();
             return;
+        } else {
+            uiManager.updateSpecialAbilityButton(activePlayer);
+            updateGUI();
         }
-
-        controlPanel.setSpecialButtonEnabled(activePlayer.isSpecialAbilityReady());
-        controlPanel.setSpecialButtonColor(activePlayer.isSpecialAbilityReady() ? java.awt.Color.CYAN : java.awt.Color.LIGHT_GRAY);
-        // Update the GUI to reflect any changes (like Lucy's health drop or Bean's heal)
-        updateGUI();
-    }
-
-    /**
-     * Sets the UI to a state where the player has finished an encounter
-     * (like a trap or an empty room) and needs to click "Continue" to proceed.
-     * This allows the player to see the outcome and the associated image.
-     */
-    private void setPostEncounterMode() {
-        dungeonPanel.door1Button.setVisible(false);
-        dungeonPanel.door2Button.setVisible(false);
-        controlPanel.setAttackButtonVisible(false);
-        controlPanel.setFleeButtonVisible(false);
-        controlPanel.setSpecialButtonVisible(false);
-        controlPanel.setShopButtonVisible(false);
-        controlPanel.setContinueButtonVisible(true);
     }
 
     private void winCombat() {
-        logPanel.addMessage("You defeated the " + currentEnemy.getName() + "!");
+        String enemyName = currentEnemy.getName();
+        uiManager.getLogPanel().addMessage("You defeated the " + enemyName + "!");
 
         // Update encounter count
-        String enemyName = currentEnemy.getName();
-        int newCount = enemyEncounterCount.getOrDefault(enemyName, 0) + 1;
-        enemyEncounterCount.put(enemyName, newCount);
+        doorManager.incrementEnemyCount(enemyName);
 
         // Award loot
-        Item loot = generateLoot();
+        Item loot = currentEnemy.dropLoot(dice);
         if (loot != null) {
             activePlayer.pickItem(loot);
-            logPanel.addMessage("The enemy dropped a " + loot.getName() + "!");
+            uiManager.getLogPanel().addMessage("The enemy dropped a " + loot.getName() + "!");
         }
 
         // Give the player some gold for winning the fight
         activePlayer.addGold(currentEnemy.getGoldValue());
-        logPanel.addMessage("You found " + currentEnemy.getGoldValue() + " gold!");
+        uiManager.getLogPanel().addMessage("You found " + currentEnemy.getGoldValue() + " gold!");
 
         // Check if the player died from a special ability (like Lucy's)
         if (!activePlayer.isAlive()) {
             endGame();
         } else {
-            setDoorMode();
+            this.currentEnemy = null;
+            this.combatManager = null;
+            uiManager.setDoorMode();
+            updateGUI();
         }
     }
 
@@ -474,11 +295,13 @@ public class Game {
 
         // Delegate flee logic to the CombatManager
         CombatManager.FleeResult result = combatManager.attemptFlee();
-        logPanel.addMessage(result.logMessage);
+        uiManager.getLogPanel().addMessage(result.logMessage);
 
         if (result.success) {
             String fledEnemyName = currentEnemy.getName();
-            setDoorMode(false); // Go to door mode, but don't clear the enemy image yet
+            this.currentEnemy = null;
+            this.combatManager = null;
+            uiManager.setDoorMode(false); // Go to door mode, but don't clear the enemy image yet
             // Simulate choosing another door, ensuring a different enemy appears.
             int nextDoor = dice.roll(2);
             chooseDoor(nextDoor, fledEnemyName);
@@ -491,76 +314,32 @@ public class Game {
         }
     }
 
-    private void endGame() {
-        logPanel.addMessage("\nYou have been defeated! GAME OVER.");
-        
-        // Disable all buttons
-        dungeonPanel.door1Button.setVisible(false);
-        dungeonPanel.door2Button.setVisible(false);
-        controlPanel.setAllButtonsEnabled(false);
-
-        // Display a game over image or message
-        try {
-            dungeonPanel.displayImage("images/ui/GameOver.png"); // Assuming you have this image
-        } catch (Exception e) {
-            logPanel.addMessage("[SYSTEM] Warning: Could not load GameOver image.");
-        }
-    }
-
-    private void winGame() {
-        logPanel.addMessage("\nCONGRATULATIONS! You have escaped the dungeon!");
-        try {
-            dungeonPanel.displayImage("images/ui/Victory.png"); // Assuming you have a victory image
-        } catch (Exception e) {
-            logPanel.addMessage("[SYSTEM] Warning: Could not load Victory image.");
-        }
-        controlPanel.setAllButtonsEnabled(false);
-    }
-
-    /**
-     * Manages the inventory screen, allowing the player to use items.
-     */
-    private void manageInventory() { // This is a private helper method
-        // Create a list of item names for the dialog
-        Object[] itemNames = activePlayer.getInventory().getItems().stream().map(Item::getName).toArray();
-
-        if (itemNames.length == 0) {
-            JOptionPane.showMessageDialog(null, "Your inventory is empty.");
-            return;
-        }
-
-        String selectedItem = (String) JOptionPane.showInputDialog(null,
-                "Choose an item to use:", "Inventory",
-                JOptionPane.PLAIN_MESSAGE, null, itemNames, itemNames[0]);
-
-        if (selectedItem != null && !selectedItem.isEmpty()) {
-            try {
-                processUseItem(selectedItem);
-            } catch (InvalidMoveException e) {
-                logPanel.addMessage("Could not use item: " + e.getMessage());
+    private void manageInventory() {
+        // Delegate to ItemManager
+        ItemManager.ItemUseResult result = itemManager.openInventoryDialog(activePlayer);
+        if (!result.cancelled()) {
+            if (result.message() != null && !result.message().isEmpty()) {
+                uiManager.getLogPanel().addMessage(result.message());
+            }
+            if (result.success()) {
+                updateGUI();
             }
         }
     }
 
-    /**
-     * This method is the single point of control for using an item.
-     * It updates the model and then updates the view.
-     */
-    private void processUseItem(String itemName) throws InvalidMoveException {
-        // Find the item before it's potentially consumed by useItem().
-        // This is safe because useItem() would have thrown an exception if it wasn't found.
-        Item usedItem = activePlayer.getInventory().findItem(itemName);
-        if (usedItem == null) { // Should not happen if logic is correct, but good for safety.
-            throw new InvalidMoveException("Could not find item '" + itemName + "' to get use message.");
-        }
+    public void updateGUI() {
+        uiManager.updateAllPanels(activePlayer, party, currentEnemy);
+    }
 
-        // Delegate the entire "use item" logic to the Player class.
-        activePlayer.useItem(itemName);
+    private void endGame() {
+        uiManager.getLogPanel().addMessage("\nYou have been defeated! GAME OVER.");
+        uiManager.displayImage("images/ui/GameOver.png");
+        uiManager.setGameOverMode();
+    }
 
-        // Polymorphism in action! We ask the item itself for its use message.
-        // The Game class no longer needs to know about specific item types.
-        // The 'usedItem' variable from the top of the method holds the correct reference.
-        logPanel.addMessage(usedItem.getUseMessage(activePlayer));
-        updateGUI(); // Refresh the screen
+    private void winGame() {
+        uiManager.getLogPanel().addMessage("\nCONGRATULATIONS! You have escaped the dungeon!");
+        uiManager.displayImage("images/ui/Victory.png");
+        uiManager.setGameOverMode();
     }
 }
