@@ -295,9 +295,9 @@ public class Game {
 
         // Delegate flee logic to the CombatManager
         CombatManager.FleeResult result = combatManager.attemptFlee();
-        uiManager.getLogPanel().addMessage(result.logMessage);
+        uiManager.getLogPanel().addMessage(result.logMessage());
 
-        if (result.success) {
+        if (result.success()) {
             String fledEnemyName = currentEnemy.getName();
             this.currentEnemy = null;
             this.combatManager = null;

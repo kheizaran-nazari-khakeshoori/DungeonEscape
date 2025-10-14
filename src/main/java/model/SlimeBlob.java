@@ -1,25 +1,23 @@
 package model;
-
 import utils.DiceRoller;
 
 public class SlimeBlob extends Enemy {
-
     public SlimeBlob() {
-        // Name, Health, Base Damage, Image Path
-        super("Slime Blob", 60, 9, "images/enemies/SlimeBlob.png");
+        // Name, Health, Base Damage, Gold Value, Image Path, Damage Type
+        super("Slime Blob", 60, 9, 20, "images/enemies/SlimeBlob.png", model.DamageType.ACID);
 
-
-        // Slimes are resistant to sharp things but weak to fire/magic
+        // Slimes are resistant to sharp things but weak to fire
         resistances.put(DamageType.SLASHING, 0.5);
         resistances.put(DamageType.PIERCING, 0.5);
         resistances.put(DamageType.FIRE, 1.5);
     }
 
     @Override
-    public String attack(Player player, DiceRoller dice) {
-        player.takeDamage(this.baseDamage);
+    public String attack(ICombatant target, DiceRoller dice) throws exceptions.InvalidMoveException {
+       target.takeDamage(this.baseDamage);
         return this.name + " engulfs you with a pseudopod, dealing " + this.baseDamage + " acidic damage.";
     }
+
 
     @Override
     public String getHint() {

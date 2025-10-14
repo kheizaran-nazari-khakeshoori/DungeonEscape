@@ -40,10 +40,6 @@ public class DoorManager {
             Supplier<Enemy> enemySupplier = currentEncounterDeck.remove(0);
             Enemy enemy = enemySupplier.get();
             // Avoid specific enemy if fleeing
-            if (enemyToAvoid != null && enemy.getName().equals(enemyToAvoid) && !currentEncounterDeck.isEmpty()) {
-                Supplier<Enemy> nextSupplier = currentEncounterDeck.remove(0);
-                currentEncounterDeck.add(enemySupplier);
-                enemy = nextSupplier.get();
             if (enemyToAvoid != null && enemy.getName().equals(enemyToAvoid)) {
                 // Find the first different enemy in the deck to swap with
                 for (int i = 0; i < currentEncounterDeck.size(); i++) {

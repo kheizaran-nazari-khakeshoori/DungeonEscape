@@ -53,6 +53,7 @@
 /home/kheizaran/Github/DungeonEscape/src/main/java/utils/RandomUtil.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/PoisonTypeEffect.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/Bean.java
+/home/kheizaran/Github/DungeonEscape/src/main/java/model/ICombatant.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/Effect.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/Level.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/PoisonDartTrap.java
@@ -61,6 +62,7 @@
 /home/kheizaran/Github/DungeonEscape/src/main/java/utils/DiceRoller.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/Item.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/TrapFactory.java
+/home/kheizaran/Github/DungeonEscape/src/main/java/model/ILootable.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/Player.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/MimicChest.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/view/PlayerSelectionWindow.java

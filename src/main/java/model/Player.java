@@ -1,14 +1,15 @@
 package model;
 // standard java utility classes 
 import java.util.ArrayList;
-import java.util.Iterator;  
+import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
 import controller.RuleEngine;  // important game's rule 
 import exceptions.InvalidMoveException;
 import utils.DiceRoller;
 
-public abstract class Player {
+public abstract class Player implements ICombatant {
     private String name;
     private int maxHealth;
     private int health;
@@ -109,13 +110,18 @@ public abstract class Player {
         return equippedWeapon;
     }
 
-    // Player attacks an enemy using the equipped weapon
-    public String attack(Enemy enemy, DiceRoller dice) throws InvalidMoveException {
-        // This standard attack calls the overloaded version with 0 bonus damage.
-        return attack(enemy, 0, dice);
+    @Override
+    public String attack(ICombatant target, DiceRoller dice) throws InvalidMoveException {
+        if (!(target instanceof Enemy)) {
+            throw new InvalidMoveException("Players can only attack enemies.");
+        }
+        return attack((Enemy) target, 0, dice);
     }
 
-    // Overloaded attack method for special moves or bonuses (Overloading Polymorphism)
+    /**
+     * Overloaded attack method for special moves or bonuses (Overloading Polymorphism)
+     * @param enemy The target enemy
+     */
     public String attack(Enemy enemy, int bonusDamage, DiceRoller dice) throws InvalidMoveException {
         if (equippedWeapon != null) {
             int baseDamage = equippedWeapon.getDamage() + bonusDamage;
@@ -180,6 +186,14 @@ public abstract class Player {
         activeEffects.removeIf(effectType::isInstance);
     }
 
+    /**
+     * Returns a read-only view of the active effects on the player.
+     * This prevents external modification of the list, preserving encapsulation.
+     * @return An unmodifiable list of effects.
+     */
+    public List<Effect<Player>> getActiveEffects() {
+        return Collections.unmodifiableList(activeEffects);
+    }
     public String applyTurnEffects() { // Renamed from getTurnEffectsResult for clarity
         if (activeEffects.isEmpty()) {
             return "";

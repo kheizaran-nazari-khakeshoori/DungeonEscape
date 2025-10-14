@@ -3,23 +3,22 @@ package model;
 import utils.DiceRoller;
 
 public class StoneMan extends Enemy {
-
     public StoneMan() {
-        // Name, Health, Base Damage, Image Path
-        super("StoneMan", 80, 15, "images/enemies/StoneMan.png");
+        // Name, Health, Base Damage, Gold Value, Image Path, Damage Type
+        super("StoneMan", 80, 15, 50, "images/enemies/StoneMan.png", DamageType.BLUNT);
 
-
-        // Stone Golems are resistant to sharp weapons but weak to crushing blows.
-        resistances.put(DamageType.SLASHING, 0.5); // Takes half damage
-        resistances.put(DamageType.PIERCING, 0.25); // Takes quarter damage
-        resistances.put(DamageType.BLUNT, 1.75);    // Takes extra damage
+        // Stone Golems are resistant to sharp weapons but weak to blunt damage.
+        resistances.put(DamageType.SLASHING, 0.5);
+        resistances.put(DamageType.PIERCING, 0.25);
+        weaknesses.put(DamageType.BLUNT, 1.75);
     }
 
     @Override
-    public String attack(Player player, DiceRoller dice) {
-        player.takeDamage(this.baseDamage);
+    public String attack(ICombatant target, DiceRoller dice) throws exceptions.InvalidMoveException {
+       target.takeDamage(this.baseDamage);
         return this.name + " slams you for " + this.baseDamage + " heavy damage.";
     }
+
 
     @Override
     public String getHint() {

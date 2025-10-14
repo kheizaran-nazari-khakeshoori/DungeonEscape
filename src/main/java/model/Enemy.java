@@ -4,92 +4,122 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Supplier;
 
-import controller.RuleEngine;
 import utils.DiceRoller;
 
-public abstract class Enemy {
+public abstract class Enemy implements ICombatant, ILootable {
     protected String name;
-    protected int health;
     protected int maxHealth;
+    protected int health;
     protected int baseDamage;
+    protected int goldValue;
     protected String imagePath;
-    protected int goldValue; // How much gold the enemy is worth
-    // Map of DamageType to a multiplier (e.g., 2.0 for weakness, 0.5 for resistance)
-    protected Map<DamageType, Double> resistances = new HashMap<>();
-    protected List<Supplier<Item>> lootTable = new ArrayList<>();
+    protected DamageType damageType;
+    private final List<Effect<Enemy>> activeEffects;
+    protected Map<DamageType, Double> weaknesses;
+    protected Map<DamageType, Double> resistances;
 
-    public Enemy(String name, int health, int baseDamage, String imagePath) {
+    public Enemy(String name, int maxHealth, int baseDamage, int goldValue, String imagePath, DamageType damageType) {
         this.name = name;
-        this.health = health;
-        this.maxHealth = health;
+        this.maxHealth = maxHealth;
+        this.health = maxHealth;
         this.baseDamage = baseDamage;
-        this.goldValue = baseDamage * 2; // The gold value is a function of damage.
+        this.goldValue = goldValue;
         this.imagePath = imagePath;
+        this.damageType = damageType;
+        this.weaknesses = new HashMap<>();
+        this.resistances = new HashMap<>();
+         this.activeEffects = new ArrayList<>();
     }
 
-    public String getName() { return name; }
-    public int getHealth() { return health; }
-    public int getMaxHealth() { return maxHealth; }
-    public String getImagePath() { return imagePath; }
+    @Override
+    public String getName() {
+        return name;
+    }
 
-    public int getGoldValue() { return goldValue; }
+    @Override
+    public int getHealth() {
+        return health;
+    }
 
-    public boolean isAlive() { return health > 0; }
+    @Override
+    public int getMaxHealth() {
+        return maxHealth;
+    }
 
-    /**
-     * Applies damage to the enemy, considering its resistances and weaknesses.
-     * @param amount The base damage amount.
-     * @param type The type of damage being dealt.
-     * @return A string describing the effectiveness of the attack.
-     */
-    public String takeDamage(int amount, DamageType type) {
-        double multiplier = resistances.getOrDefault(type, 1.0);
+    @Override
+    public boolean isAlive() {
+        return health > 0;
+    }
 
-        // COERCION: The 'int' (amount) is implicitly converted to a 'double'
-        // to be multiplied by the 'double' (multiplier).
-        int finalDamage = (int) (amount * multiplier);
-        this.health -= finalDamage;
+    @Override
+    public void takeDamage(int amount) {
+        this.health -= amount;
         if (this.health < 0) this.health = 0;
+    }
 
-        if (multiplier > 1.5) {
-            return "It's super effective!";
-        } else if (multiplier < 0.75) {
-            return "It's not very effective...";
+    public String takeDamage(int amount, DamageType type) {
+        double multiplier = 1.0;
+        String effectiveness = "";
+        if (weaknesses.containsKey(type)) {
+            multiplier = 1.5;
+            effectiveness = "It's super effective!";
+        } else if (resistances.containsKey(type)) {
+            multiplier = 0.5;
+            effectiveness = "It's not very effective...";
         }
+        int finalDamage = (int) (amount * multiplier);
+        takeDamage(finalDamage);
+        return effectiveness;
+    }
+
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    public String getHint() {
+        if (!weaknesses.keySet().isEmpty()) {
+            return "Hint: It seems weak to " + weaknesses.keySet().iterator().next().toString().toLowerCase() + " damage.";
+        }
+        return "Hint: A standard foe.";
+    }
+
+    public void strengthen(int level, controller.RuleEngine ruleEngine) {
+        this.maxHealth += (int) (this.maxHealth * ruleEngine.getRule(controller.RuleEngine.ENEMY_HEALTH_SCALING) * level);
+        this.health = this.maxHealth;
+        this.baseDamage += (int) (this.baseDamage * ruleEngine.getRule(controller.RuleEngine.ENEMY_DAMAGE_SCALING) * level);
+    }
+    
+    @Override
+    public String applyTurnEffects() {
+        // Placeholder for enemy effects
         return "";
     }
 
-    /**
-     * Increases the enemy's stats based on an encounter level.
-     * Now uses the RuleEngine for scaling values.
-     * @param level The number of times this enemy has been encountered before.
-     * @param rules The rule engine providing scaling factors.
-     */
-    public void strengthen(int level, RuleEngine rules) {
-        this.maxHealth = (int) (this.maxHealth * (1 + rules.getRule(RuleEngine.ENEMY_HEALTH_SCALING) * level));
-        this.health = this.maxHealth;
-        this.baseDamage = (int) (this.baseDamage * (1 + rules.getRule(RuleEngine.ENEMY_DAMAGE_SCALING) * level));
+    @Override
+    public Item dropLoot(DiceRoller dice) {
+        // Default: no loot
+        return null;
     }
 
-    // Each enemy must implement its own attack logic.
-    public abstract String attack(Player player, DiceRoller dice);
+    @Override
+    public int getGoldValue() {
+        return goldValue;
+    }
 
-    // Each enemy can provide a hint about its nature.
-    public abstract String getHint();
+    public int getBaseDamage() {
+        return baseDamage;
+    }
 
-    /**
-     * Generates a loot item based on the enemy's loot table and randomness.
-     * @param dice The dice roller to determine if loot drops.
-     * @return An Item if one is dropped, otherwise null.
-     */
-    public Item dropLoot(DiceRoller dice) {
-        // Example: 33% chance to drop an item from the loot table.
-        if (!lootTable.isEmpty() && dice.roll(3) == 1) {
-            int lootIndex = dice.getRandom().nextInt(lootTable.size());
-            return lootTable.get(lootIndex).get();
+     @Override
+    public String attack(ICombatant target, DiceRoller dice) throws exceptions.InvalidMoveException{
+        if (target instanceof Player) {
+            Player player = (Player) target;
+            player.takeDamage(this.baseDamage);
+            return this.name + " attacks " + player.getName() + " for " + this.baseDamage + " damage.";
         }
-        return null;
+        // Generic attack for other ICombatant types
+        target.takeDamage(this.baseDamage);
+        return this.name + " attacks " + target.getName() + " for " + this.baseDamage + " damage.";
     }
 }

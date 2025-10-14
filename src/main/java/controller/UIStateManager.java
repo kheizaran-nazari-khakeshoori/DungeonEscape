@@ -97,6 +97,15 @@ public class UIStateManager {
         dungeonPanel.loadBackgroundImage(imagePath);
     }
 
+    /**
+     * Adds a message to the game's log panel.
+     * This acts as a proxy to the LogPanel, keeping it encapsulated.
+     * @param message The message to log.
+     */
+    public void logMessage(String message) {
+        logPanel.addMessage(message);
+    }
+
     public LogPanel getLogPanel() {
         return logPanel;
     }
