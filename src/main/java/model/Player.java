@@ -5,22 +5,23 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
-import controller.RuleEngine;  // important game's rule 
-import exceptions.InvalidMoveException;
-import utils.DiceRoller;
+import controller.RuleEngine;  // important game's rule
+import exceptions.InvalidMoveException;//used for custom exception 
+import utils.DiceRoller;// Dependency injection DI 
 
 public abstract class Player implements ICombatant {
     private String name;
     private int maxHealth;
     private int health;
-    private Inventory inventory;
+    private Inventory inventory;//cpmposition 
     private final List<Effect<Player>> activeEffects;// We declare a "List" to hold the effects.
     private Weapon equippedWeapon;
     private int gold; // The amount of gold the player has
+    
     // Cooldown fields
     protected int specialAbilityCooldownTurns;
     protected int currentSpecialAbilityCooldown;
-    protected RuleEngine ruleEngine; // Each player can have their own set of rules
+    protected RuleEngine ruleEngine; //composition cause Each player can have their own set of rules
 
     public Player(String name) {
         this(name, 100); // Default to 100 health
@@ -30,8 +31,8 @@ public abstract class Player implements ICombatant {
         this.name = name;
         this.maxHealth = maxHealth;
         this.health = this.maxHealth;
-        this.inventory = new Inventory();
-        this.activeEffects = new ArrayList<>();
+        this.inventory = new Inventory(); //creating inventory for the player 
+        this.activeEffects = new ArrayList<>();//effect list for the player 
         this.equippedWeapon = null;
         this.gold = 0; // Starting gold
         this.specialAbilityCooldownTurns = 3; // Default cooldown of 3 turns
@@ -55,16 +56,21 @@ public abstract class Player implements ICombatant {
         this.gold += amount;
         if (this.gold < 0) this.gold = 0; // Prevent negative gold
     }
+    //public void addGold(int amout)
+    //{if (amount > 0)
+    //this.gold += amount;
+    //}
 
     /**
      * Attempts to spend a certain amount of gold.
-     * @param amount The amount of gold to spend.
+     * @param amount The amount of gold to spend.the parameter  the method accept 
      * @return true if the player had enough gold and it was spent, false otherwise.
      */
+    
     public boolean spendGold(int amount) {
         if (amount > 0 && this.gold >= amount) {
             this.gold -= amount;
-            return true;
+            return true;//signaling to the caller like shop that purchase was successful
         }
         return false;
     }
@@ -80,18 +86,19 @@ public abstract class Player implements ICombatant {
     @Override
     public void takeDamage(int amount) {
         int finalDamage = amount;
-        // Check for defensive effects
-        if (hasEffect(DefensiveStanceEffect.EFFECT_NAME)) {
-            finalDamage /= 2; // Take half damage
+        // Polymorphically apply all active defensive effects.
+        for (Effect<Player> effect : activeEffects) {//iterating through active effect on the player 
+            if (effect instanceof IDefensiveEffect) {
+                finalDamage = ((IDefensiveEffect) effect).applyDefense(finalDamage);
+            }
         }
-
-        health -= finalDamage;
+        this.health -= finalDamage;
         if (health < 0) health = 0;
     }
 
     @Override
-    public String takeDamage(int amount, DamageType type) {
-        takeDamage(amount); // Player doesn't have resistances, so just take normal damage.
+    public String takeDamage(int amount, DamageType type) {//damage type like fire,poison
+        takeDamage(amount); // ckeck for defensive damage 
         return ""; // Return empty string as there's no effectiveness message.
     }
 
@@ -110,7 +117,7 @@ public abstract class Player implements ICombatant {
     }
 
     public void setEquippedWeapon(Weapon weapon) {
-        this.equippedWeapon = weapon;
+        this.equippedWeapon = weapon;//when the player uses a weapin from inventory 
     }
 
     public Weapon getEquippedWeapon() {
@@ -119,11 +126,11 @@ public abstract class Player implements ICombatant {
 
     @Override
     public String attack(ICombatant target, DiceRoller dice) throws InvalidMoveException {
-        if (equippedWeapon != null) {
+        if (equippedWeapon != null) {//checking for being equipped
             int baseDamage = equippedWeapon.getDamage();
             
             // The takeDamage method now returns a string about effectiveness
-            // This is now truly polymorphic and works on ANY ICombatant.
+            
             String effectivenessMessage = target.takeDamage(baseDamage, equippedWeapon.getDamageType());
             
             equippedWeapon.decreaseDurability();

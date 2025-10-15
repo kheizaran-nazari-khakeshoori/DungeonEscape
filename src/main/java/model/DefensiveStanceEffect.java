@@ -1,31 +1,39 @@
 package model;
 
 /**
- * An effect that reduces incoming damage for a short duration.
+ * An effect that reduces incoming damage by half for its duration.
+ * It implements IDefensiveEffect to polymorphically interact with the combat system.
  */
-public class DefensiveStanceEffect implements Effect<Player> {
+public class DefensiveStanceEffect implements Effect<Player>, IDefensiveEffect {
     public static final String EFFECT_NAME = "Defensive Stance";
-    private int turnsRemaining;
+    private int remainingDuration;
 
     public DefensiveStanceEffect(int duration) {
-        this.turnsRemaining = duration;
+        this.remainingDuration = duration;
     }
 
     @Override
-    public String apply(Player target) {
-        // This effect doesn't do anything on its own turn, it's a passive buff.
-        // We could add a message here if we wanted.
-        turnsRemaining--;
-        return null; // No message needed each turn.
+    public String apply(Player player) {
+        // This effect's primary logic is in applyDefense.
+        // We just decrement its duration each turn.
+        if (!isFinished()) {
+            remainingDuration--;
+        }
+        return player.getName() + " is in a defensive stance!";
     }
 
     @Override
     public boolean isFinished() {
-        return turnsRemaining <= 0;
+        return remainingDuration <= 0;
     }
 
     @Override
     public String getName() {
         return EFFECT_NAME;
+    }
+
+    @Override
+    public int applyDefense(int incomingDamage) {
+        return incomingDamage / 2; // Reduce damage by 50%
     }
 }
