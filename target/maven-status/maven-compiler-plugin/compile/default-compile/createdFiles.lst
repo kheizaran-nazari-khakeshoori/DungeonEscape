@@ -28,6 +28,7 @@ model/Bean.class
 controller/TrapManager.class
 model/Elfo.class
 utils/ConfigLoader.class
+model/IDefensiveEffect.class
 model/StaminaElixir.class
 model/Ghost.class
 model/DefensiveStanceEffect.class

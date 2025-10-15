@@ -1,19 +1,15 @@
 package model;
 
+import controller.RuleEngine;
 import utils.DiceRoller;
+
 
 public class Bean extends Player {
     public Bean() {
         // A rebellious princess, surprisingly tough.
         super("Bean", 100);
-    }
-
-    /**
-     * Bean is tough and has a natural resistance to poison.
-     */
-    @Override
-    public double getPoisonResistance() {
-        return 0.5; // Bean takes only 50% damage from poison.
+        // Bean is tough and has a natural resistance to poison.
+         this.ruleEngine.setRule(RuleEngine.POISON_RESISTANCE, 0.5);
     }
 
     /**

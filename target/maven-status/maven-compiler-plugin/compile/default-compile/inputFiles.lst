@@ -18,6 +18,7 @@
 /home/kheizaran/Github/DungeonEscape/src/main/java/utils/Logger.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/InvisibilityPotion.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/utils/ConfigLoader.java
+/home/kheizaran/Github/DungeonEscape/src/main/java/model/IDefensiveEffect.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/DefensiveStanceEffect.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/exceptions/InvalidMoveException.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/Goblin.java
@@ -48,6 +49,7 @@
 /home/kheizaran/Github/DungeonEscape/src/main/java/controller/DoorManager.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/view/DungeonPanel.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/ActiveEffect.java
+/home/kheizaran/Github/DungeonEscape/src/main/java/controller/Player.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/SlimeBlob.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/utils/RandomUtil.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/PoisonTypeEffect.java

@@ -170,7 +170,7 @@ public abstract class Player implements ICombatant {
 
     public void addEffect(Effect<Player> effect) { // Now correctly typed
         activeEffects.add(effect);
-    }
+    }//polymorphism ??
 
     public boolean hasEffect(String effectName) {
         return activeEffects.stream().anyMatch(effect -> effect.getName().equals(effectName));
@@ -206,7 +206,7 @@ public abstract class Player implements ICombatant {
         Iterator<Effect<Player>> iterator = activeEffects.iterator(); // Use the generic iterator
         while (iterator.hasNext()) {
             Effect<Player> effect = iterator.next();
-            String result = effect.apply(this); // Get result message from effect
+            String result = effect.apply(this); // polymorphism 
             if (result != null && !result.isEmpty()) {
                 if (effectsResult.length() > 0) effectsResult.append("\n");
                 effectsResult.append(result);
@@ -231,7 +231,7 @@ public abstract class Player implements ICombatant {
      * @return A multiplier for incoming poison damage (e.g., 1.0 for full damage, 0.5 for half).
      */
     public double getPoisonResistance() {
-        return 1.0; // Default: takes full damage from poison.
+        return ruleEngine.getRule(RuleEngine.POISON_RESISTANCE);
     }
 
     public RuleEngine getRuleEngine() {
@@ -265,10 +265,10 @@ public abstract class Player implements ICombatant {
         }
     }
 
-    public int getCurrentSpecialAbilityCooldown() {
+    public int getCurrentSpecialAbilityCooldown() {//how many turns are left to cooldown
         return currentSpecialAbilityCooldown;
     }
 
     // This should be called by subclasses within their useSpecialAbility implementation.
-    protected void putSpecialAbilityOnCooldown() { this.currentSpecialAbilityCooldown = this.specialAbilityCooldownTurns; }
+    protected void putSpecialAbilityOnCooldown() { this.currentSpecialAbilityCooldown = this.specialAbilityCooldownTurns; } 
 }

@@ -9,13 +9,13 @@ public class Elfo extends Player {
         super("Elfo", 75);
         // Elfo is nimble and better at fleeing. We can customize his rules.
         this.ruleEngine.setRule(RuleEngine.FLEE_CHANCE, 0.75); // 75% flee chance for Elfo
-    }
+    }//using the composed ruleengine defining uniqness 
 
     /**
      * Elfo is nimble and has a better chance of avoiding traps.
      */
-    @Override
-    public double getTrapDisarmChance() {
+    @Override// polymorphism cause you call the same method but get the different behavior
+    public double getTrapDisarmChance() { 
         return 0.66; // Elfo has a 66% chance to succeed.
     }
 
@@ -27,7 +27,7 @@ public class Elfo extends Player {
      */
     @Override
     public String useSpecialAbility(Enemy enemy, DiceRoller dice) {
-        if (getEquippedWeapon() == null) {
+        if (getEquippedWeapon() == null) {//checking for having weapon 
             return "Elfo tries to aim, but has nothing to shoot with!";
         }
 

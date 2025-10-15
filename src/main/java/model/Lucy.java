@@ -11,7 +11,7 @@ public class Lucy extends Player {
         this.ruleEngine.setRule(RuleEngine.FLEE_CHANCE, 0.25); // 25% flee chance
     }
 
-    @Override
+    @Override // polymorphism 
     public double getTrapDisarmChance() {
         return 0.20; // Lucy is not the most careful.
     }
@@ -23,7 +23,7 @@ public class Lucy extends Player {
     @Override
     public String useSpecialAbility(Enemy enemy, DiceRoller dice) {
         int damageDealt = 35;
-        int recoilDamage = 15;
+        int recoilDamage = 15;//cost or penalty
 
         String effectiveness = enemy.takeDamage(damageDealt, DamageType.PHYSICAL);
         this.takeDamage(recoilDamage); // Lucy takes recoil damage
