@@ -3,14 +3,12 @@ package controller;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * A centralized class to hold and manage game rules and constants.
- * This makes the game easily customizable, as all key values are in one place.
- * In a more advanced implementation, these values could be loaded from a configuration file.
-t*/
-public class RuleEngine implements Cloneable {
+
+public class RuleEngine implements Cloneable {//for making copy of it safely (the class i mean)
 
     // Using a Map allows for adding new rules without changing the class structure.
+    //like a page of rule-book 
+    //each rule has a title (string) and a value (double)
     private Map<String, Double> rules = new HashMap<>();
 
     // Rule Keys - Using constants prevents typos.
@@ -33,22 +31,22 @@ public class RuleEngine implements Cloneable {
         rules.put(POISON_RESISTANCE, 1.0); // Default: 100% damage taken
     }
 
-    public double getRule(String key) {
+    public double getRule(String key) {//look up a rule in the book
         return rules.getOrDefault(key, 0.0);
     }
 
-    public void setRule(String key, double value) {
+    public void setRule(String key, double value) {//change ruke 
         rules.put(key, value);
     }
 
     @Override
-    public RuleEngine clone() {
+    public RuleEngine clone() {// i do not want to give all the characters the same rule-book 
         try {
-            RuleEngine cloned = (RuleEngine) super.clone();
-            cloned.rules = new HashMap<>(this.rules);
+            RuleEngine cloned = (RuleEngine) super.clone();//shallow copy (making the cover)
+            cloned.rules = new HashMap<>(this.rules);//make the copy deep 
             return cloned;
         } catch (CloneNotSupportedException e) {
-            throw new AssertionError(); // Can't happen
+            throw new AssertionError(); // Can't happen cause the class implement cloneable , i gave the permission already 
         }
     }
 }

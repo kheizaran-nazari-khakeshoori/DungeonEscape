@@ -2,7 +2,7 @@ package model;
 
 import utils.DiceRoller;
 
-public interface ILootable {
+public interface ILootable {//the item or the thing we can get 
     Item dropLoot(DiceRoller dice);
     int getGoldValue();
 }

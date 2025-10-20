@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import controller.RuleEngine;
 import utils.DiceRoller;
 
 public abstract class Enemy implements ICombatant, ILootable {
@@ -15,7 +16,7 @@ public abstract class Enemy implements ICombatant, ILootable {
     protected int goldValue;
     protected String imagePath;
     protected DamageType damageType;
-    private final List<Effect<Enemy>> activeEffects;
+    private final List<Effect<Enemy>> activeEffects;// composition , object contain other objects
     protected final Map<DamageType, Double> weaknesses;
     protected final Map<DamageType, Double> resistances;
 
@@ -27,9 +28,9 @@ public abstract class Enemy implements ICombatant, ILootable {
         this.goldValue = goldValue;
         this.imagePath = imagePath;
         this.damageType = damageType;
-        this.weaknesses = new HashMap<>();
+        this.weaknesses = new HashMap<>();//we can say that they are composition 
         this.resistances = new HashMap<>();
-         this.activeEffects = new ArrayList<>();
+        this.activeEffects = new ArrayList<>();
     }
 
     /**
@@ -38,9 +39,9 @@ public abstract class Enemy implements ICombatant, ILootable {
      * @param type The DamageType the enemy is weak to.
      * @param multiplier The damage multiplier (e.g., 1.5 for +50% damage).
      */
-    protected void addWeakness(DamageType type, double multiplier) {
-        this.weaknesses.put(type, multiplier);
-    }
+    protected void addWeakness(DamageType type, double multiplier) {//opne/close principle 
+        this.weaknesses.put(type, multiplier);//getting extra damage from specific damage type 
+    }//subclasses add their own weakness 
 
     /**
      * Protected method for subclasses to declare a resistance.
@@ -48,7 +49,7 @@ public abstract class Enemy implements ICombatant, ILootable {
      * @param multiplier The damage multiplier (e.g., 0.75 for 25% resistance).
      */
     protected void addResistance(DamageType type, double multiplier) {
-        this.resistances.put(type, multiplier);
+        this.resistances.put(type, multiplier);// getting less damage from specific damage type 
     }
 
     @Override
@@ -79,16 +80,17 @@ public abstract class Enemy implements ICombatant, ILootable {
     }
 
     public String takeDamage(int amount, DamageType type) {
-        double multiplier = 1.0;
+        double multiplier = 1.0; // calculate effectiveness
         String effectiveness = "";
-        if (weaknesses.containsKey(type)) {
-            multiplier = weaknesses.get(type); // Use the value from the map
+        if (weaknesses.containsKey(type)) { // >> checking the damage type is in the map 
+            multiplier = weaknesses.get(type); 
             effectiveness = "It's super effective!";
         } else if (resistances.containsKey(type)) {
-            multiplier = resistances.get(type); // Use the value from the map
+            multiplier = resistances.get(type); 
             effectiveness = "It's not very effective...";
         }
-        int finalDamage = (int) (amount * multiplier);
+        //apply damage 
+        int finalDamage = (int) (amount * multiplier); // not polymorphism cause i manually casting 
         takeDamage(finalDamage);
         return effectiveness;
     }
@@ -99,15 +101,15 @@ public abstract class Enemy implements ICombatant, ILootable {
 
     public String getHint() {
         if (!weaknesses.keySet().isEmpty()) {
-            return "Hint: It seems weak to " + weaknesses.keySet().iterator().next().toString().toLowerCase() + " damage.";
+            return "Hint: It seems weak to " + weaknesses.keySet().iterator().next().toString().toLowerCase() + " damage.";//using iterator pattern to get the first elemet from the set 
         }
         return "Hint: A standard foe.";
     }
 
-    public void strengthen(int level, controller.RuleEngine ruleEngine) {
-        this.maxHealth += (int) (this.maxHealth * ruleEngine.getRule(controller.RuleEngine.ENEMY_HEALTH_SCALING) * level);
+    public void strengthen(int level, RuleEngine ruleEngine) {
+        this.maxHealth += (int) (this.maxHealth * ruleEngine.getRule(RuleEngine.ENEMY_HEALTH_SCALING) * level);
         this.health = this.maxHealth;
-        this.baseDamage += (int) (this.baseDamage * ruleEngine.getRule(controller.RuleEngine.ENEMY_DAMAGE_SCALING) * level);
+        this.baseDamage += (int) (this.baseDamage * ruleEngine.getRule(RuleEngine.ENEMY_DAMAGE_SCALING) * level);
     }
     
     @Override
@@ -131,10 +133,11 @@ public abstract class Enemy implements ICombatant, ILootable {
         return baseDamage;
     }
 
-     @Override
+
+    
+    @Override 
     public String attack(ICombatant target, DiceRoller dice) throws exceptions.InvalidMoveException{
-        // Polymorphic attack: works for any ICombatant (Player, another Enemy, etc.)
-        target.takeDamage(this.baseDamage);
+        target.takeDamage(this.baseDamage);//run time polymorphism  and liskov principle 
         return this.name + " attacks " + target.getName() + " for " + this.baseDamage + " damage.";
     }
 }
