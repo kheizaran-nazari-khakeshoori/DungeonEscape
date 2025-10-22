@@ -9,13 +9,13 @@ import controller.RuleEngine;
 import utils.DiceRoller;
 
 public abstract class Enemy implements ICombatant, ILootable {
-    protected String name;
+    protected String name;//these are protected for subclass cunstructor access
     protected int maxHealth;
     protected int health;
     protected int baseDamage;
     protected int goldValue;
     protected String imagePath;
-    protected DamageType damageType;
+    protected DamageType damageType;//Association not composition 
     private final List<Effect<Enemy>> activeEffects;// composition , object contain other objects
     protected final Map<DamageType, Double> weaknesses;
     protected final Map<DamageType, Double> resistances;
@@ -28,7 +28,7 @@ public abstract class Enemy implements ICombatant, ILootable {
         this.goldValue = goldValue;
         this.imagePath = imagePath;
         this.damageType = damageType;
-        this.weaknesses = new HashMap<>();//we can say that they are composition 
+        this.weaknesses = new HashMap<>();
         this.resistances = new HashMap<>();
         this.activeEffects = new ArrayList<>();
     }
@@ -73,7 +73,7 @@ public abstract class Enemy implements ICombatant, ILootable {
     }
 
     @Override
-    // This method is required by the ICombatant interface.
+    
     public void takeDamage(int amount) {
         this.health -= amount;
         if (this.health < 0) this.health = 0;
