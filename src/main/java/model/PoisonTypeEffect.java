@@ -1,7 +1,5 @@
 package model;
-
-/**
- * A marker interface to identify effects that are considered poisons.
- * This allows for polymorphic handling of different poison types (e.g., by an Antidote).
- */
+//marker interface >>
 public interface PoisonTypeEffect extends Effect<Player> {}
+//because poison effects only apply to the player not the enemy 
+//i need more nformation ??????

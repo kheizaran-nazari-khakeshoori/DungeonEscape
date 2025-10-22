@@ -1,26 +1,24 @@
 package model;
 
-/**
- * A generic interface for status effects that can be applied to a target.
- * @param <T> The type of character this effect can be applied to (e.g., Player, Enemy).
- */
-public interface Effect<T> {
-    /**
-     * Applies the effect's logic to the target for one turn.
-     * @param target The character to apply the effect to.
-     * @return A string describing what happened.
-     */
-    String apply(T target);
+//type saftey , reusable code , one code used by different type 
+//so it demonstrates generic polymorphism 
+//this T can  be any type , player , enemy ,,,, 
+//open close principle , i can add burneffect for example 
 
-    /**
-     * Checks if the effect has finished and should be removed.
-     * @return true if the effect is finished, false otherwise.
-     */
+
+
+
+public interface Effect<T> {
+   
+    String apply(T target); // in enemy it can be apply (enemy target)
+
+    
     boolean isFinished();
 
-    /**
-     * Gets the name of the effect (e.g., "Poison", "Regeneration").
-     * @return The name of the effect (e.g., "Poison", "Regeneration").
-     */
+   
     String getName();
 }
+
+// why not use <T extends icombatant>??
+//for maxixmum flexibility , like a non-player character 
+//it is a focused interface >> so i have interface segregation 

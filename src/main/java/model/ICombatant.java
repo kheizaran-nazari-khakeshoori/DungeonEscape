@@ -17,3 +17,4 @@ public interface ICombatant {
     String attack(ICombatant target, DiceRoller dice) throws exceptions.InvalidMoveException;
     String applyTurnEffects();
 }
+

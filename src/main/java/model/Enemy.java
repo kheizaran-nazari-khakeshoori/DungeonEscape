@@ -113,7 +113,7 @@ public abstract class Enemy implements ICombatant, ILootable {
     }
     
     @Override
-    public String applyTurnEffects() {
+    public String applyTurnEffects() {//interface requirment
         // Placeholder for enemy effects
         return "";
     }
@@ -141,3 +141,7 @@ public abstract class Enemy implements ICombatant, ILootable {
         return this.name + " attacks " + target.getName() + " for " + this.baseDamage + " damage.";
     }
 }
+
+
+//exception handeling and turn effect >> future implementation 
+//relation between composition and final 

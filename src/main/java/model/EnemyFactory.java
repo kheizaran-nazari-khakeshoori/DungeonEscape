@@ -5,24 +5,21 @@ import java.util.List;
 import java.util.function.Supplier;
 
 import utils.DiceRoller;
+//here i am using factory pattern 
 
-/**
- * A factory class for creating different types of enemies.
- * This design makes it easy to add new enemy types.
- */
+
 public class EnemyFactory {
     private final DiceRoller dice;
     private final List<Supplier<Enemy>> enemySuppliers = new ArrayList<>();
 
-    public EnemyFactory(DiceRoller dice) {
+    public EnemyFactory(DiceRoller dice) {//cunstructor dependacy injection 
         this.dice = dice;
         // Register all available enemy types here.
-        // To add a new enemy, just create its class and add it to this list.
+       
         enemySuppliers.add(Goblin::new);
         enemySuppliers.add(Ghost::new);
         enemySuppliers.add(StoneMan::new);
         enemySuppliers.add(SkeletonWarrior::new);
-        // Adding the rest of my custom enemies
         enemySuppliers.add(MimicChest::new);
         enemySuppliers.add(PoisonSpider::new);
         enemySuppliers.add(ShadowAssassin::new);
@@ -31,7 +28,7 @@ public class EnemyFactory {
 
     public Enemy createRandomEnemy() {
         if (enemySuppliers.isEmpty()) {
-            // Fallback in case no enemies are registered.
+            
             System.err.println("Warning: No enemies registered in EnemyFactory. Defaulting to Goblin.");
             return new Goblin();
         }
