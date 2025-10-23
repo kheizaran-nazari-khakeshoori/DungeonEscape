@@ -2,7 +2,7 @@ package model;
 
 import java.util.ArrayList;
 import java.util.List;
-
+//one responsiblity >> manage collection of item 
 public class Inventory {
     private List<Item> items = new ArrayList<>();
 
@@ -15,7 +15,7 @@ public class Inventory {
     }
 
     // Return a copy of the items list for safe access
-    public List<Item> getItems() {
+    public List<Item> getItems() {//get all item 
         return new ArrayList<>(items);
     }
 
@@ -29,3 +29,5 @@ public class Inventory {
         return null;
     }
 }
+
+//the two type of polymorphism must be considered for this line >> private List<Item> items = new ArrayList<>();

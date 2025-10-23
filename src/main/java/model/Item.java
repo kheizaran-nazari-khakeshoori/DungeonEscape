@@ -13,7 +13,7 @@ public abstract class Item {
         this.cost = cost;
     }
 
-    // Encapsulation: getter for name
+   
     public String getName() {
         return name;
     }
