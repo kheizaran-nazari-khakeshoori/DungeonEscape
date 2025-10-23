@@ -145,3 +145,4 @@ public abstract class Enemy implements ICombatant, ILootable {
 
 //exception handeling and turn effect >> future implementation 
 //relation between composition and final 
+

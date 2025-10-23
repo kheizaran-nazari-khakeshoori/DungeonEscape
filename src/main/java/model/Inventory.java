@@ -19,7 +19,7 @@ public class Inventory {
         return new ArrayList<>(items);
     }
 
-    // Find an item by name
+    // Find an item by name >> check if it need to be deleted 
     public Item findItem(String name) {
         for (Item item : items) {
             if (item.getName().equalsIgnoreCase(name)) {

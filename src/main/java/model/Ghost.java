@@ -20,11 +20,9 @@ public class Ghost extends Enemy {
 
     @Override
     public String getHint() {
-        return "Hint: It appears spectral and translucent. Physical attacks might be less effective.";
+        return "Hint: Physical attacks might be less effective.";
     }
 }
 
 // using DRY principle
-//methodes are overriden only if the behavior itself needs to change not the data 
-//in attack ichamged the message but in weakness i only add data to the map not changing the methodes as you can see 
 
