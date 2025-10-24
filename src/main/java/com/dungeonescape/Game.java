@@ -37,10 +37,10 @@ import view.ShopDialog;
  * The main controller for the game, coordinating between managers.
  */
 public class Game {
-    // Core models
-    private Player activePlayer;
+    
+    private Player activePlayer;//association 
     private final List<Player> party;
-    private Enemy currentEnemy;
+    private Enemy currentEnemy;//association 
 
     // Managers (single responsibility classes)
     private final DiceRoller dice;
@@ -52,8 +52,8 @@ public class Game {
     private CombatManager combatManager;
     private final ShopEncounter shopEncounter;
 
-    // Tracking
-    private final Map<String, Integer> enemyEncounterCount;
+    // decleration 
+    private final Map<String, Integer> enemyEncounterCount;//the variable type is map (interface)
 
     public Game(Player player, GameWindow gameWindow, PartyPanel partyPanel, DungeonPanel dungeonPanel, InventoryPanel inventoryPanel, LogPanel logPanel, ControlPanel controlPanel, HUDPanel hudPanel) {
         // Initialize player and party
@@ -62,6 +62,7 @@ public class Game {
         initializeParty();
         // Initialize utilities
         this.dice = new DiceRoller();
+        //instantiation 
         this.enemyEncounterCount = new HashMap<>();
         // Initialize managers
         EnemyFactory enemyFactory = new EnemyFactory(dice);
@@ -151,7 +152,7 @@ public class Game {
         // Delegate encounter generation to DoorManager
         DoorManager.EncounterResult encounter = doorManager.generateEncounter(activePlayer, enemyToAvoid);
         
-        // Replacing the switch statement with an if-else block as requested.
+        
         var encounterType = encounter.type();
         if (encounterType == DoorManager.EncounterType.ENEMY) {
             handleEnemyEncounter(encounter.enemy());
