@@ -16,14 +16,14 @@ public class CombatManager {
         this.dice = dice;
     }
 
-    public String performCombatRound() {
-        StringBuilder combatLog = new StringBuilder();
-        player.tickCooldowns();
+    public String performCombatRound() {//why do you alway  forget the method type is string 
+        StringBuilder combatLog = new StringBuilder();// the append method modifies the same object instead of creating new object >> at the end i concert it into the string
+        player.tickCooldowns();//delegating to the player class 
 
         // Player attacks enemy
         if (player.isAlive()) {
             try {
-                combatLog.append(player.attack(enemy, dice));
+                combatLog.append(player.attack(enemy, dice));//polymorphism 
             } catch (exceptions.InvalidMoveException e) {
                 combatLog.append(player.getName()).append(" tries to attack but fails: ").append(e.getMessage());
             }
@@ -37,8 +37,8 @@ public class CombatManager {
         }
 
         // Apply effects
-        String playerEffects = player.applyTurnEffects();
-        if (!playerEffects.isEmpty()) {
+        String playerEffects = player.applyTurnEffects();//effect message 
+        if (!playerEffects.isEmpty()) {//for preventing the empty lines in combat log 
             combatLog.append("\n").append(playerEffects);
         }
         String enemyEffects = enemy.applyTurnEffects();
@@ -53,8 +53,8 @@ public class CombatManager {
         if (!player.isSpecialAbilityReady()) {
             return player.getName() + "'s special ability is not ready!";
         }
-        if (enemy instanceof Enemy) {
-            return player.useSpecialAbility((Enemy) enemy, dice);
+        if (enemy instanceof Enemy) {//checking enemy is actually enemy type 
+            return player.useSpecialAbility((Enemy) enemy, dice);   //downcasting
         }
         return player.getName() + " can't use their ability on this target.";
     }
