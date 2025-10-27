@@ -14,7 +14,7 @@ public class InvisibilityPotion extends Potion {
 
     @Override
     public String getUseMessage(Player user) {
-        return "You drink the " + getName() + ". You shimmer and turn invisible!";
+        return "You drink the " + getName() + ". You shimmer and turn invisible! The effect will last until your next flee attempt.";
     }
 
     @Override

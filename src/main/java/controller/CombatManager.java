@@ -60,7 +60,14 @@ public class CombatManager {
     }
 
     public FleeResult attemptFlee() {
-        if (dice.getRandom().nextDouble() < player.getRuleEngine().getRule(RuleEngine.FLEE_CHANCE)) {
+        // --- IMPROVEMENT: Check for invisibility before rolling for a normal flee ---
+        if (player.hasEffect("Invisibility")) {
+            // Consume the effect for a guaranteed escape
+            player.removeEffect("Invisibility");
+            return new FleeResult(true, "Your invisibility allows you to slip away unnoticed!");
+        }
+
+        if (dice.getRandom().nextDouble() < player.getRuleEngine().getRule(RuleEngine.FLEE_CHANCE)) { // Normal flee chance
             return new FleeResult(true, "You successfully escaped!");
         } else {
             int damageTaken = 15; // Penalty for failing to flee
