@@ -7,11 +7,9 @@ controller/CombatManager.class
 model/Antidote.class
 model/PoisonDartTrap.class
 com/dungeonescape/GameState.class
-controller/ItemManager$ItemUseResult.class
 model/SpikeTrap.class
 controller/RuleEngine.class
 model/ActiveEffect.class
-controller/ItemManager.class
 model/MimicChest.class
 model/PoisonTypeEffect.class
 model/TrapFactory.class
@@ -21,10 +19,13 @@ model/Effect.class
 com/dungeonescape/Main.class
 model/Goblin.class
 model/ICombatant.class
+controller/ItemUsageManager$ItemUseResult.class
 model/SlimeBlob.class
 view/ShopDialog.class
 view/PartyPanel.class
 com/dungeonescape/Game.class
+controller/ItemUsageManager.class
+view/InventoryDialog.class
 com/dungeonescape/ItemSelectionWindow.class
 model/Enemy.class
 controller/CombatManager$FleeResult.class

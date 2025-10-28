@@ -1,5 +1,7 @@
 /home/kheizaran/Github/DungeonEscape/src/main/java/view/PartyPanel.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/Enemy.java
+/home/kheizaran/Github/DungeonEscape/src/main/java/view/InventoryDialog.java
+/home/kheizaran/Github/DungeonEscape/src/main/java/controller/ItemUsageManager.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/StoneMan.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/view/ControlPanel.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/StaminaElixir.java
@@ -18,7 +20,6 @@
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/DefensiveStanceEffect.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/exceptions/InvalidMoveException.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/Goblin.java
-/home/kheizaran/Github/DungeonEscape/src/main/java/controller/ItemManager.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/controller/LevelManager.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/GoblinPoisonEffect.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/DamageType.java

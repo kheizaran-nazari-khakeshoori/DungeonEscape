@@ -7,7 +7,7 @@ import java.util.Map;
 
 import controller.CombatManager;
 import controller.DoorManager;
-import controller.ItemManager;
+import controller.ItemUsageManager;
 import controller.LevelManager;
 import controller.TrapManager;
 import controller.UIStateManager;
@@ -28,6 +28,7 @@ import view.ControlPanel;
 import view.DungeonPanel;
 import view.GameWindow;
 import view.HUDPanel;
+import view.InventoryDialog;
 import view.InventoryPanel;
 import view.LogPanel;
 import view.PartyPanel;
@@ -47,7 +48,7 @@ public class Game {
     private final DoorManager doorManager;
     private final TrapManager trapManager;
     private final LevelManager levelManager;
-    private final ItemManager itemManager;
+    private final ItemUsageManager itemUsageManager;
     private final UIStateManager uiManager;
     private CombatManager combatManager;
     private final ShopEncounter shopEncounter;
@@ -70,7 +71,7 @@ public class Game {
         this.doorManager = new DoorManager(dice, enemyFactory, enemyEncounterCount);
         this.trapManager = new TrapManager(trapFactory, dice);
         this.levelManager = new LevelManager(dice);
-        this.itemManager = new ItemManager();
+        this.itemUsageManager = new ItemUsageManager();
         this.uiManager = new UIStateManager(dungeonPanel, controlPanel, inventoryPanel,
                                             hudPanel, partyPanel, logPanel);
         this.shopEncounter = new ShopEncounter();
@@ -115,7 +116,7 @@ public class Game {
             .orElse(null);
         if (startingWeapon != null) {
             try {
-                ItemManager.ItemUseResult result = itemManager.useItem(activePlayer, startingWeapon.getName());
+                ItemUsageManager.ItemUseResult result = itemUsageManager.useItem(activePlayer, startingWeapon.getName());
                 uiManager.getLogPanel().addMessage(result.message());
             } catch (InvalidMoveException e) {
                 uiManager.getLogPanel().addMessage("Error equipping starting weapon: " + e.getMessage());
@@ -322,15 +323,28 @@ public class Game {
     }
 
     private void manageInventory() {
-        // Delegate to ItemManager
-        ItemManager.ItemUseResult result = itemManager.openInventoryDialog(activePlayer);
-        if (!result.cancelled()) {
-            if (result.message() != null && !result.message().isEmpty()) {
-                uiManager.getLogPanel().addMessage(result.message());
-            }
+        // UI logic is now handled in the Game controller, not the ItemManager.
+        // 1. Get data from the model
+        List<String> itemNamesList = activePlayer.getInventoryItemNames();
+        // 2. Delegate UI interaction to a dedicated View component
+        InventoryDialog inventoryDialog = new InventoryDialog();
+        String selectedItem = inventoryDialog.showAndGetSelectedItem(itemNamesList);
+
+        // If the user cancelled
+        // 3. Process the result from the view
+        if (selectedItem == null || selectedItem.isEmpty()) {
+            return;
+        }
+
+        // Try to use the item by calling the dedicated manager
+        try {
+            ItemUsageManager.ItemUseResult result = itemUsageManager.useItem(activePlayer, selectedItem);
+            uiManager.getLogPanel().addMessage(result.message());
             if (result.success()) {
-                updateGUI();
+                updateGUI(); // Update UI only on successful use
             }
+        } catch (InvalidMoveException e) {
+            uiManager.getLogPanel().addMessage("Could not use item: " + e.getMessage());
         }
     }
 

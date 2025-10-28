@@ -150,6 +150,15 @@ public abstract class Player implements ICombatant {
         }
     }
 
+    /**
+     * Returns a list of item names from the player's inventory.
+     * This respects the Law of Demeter by not exposing the inventory directly.
+     * @return A list of strings representing the names of items in the inventory.
+     */
+    public List<String> getInventoryItemNames() {
+        return inventory.getItems().stream().map(Item::getName).toList();
+    }
+
     // Use item by name; throws exception if item not in inventory
     public void useItem(String itemName) throws InvalidMoveException {
         Item item = getInventory().findItem(itemName);
