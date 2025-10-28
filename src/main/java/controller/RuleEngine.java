@@ -21,8 +21,8 @@ public class RuleEngine implements Cloneable {//for making copy of it safely (th
 
 
     public RuleEngine() {
-        // In the future, this constructor could load rules from a file.
-        // --- Default Game Rules ---
+        // In the future, this constructor could load rules from a file. but in the future ok ?? 
+        // Default Game Rules 
         rules.put(ENEMY_CHANCE, 0.75); // 75% chance for an enemy
         rules.put(TRAP_CHANCE, 0.15); // 15% chance for a trap. (10% chance for an empty room)
         rules.put(FLEE_CHANCE, 0.5); // 50% chance to flee successfully
@@ -39,7 +39,7 @@ public class RuleEngine implements Cloneable {//for making copy of it safely (th
         rules.put(key, value);
     }
 
-    @Override
+    @Override  // creating new ruleEngine object and new hashmap 
     public RuleEngine clone() {// i do not want to give all the characters the same rule-book 
         try {
             RuleEngine cloned = (RuleEngine) super.clone();//shallow copy (making the cover)

@@ -13,7 +13,7 @@ public class Ghost extends Enemy {
     }
 
     @Override
-    public String attack(ICombatant target, DiceRoller dice) throws exceptions.InvalidMoveException {
+    public String attack(Iwarrior target, DiceRoller dice) throws exceptions.InvalidMoveException {
         target.takeDamage(this.baseDamage);
         return this.name + " phases through you, dealing " + this.baseDamage + " chilling damage.";
     }

@@ -1,9 +1,13 @@
 package view;
 
-import javax.swing.*;
-import java.awt.*;
+import java.awt.BorderLayout;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
 
 import com.dungeonescape.Game;
+
+import controller.ItemUsageManager;
 import model.Player;
 
 public class GameWindow extends JFrame {
@@ -21,9 +25,9 @@ public class GameWindow extends JFrame {
         LogPanel logPanel = new LogPanel();
         ControlPanel controlPanel = new ControlPanel();
         HUDPanel hudPanel = new HUDPanel();
-
+        ItemUsageManager itemUsageManager = new ItemUsageManager();
         // Create the game controller and link it to the panels
-        new Game(player, this, partyPanel, dungeonPanel, inventoryPanel, logPanel, controlPanel, hudPanel);
+        new Game(player, this, partyPanel, dungeonPanel, inventoryPanel, logPanel, controlPanel, hudPanel,itemUsageManager);
 
         // Set layout for the main frame
         setLayout(new BorderLayout());

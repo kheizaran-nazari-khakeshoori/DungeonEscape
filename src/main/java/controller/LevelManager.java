@@ -23,7 +23,7 @@ public class LevelManager {
 
     public LevelManager(DiceRoller dice) {
         this.dice = dice;
-        this.gameLevels = new ArrayList<>();
+        this.gameLevels = new ArrayList<>(); // fine for first time (only first time) do not forget final key word 
         this.currentLevelIndex = 0;
         initializeLevels();
     }

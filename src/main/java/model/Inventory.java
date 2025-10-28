@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 //one responsiblity >> manage collection of item 
 public class Inventory {
-    private List<Item> items = new ArrayList<>();
+    private final List<Item> items = new ArrayList<>();
 
     public void addItem(Item item) {
         items.add(item);
@@ -27,6 +27,12 @@ public class Inventory {
             }
         }
         return null;
+    }
+    
+    public List<String> getItemNames() {
+        return items.stream()
+                    .map(Item::getName)
+                    .toList();
     }
 }
 

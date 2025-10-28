@@ -8,7 +8,7 @@ import java.util.Map;
 import controller.RuleEngine;
 import utils.DiceRoller;
 
-public abstract class Enemy implements ICombatant, ILootable {
+public abstract class Enemy implements Iwarrior, ILootable {
     protected String name;//these are protected for subclass cunstructor access
     protected int maxHealth;
     protected int health;
@@ -79,6 +79,7 @@ public abstract class Enemy implements ICombatant, ILootable {
         if (this.health < 0) this.health = 0;
     }
 
+    @Override
     public String takeDamage(int amount, DamageType type) {
         double multiplier = 1.0; // calculate effectiveness
         String effectiveness = "";
@@ -136,7 +137,7 @@ public abstract class Enemy implements ICombatant, ILootable {
 
     
     @Override 
-    public String attack(ICombatant target, DiceRoller dice) throws exceptions.InvalidMoveException{
+    public String attack(Iwarrior target, DiceRoller dice) throws exceptions.InvalidMoveException{
         target.takeDamage(this.baseDamage);//run time polymorphism  and liskov principle 
         return this.name + " attacks " + target.getName() + " for " + this.baseDamage + " damage.";
     }

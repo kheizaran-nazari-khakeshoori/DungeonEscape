@@ -56,7 +56,7 @@ public class Game {
     // decleration 
     private final Map<String, Integer> enemyEncounterCount;//the variable type is map (interface)
 
-    public Game(Player player, GameWindow gameWindow, PartyPanel partyPanel, DungeonPanel dungeonPanel, InventoryPanel inventoryPanel, LogPanel logPanel, ControlPanel controlPanel, HUDPanel hudPanel) {
+    public Game(Player player, GameWindow gameWindow, PartyPanel partyPanel, DungeonPanel dungeonPanel, InventoryPanel inventoryPanel, LogPanel logPanel, ControlPanel controlPanel, HUDPanel hudPanel,ItemUsageManager itemUsageManager) {
         // Initialize player and party
         this.activePlayer = player;
         this.party = new ArrayList<>();
@@ -71,7 +71,7 @@ public class Game {
         this.doorManager = new DoorManager(dice, enemyFactory, enemyEncounterCount);
         this.trapManager = new TrapManager(trapFactory, dice);
         this.levelManager = new LevelManager(dice);
-        this.itemUsageManager = new ItemUsageManager();
+        this.itemUsageManager = itemUsageManager;
         this.uiManager = new UIStateManager(dungeonPanel, controlPanel, inventoryPanel,
                                             hudPanel, partyPanel, logPanel);
         this.shopEncounter = new ShopEncounter();
@@ -325,7 +325,7 @@ public class Game {
     private void manageInventory() {
         // UI logic is now handled in the Game controller, not the ItemManager.
         // 1. Get data from the model
-        List<String> itemNamesList = activePlayer.getInventoryItemNames();
+        List<String> itemNamesList = activePlayer.getInventory().getItemNames();
         // 2. Delegate UI interaction to a dedicated View component
         InventoryDialog inventoryDialog = new InventoryDialog();
         String selectedItem = inventoryDialog.showAndGetSelectedItem(itemNamesList);

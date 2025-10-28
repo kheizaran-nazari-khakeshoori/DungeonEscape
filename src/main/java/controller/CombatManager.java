@@ -1,16 +1,16 @@
 package controller;
 
 import model.Enemy;
-import model.ICombatant;
+import model.Iwarrior;
 import model.Player;
 import utils.DiceRoller;
 
 public class CombatManager {
     private final Player player;
-    private final ICombatant enemy;
+    private final Iwarrior enemy;
     private final DiceRoller dice;
 
-    public CombatManager(Player player, ICombatant enemy, DiceRoller dice) {
+    public CombatManager(Player player, Iwarrior enemy, DiceRoller dice) {
         this.player = player;
         this.enemy = enemy;
         this.dice = dice;

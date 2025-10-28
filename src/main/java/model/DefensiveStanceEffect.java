@@ -1,9 +1,6 @@
 package model;
 
-/**
- * An effect that reduces incoming damage by half for its duration.
- * It implements IDefensiveEffect to polymorphically interact with the combat system.
- */
+
 public class DefensiveStanceEffect implements Effect<Player>, IDefensiveEffect {
     public static final String EFFECT_NAME = "Defensive Stance";
     private int remainingDuration;

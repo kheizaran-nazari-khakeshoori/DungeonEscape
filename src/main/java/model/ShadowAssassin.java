@@ -9,7 +9,7 @@ public class ShadowAssassin extends Enemy {
 
 
     @Override
-    public String attack(ICombatant target, DiceRoller dice) throws exceptions.InvalidMoveException {
+    public String attack(Iwarrior target, DiceRoller dice) throws exceptions.InvalidMoveException {
         // Has a slightly variable but high damage output
         int damage = this.baseDamage + dice.roll(5) - 2; // Damage between 18-23
         target.takeDamage(damage);

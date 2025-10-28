@@ -14,7 +14,7 @@ public class StoneMan extends Enemy {
     }
 
     @Override
-    public String attack(ICombatant target, DiceRoller dice) throws exceptions.InvalidMoveException {
+    public String attack(Iwarrior target, DiceRoller dice) throws exceptions.InvalidMoveException {
        target.takeDamage(this.baseDamage);
         return this.name + " slams you for " + this.baseDamage + " heavy damage.";
     }

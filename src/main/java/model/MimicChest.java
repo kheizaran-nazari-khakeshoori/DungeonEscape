@@ -11,7 +11,7 @@ public class MimicChest extends Enemy {
     }
 
     @Override
-    public String attack(ICombatant target, DiceRoller dice) throws exceptions.InvalidMoveException {
+    public String attack(Iwarrior target, DiceRoller dice) throws exceptions.InvalidMoveException {
        target.takeDamage(this.baseDamage);
         return this.name + " reveals its teeth and chomps down on you for " + this.baseDamage + " damage!";
     }

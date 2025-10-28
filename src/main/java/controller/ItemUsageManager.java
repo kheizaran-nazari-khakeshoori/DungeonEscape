@@ -19,9 +19,18 @@ public class ItemUsageManager {
         if (usedItem == null) {
             throw new InvalidMoveException("Could not find item '" + itemName + "'");
         }
-        // Use the item
-        player.useItem(itemName);
-        // Get the use message (polymorphism!)
+
+        // 1. Apply the item's effect to the player.
+        // This is polymorphism: we call `use` on an `Item`, and the correct
+        // implementation (Potion, Weapon, etc.) is executed.
+        usedItem.use(player);
+
+        // 2. If the item is consumable (like a potion), remove it from inventory.
+        if (usedItem.isConsumable()) {
+            player.getInventory().removeItem(usedItem);
+        }
+
+        // 3. Return the result, including the item's specific use message.
         return new ItemUseResult(usedItem.getUseMessage(player), true, false, false);
     }
 

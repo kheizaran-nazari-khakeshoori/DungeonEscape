@@ -16,10 +16,6 @@ public class TrapManager {
         this.dice = dice;
     }
 
-    /**
-     * Handles a trap encounter.
-     * @return TrapResult containing messages and outcome
-     */
     public TrapResult handleTrap(Player player) {
         TrapResult result = new TrapResult();
         // Initial damage from finding trap

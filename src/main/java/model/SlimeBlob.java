@@ -13,7 +13,7 @@ public class SlimeBlob extends Enemy {
     }
 
     @Override
-    public String attack(ICombatant target, DiceRoller dice) throws exceptions.InvalidMoveException {
+    public String attack(Iwarrior target, DiceRoller dice) throws exceptions.InvalidMoveException {
        target.takeDamage(this.baseDamage);
         return this.name + " engulfs you with a pseudopod, dealing " + this.baseDamage + " acidic damage.";
     }
