@@ -9,7 +9,7 @@ public class Bean extends Player {
         // A rebellious princess, surprisingly tough.
         super("Bean", 100);
         // Bean is tough and has a natural resistance to poison.
-         this.ruleEngine.setRule(RuleEngine.POISON_RESISTANCE, 0.5);
+        this.ruleEngine.setRule(RuleEngine.POISON_RESISTANCE, 0.5);
     }
 
     /**

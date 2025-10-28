@@ -25,10 +25,7 @@ public class DoorManager {
         this.currentEncounterDeck = deck;
     }
 
-    /**
-     * Generates the next encounter based on dice roll.
-     * @return EncounterResult containing the type and data
-     */
+ 
     public EncounterResult generateEncounter(Player player, String enemyToAvoid) {
         double encounterRoll = dice.getRandom().nextDouble();
         double enemyChance = player.getRuleEngine().getRule(RuleEngine.ENEMY_CHANCE);

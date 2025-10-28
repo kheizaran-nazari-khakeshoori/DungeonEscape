@@ -170,7 +170,7 @@ public abstract class Player implements ICombatant {
 
     public void addEffect(Effect<Player> effect) { // Now correctly typed
         activeEffects.add(effect);
-    }//polymorphism ??
+    }//polymorphism ?
 
     public boolean hasEffect(String effectName) {
         return activeEffects.stream().anyMatch(effect -> effect.getName().equals(effectName));

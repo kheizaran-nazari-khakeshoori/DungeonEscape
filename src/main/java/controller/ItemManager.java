@@ -7,10 +7,7 @@ import model.Item;
 import model.Player;
 
 public class ItemManager {
-    /**
-     * Opens inventory dialog and processes item usage.
-     * @return ItemUseResult containing messages and status
-     */
+    
     public ItemUseResult openInventoryDialog(Player player) {
         // Create list of item names
         Object[] itemNames = player.getInventory().getItems().stream()
