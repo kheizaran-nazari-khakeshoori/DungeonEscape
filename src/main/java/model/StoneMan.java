@@ -4,10 +4,10 @@ import utils.DiceRoller;
 
 public class StoneMan extends Enemy {
     public StoneMan() {
-        // Name, Health, Base Damage, Gold Value, Image Path, Damage Type
+        
         super("StoneMan", 80, 15, 50, "images/enemies/StoneMan.png", DamageType.BLUNT);
 
-        // Stone Golems are resistant to sharp weapons but weak to blunt damage.
+
         addResistance(DamageType.SLASHING, 0.5);
         addResistance(DamageType.PIERCING, 0.25);
         addWeakness(DamageType.BLUNT, 1.75);

@@ -27,13 +27,13 @@ public abstract class Player implements Iwarrior {
         this.name = name;
         this.maxHealth = maxHealth;
         this.health = this.maxHealth;
-        this.inventory = new Inventory(); //creating inventory for the player 
-        this.activeEffects = new ArrayList<>();//effect list for the player 
+        this.inventory = new Inventory(); 
+        this.activeEffects = new ArrayList<>();
         this.equippedWeapon = null;
-        this.gold = 0; // Starting gold
-        this.specialAbilityCooldownTurns = 3; // Default cooldown of 3 turns
-        this.currentSpecialAbilityCooldown = 0; // Starts ready to use
-        this.ruleEngine = new RuleEngine(); // Each player gets a default rule engine
+        this.gold = 0; 
+        this.specialAbilityCooldownTurns = 3; 
+        this.currentSpecialAbilityCooldown = 0; 
+        this.ruleEngine = new RuleEngine(); 
     }
 
     @Override
@@ -96,7 +96,7 @@ public abstract class Player implements Iwarrior {
     }
 
     public void heal(int amount) {
-        this.health += amount;
+        this.health = health + amount;
         if (this.health > this.maxHealth) this.health = this.maxHealth;
     }
 
@@ -141,12 +141,6 @@ public abstract class Player implements Iwarrior {
             throw new InvalidMoveException("You have no weapon equipped to attack!");
         }
     }
-
-   
-   
-
-
-
     public void addEffect(Effect<Player> effect) { 
         activeEffects.add(effect);
     }
@@ -224,7 +218,7 @@ public abstract class Player implements Iwarrior {
     }
 
    
-    public abstract String useSpecialAbility(Enemy enemy, DiceRoller dice);
+    public abstract String useSpecialAbility(Enemy enemy);
 
     
     public boolean isSpecialAbilityReady() {

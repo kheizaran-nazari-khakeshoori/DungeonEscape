@@ -3,10 +3,10 @@ import utils.DiceRoller;
 
 public class SlimeBlob extends Enemy {
     public SlimeBlob() {
-        // Name, Health, Base Damage, Gold Value, Image Path, Damage Type
+        
         super("Slime Blob", 60, 9, 20, "images/enemies/SlimeBlob.png", model.DamageType.ACID);
 
-        // Slimes are resistant to sharp things but weak to fire
+    
         resistances.put(DamageType.SLASHING, 0.5);
         resistances.put(DamageType.PIERCING, 0.5);
         resistances.put(DamageType.FIRE, 1.5);

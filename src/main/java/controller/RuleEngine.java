@@ -18,7 +18,7 @@ public class RuleEngine implements Cloneable {//for making copy of it safely (th
     public static final String ENEMY_HEALTH_SCALING = "ENEMY_HEALTH_SCALING";
     public static final String ENEMY_DAMAGE_SCALING = "ENEMY_DAMAGE_SCALING";
     public static final String POISON_RESISTANCE = "POISON_RESISTANCE";
-
+    public static final String SUPER_POWER = "SUPER_POWER";
 
     public RuleEngine() {
         // In the future, this constructor could load rules from a file. but in the future ok ?? 
@@ -29,6 +29,8 @@ public class RuleEngine implements Cloneable {//for making copy of it safely (th
         rules.put(ENEMY_HEALTH_SCALING, 0.2); // +20% health per level
         rules.put(ENEMY_DAMAGE_SCALING, 0.1); // +10% damage per level
         rules.put(POISON_RESISTANCE, 1.0); // Default: 100% damage taken
+        rules.put(SUPER_POWER , 0.85);
+
     }
 
     public double getRule(String key) {//look up a rule in the book

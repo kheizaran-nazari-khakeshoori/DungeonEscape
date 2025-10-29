@@ -3,10 +3,10 @@ import utils.DiceRoller;
 
 public class SkeletonWarrior extends Enemy {
     public SkeletonWarrior() {
-        // Name, Health, Base Damage, Gold Value, Image Path, Damage Type
+        
         super("Skeleton Warrior", 50, 10, 30, "images/enemies/SkeletonWarrior.png", model.DamageType.PHYSICAL);
 
-        // Skeletons are often weak to blunt damage and resistant to piercing
+
         addWeakness(DamageType.BLUNT, 1.5);
         addResistance(DamageType.PIERCING, 0.75);
     }

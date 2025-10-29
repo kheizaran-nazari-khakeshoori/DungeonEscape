@@ -53,8 +53,8 @@ public class CombatManager {
         if (!player.isSpecialAbilityReady()) {
             return player.getName() + "'s special ability is not ready!";
         }
-        if (enemy instanceof Enemy) {//checking enemy is actually enemy type 
-            return player.useSpecialAbility((Enemy) enemy, dice);   //downcasting
+        if (enemy instanceof Enemy enemy1) {
+            return player.useSpecialAbility(enemy1);   
         }
         return player.getName() + " can't use their ability on this target.";
     }

@@ -10,15 +10,15 @@ import java.util.Map;
 import controller.RuleEngine;
 import utils.DiceRoller;
 
-public abstract class Enemy implements Iwarrior, ILootable {
-    protected String name;//these are protected for subclass cunstructor access
+public abstract class Enemy implements Iwarrior, ITakeable {
+    protected String name;
     protected int maxHealth;
     protected int health;
     protected int baseDamage;
     protected int goldValue;
     protected String imagePath;
-    protected DamageType damageType;//Association not composition 
-    private final List<Effect<Enemy>> activeEffects;// composition , object contain other objects
+    protected DamageType damageType;
+    private final List<Effect<Enemy>> activeEffects;
     protected final Map<DamageType, Double> weaknesses;
     protected final Map<DamageType, Double> resistances;
 
@@ -35,23 +35,14 @@ public abstract class Enemy implements Iwarrior, ILootable {
         this.activeEffects = new ArrayList<>();
     }
 
-    /**
-     * Protected method for subclasses to declare a weakness.
-     * This improves encapsulation by preventing direct map modification.
-     * @param type The DamageType the enemy is weak to.
-     * @param multiplier The damage multiplier (e.g., 1.5 for +50% damage).
-     */
-    protected void addWeakness(DamageType type, double multiplier) {//opne/close principle 
-        this.weaknesses.put(type, multiplier);//getting extra damage from specific damage type 
-    }//subclasses add their own weakness 
+    
+    protected void addWeakness(DamageType type, double multiplier) {
+        this.weaknesses.put(type, multiplier);
+    }
 
-    /**
-     * Protected method for subclasses to declare a resistance.
-     * @param type The DamageType the enemy is resistant to.
-     * @param multiplier The damage multiplier (e.g., 0.75 for 25% resistance).
-     */
+    
     protected void addResistance(DamageType type, double multiplier) {
-        this.resistances.put(type, multiplier);// getting less damage from specific damage type 
+        this.resistances.put(type, multiplier);
     }
 
     @Override
@@ -97,6 +88,7 @@ public abstract class Enemy implements Iwarrior, ILootable {
         if (weaknesses.containsKey(type)) {
             multiplier = weaknesses.get(type); 
             effectiveness = "It's super effective!";
+
         } else if (resistances.containsKey(type)) {
             multiplier = resistances.get(type); 
             effectiveness = "It's not very effective...";
@@ -121,16 +113,27 @@ public abstract class Enemy implements Iwarrior, ILootable {
     }
 
     public String getHint() {
-        if (!weaknesses.keySet().isEmpty()) {
-            return "Hint: It seems weak to " + weaknesses.keySet().iterator().next().toString().toLowerCase() + " damage.";//using iterator pattern to get the first elemet from the set 
+        if(weaknesses.size()> 0)
+        {
+            DamageType firstWeakness = weaknesses.keySet().iterator().next();
+            String weaknessName = firstWeakness.toString().toLowerCase();
+            return "Hint: It seems weak to " + weaknessName + " damage.";
         }
-        return "Hint: A standard foe.";
+        return "Hint:normal enemy";
     }
 
-    public void strengthen(int level, RuleEngine ruleEngine) {
-        this.maxHealth += (int) (this.maxHealth * ruleEngine.getRule(RuleEngine.ENEMY_HEALTH_SCALING) * level);
-        this.health = this.maxHealth;
-        this.baseDamage += (int) (this.baseDamage * ruleEngine.getRule(RuleEngine.ENEMY_DAMAGE_SCALING) * level);
+    public void strengthen(int level , RuleEngine ruleEngine)
+    {
+        double health_scaling = ruleEngine.getRule (RuleEngine.ENEMY_HEALTH_SCALING);
+        double damage_scaling = ruleEngine.getRule (RuleEngine.ENEMY_DAMAGE_SCALING);
+
+        int healthincrease = (int) (this.maxHealth * health_scaling * level);
+        this.maxHealth = maxHealth + healthincrease;
+
+        int damageincrease = (int) (this.baseDamage * damage_scaling * level );
+        this.baseDamage = baseDamage + damageincrease ;
+
+        
     }
     
     @Override
@@ -179,7 +182,7 @@ public abstract class Enemy implements Iwarrior, ILootable {
     
     @Override 
     public String attack(Iwarrior target, DiceRoller dice) throws exceptions.InvalidMoveException{
-        target.takeDamage(this.baseDamage);//run time polymorphism  and liskov principle 
+        target.takeDamage(this.baseDamage);
         return this.name + " attacks " + target.getName() + " for " + this.baseDamage + " damage.";
     }
 

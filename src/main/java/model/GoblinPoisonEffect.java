@@ -1,13 +1,9 @@
 package model;
 
-/**
- * A specific, weaker poison effect applied by Goblins.
- * This demonstrates polymorphism by inclusion, as it's a unique implementation
- * of the Effect interface, but can be treated as any other Effect by the Player.
- */
+
 public class GoblinPoisonEffect implements PoisonTypeEffect { // Implement the marker interface
     public static final String EFFECT_NAME = "Goblin Poison";
-    private int damagePerTurn;
+    private final int damagePerTurn;
     private int remainingDuration;
 
     public GoblinPoisonEffect(int damagePerTurn, int duration) {

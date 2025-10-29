@@ -3,10 +3,9 @@ import utils.DiceRoller;
 
 public class MimicChest extends Enemy {
    public MimicChest() {
-        // Name, Health, Base Damage, Gold Value, Image Path, Damage Type
+        
         super("Mimic Chest", 70, 18, 80, "images/enemies/MimicChest.png", DamageType.PHYSICAL);
 
-        // Mimics are tough, maybe slightly resistant to piercing
         addResistance(DamageType.PIERCING, 0.8);
     }
 

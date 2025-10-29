@@ -55,7 +55,7 @@
 /home/kheizaran/Github/DungeonEscape/src/main/java/utils/DiceRoller.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/Item.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/TrapFactory.java
-/home/kheizaran/Github/DungeonEscape/src/main/java/model/ILootable.java
+/home/kheizaran/Github/DungeonEscape/src/main/java/model/ITakeable.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/Player.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/MimicChest.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/view/PlayerSelectionWindow.java
