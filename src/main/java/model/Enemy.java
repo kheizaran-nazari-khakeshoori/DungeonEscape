@@ -1,7 +1,9 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -75,24 +77,42 @@ public abstract class Enemy implements Iwarrior, ILootable {
     @Override
     
     public void takeDamage(int amount) {
-        this.health -= amount;
+        int finalDamage = amount;
+        for (Effect<Enemy> effect : activeEffects)
+        {
+            if(effect instanceof  IDefensiveEffect  iDefensiveEffect)
+            {
+                finalDamage = iDefensiveEffect.applyDefense(finalDamage);
+            }
+        }
+        this.health = health - finalDamage;
         if (this.health < 0) this.health = 0;
     }
 
     @Override
     public String takeDamage(int amount, DamageType type) {
-        double multiplier = 1.0; // calculate effectiveness
+        double multiplier = 1.0; 
         String effectiveness = "";
-        if (weaknesses.containsKey(type)) { // >> checking the damage type is in the map 
+
+        if (weaknesses.containsKey(type)) {
             multiplier = weaknesses.get(type); 
             effectiveness = "It's super effective!";
         } else if (resistances.containsKey(type)) {
             multiplier = resistances.get(type); 
             effectiveness = "It's not very effective...";
         }
-        //apply damage 
-        int finalDamage = (int) (amount * multiplier); // not polymorphism cause i manually casting 
-        takeDamage(finalDamage);
+        int damagecaused = (int) (amount * multiplier); 
+        int finalDamage = damagecaused;
+       for (Effect<Enemy> effect : activeEffects)
+        {
+            if (effect instanceof  IDefensiveEffect  iDefensiveEffect)
+            {
+                finalDamage = iDefensiveEffect.applyDefense(finalDamage);
+            }
+        }
+        this.health -= finalDamage;
+        if (this.health < 0) this.health = 0;
+    
         return effectiveness;
     }
 
@@ -114,9 +134,30 @@ public abstract class Enemy implements Iwarrior, ILootable {
     }
     
     @Override
-    public String applyTurnEffects() {//interface requirment
-        // Placeholder for enemy effects
-        return "";
+    public String applyTurnEffects() {
+        if (activeEffects.isEmpty())
+        {
+            return "";
+        }
+
+    StringBuilder effectsResult = new StringBuilder();
+    Iterator<Effect<Enemy>> iterator = activeEffects.iterator();
+    
+    while (iterator.hasNext()) {
+        Effect<Enemy> effect = iterator.next();
+        String result = effect.apply(this);
+        
+        if (result != null && !result.isEmpty()) {
+            if (effectsResult.length() > 0) effectsResult.append("\n");
+            effectsResult.append(result);
+        }
+        
+        if (effect.isFinished()) {
+            iterator.remove();
+        }
+    }
+    return effectsResult.toString();
+       
     }
 
     @Override
@@ -141,9 +182,48 @@ public abstract class Enemy implements Iwarrior, ILootable {
         target.takeDamage(this.baseDamage);//run time polymorphism  and liskov principle 
         return this.name + " attacks " + target.getName() + " for " + this.baseDamage + " damage.";
     }
+
+    public void addEffect(Effect<Enemy> effect) {
+        activeEffects.add(effect);
+    }
+
+
+    public boolean hasEffect(String effectName) {
+        for (Effect<Enemy> effect : activeEffects) {
+            if (effect.getName().equals(effectName)) {
+            return true;
+            }
+        }
+        return false;
+    }
+
+    public void removeEffect(String effectName) {
+        Iterator<Effect<Enemy>> iterator = activeEffects.iterator();
+        while (iterator.hasNext()) {
+            Effect<Enemy> effect = iterator.next();
+            if (effect.getName().equals(effectName)) {
+                iterator.remove();
+                break;
+                }
+            }
+        }
+
+
+    public void removeEffectsOfType(Class<?> effectType) {
+        Iterator<Effect<Enemy>> iterator = activeEffects.iterator();
+        while (iterator.hasNext()) {
+            Effect<Enemy> effect = iterator.next();
+            if (effectType.isInstance(effect)) {
+                iterator.remove();
+            }
+        }
+    }
+
+    public List<Effect<Enemy>> getActiveEffects() 
+    {
+        return Collections.unmodifiableList(activeEffects);
+    }
 }
 
 
-//exception handeling and turn effect >> future implementation 
-//relation between composition and final 
 

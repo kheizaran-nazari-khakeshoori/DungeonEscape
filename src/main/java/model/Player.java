@@ -76,22 +76,23 @@ public abstract class Player implements Iwarrior {
 
     @Override
     public void takeDamage(int amount) {
-        int finalDamage = amount;
-        
-        for (Effect<Player> effect : activeEffects) {
-            if (effect instanceof IDefensiveEffect iDefensiveEffect) {
-                finalDamage = iDefensiveEffect.applyDefense(finalDamage);
-            }
-        }
-        this.health = health - finalDamage;
-        if (health < 0) health = 0;
+        takeDamage(amount,null);
     }
 
 
     @Override
     public String takeDamage(int amount, DamageType type) {
-        takeDamage(amount); 
-        return ""; 
+        int finalDamage = amount;
+        for (Effect<Player> effect : activeEffects)
+        {
+            if(effect instanceof IDefensiveEffect iDefensiveEffect)
+            {
+                finalDamage = iDefensiveEffect.applyDefense(finalDamage);
+            }
+        }
+        this.health = health - finalDamage ;
+        if(this.health < 0 ) this.health = 0;
+        return ""; // do not forget that player does not have type effectiveness  
     }
 
     public void heal(int amount) {
@@ -132,7 +133,7 @@ public abstract class Player implements Iwarrior {
             if (equippedWeapon.getDurability() <= 0) {
                 inventory.removeItem(equippedWeapon);
                 String brokenWeaponName = equippedWeapon.getName();
-                setEquippedWeapon(null); // Unequip the broken weapon
+                setEquippedWeapon(null); 
                 result += "\nYour " + brokenWeaponName + " broke!";
             }
             return result;
@@ -151,7 +152,13 @@ public abstract class Player implements Iwarrior {
     }
 
     public boolean hasEffect(String effectName) {
-        return activeEffects.stream().anyMatch(effect -> effect.getName().equals(effectName));
+    for (Effect<Player> effect : activeEffects) {
+        
+        if (effect.getName().equals(effectName)) {
+            return true;  
+            }
+        }
+        return false;
     }
 
     public void removeEffect(String effectName) {
@@ -179,17 +186,18 @@ public abstract class Player implements Iwarrior {
     public List<Effect<Player>> getActiveEffects() {
         return Collections.unmodifiableList(activeEffects);
     }
+
     @Override
-    public String applyTurnEffects() { // Renamed from getTurnEffectsResult for clarity
+    public String applyTurnEffects() { 
         if (activeEffects.isEmpty()) {
             return "";
         }
         
         StringBuilder effectsResult = new StringBuilder();
-        Iterator<Effect<Player>> iterator = activeEffects.iterator(); // Use the generic iterator
+        Iterator<Effect<Player>> iterator = activeEffects.iterator(); 
         while (iterator.hasNext()) {
             Effect<Player> effect = iterator.next();
-            String result = effect.apply(this); // polymorphism 
+            String result = effect.apply(this); 
             if (result != null && !result.isEmpty()) {
                 if (effectsResult.length() > 0) effectsResult.append("\n");
                 effectsResult.append(result);
@@ -203,7 +211,7 @@ public abstract class Player implements Iwarrior {
 
     
     public double getTrapDisarmChance() {
-        return 0.33; // Base 33% chance for a normal player
+        return 0.33; 
     }
 
     
@@ -230,7 +238,7 @@ public abstract class Player implements Iwarrior {
         }
     }
 
-    public int getCurrentSpecialAbilityCooldown() {//how many turns are left to cooldown
+    public int getCurrentSpecialAbilityCooldown() {
         return currentSpecialAbilityCooldown;
     }
 
