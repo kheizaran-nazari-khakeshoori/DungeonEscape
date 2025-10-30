@@ -1,7 +1,6 @@
 package model;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -10,7 +9,7 @@ import java.util.Map;
 import controller.RuleEngine;
 import utils.DiceRoller;
 
-public abstract class Enemy implements Iwarrior, ITakeable {
+public abstract class Enemy implements Iwarrior, ITakeable,IOperation_on_Effect<Enemy> {
     protected String name;
     protected int maxHealth;
     protected int health;
@@ -127,13 +126,11 @@ public abstract class Enemy implements Iwarrior, ITakeable {
         double health_scaling = ruleEngine.getRule (RuleEngine.ENEMY_HEALTH_SCALING);
         double damage_scaling = ruleEngine.getRule (RuleEngine.ENEMY_DAMAGE_SCALING);
 
-        int healthincrease = (int) (this.maxHealth * health_scaling * level);
-        this.maxHealth = maxHealth + healthincrease;
+        int healthIncrease = (int) (this.maxHealth * health_scaling * level);
+        this.maxHealth = maxHealth + healthIncrease;
 
-        int damageincrease = (int) (this.baseDamage * damage_scaling * level );
-        this.baseDamage = baseDamage + damageincrease ;
-
-        
+        int damageIncrease = (int) (this.baseDamage * damage_scaling * level );
+        this.baseDamage = baseDamage + damageIncrease ;
     }
     
     @Override
@@ -186,11 +183,13 @@ public abstract class Enemy implements Iwarrior, ITakeable {
         return this.name + " attacks " + target.getName() + " for " + this.baseDamage + " damage.";
     }
 
+    @Override
     public void addEffect(Effect<Enemy> effect) {
         activeEffects.add(effect);
     }
 
 
+    @Override
     public boolean hasEffect(String effectName) {
         for (Effect<Enemy> effect : activeEffects) {
             if (effect.getName().equals(effectName)) {
@@ -200,6 +199,7 @@ public abstract class Enemy implements Iwarrior, ITakeable {
         return false;
     }
 
+    @Override
     public void removeEffect(String effectName) {
         Iterator<Effect<Enemy>> iterator = activeEffects.iterator();
         while (iterator.hasNext()) {
@@ -212,6 +212,7 @@ public abstract class Enemy implements Iwarrior, ITakeable {
         }
 
 
+    @Override
     public void removeEffectsOfType(Class<?> effectType) {
         Iterator<Effect<Enemy>> iterator = activeEffects.iterator();
         while (iterator.hasNext()) {
@@ -222,10 +223,6 @@ public abstract class Enemy implements Iwarrior, ITakeable {
         }
     }
 
-    public List<Effect<Enemy>> getActiveEffects() 
-    {
-        return Collections.unmodifiableList(activeEffects);
-    }
 }
 
 

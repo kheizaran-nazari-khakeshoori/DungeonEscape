@@ -1,7 +1,6 @@
 package model;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -9,7 +8,7 @@ import controller.RuleEngine;
 import exceptions.InvalidMoveException;
 import utils.DiceRoller;
 
-public abstract class Player implements Iwarrior {
+public abstract class Player implements Iwarrior,IOperation_on_Effect<Player>{
     private final String name;
     private final int maxHealth;
     private int health;
@@ -141,10 +140,12 @@ public abstract class Player implements Iwarrior {
             throw new InvalidMoveException("You have no weapon equipped to attack!");
         }
     }
+    @Override
     public void addEffect(Effect<Player> effect) { 
         activeEffects.add(effect);
     }
 
+    @Override
     public boolean hasEffect(String effectName) {
     for (Effect<Player> effect : activeEffects) {
         
@@ -155,6 +156,7 @@ public abstract class Player implements Iwarrior {
         return false;
     }
 
+    @Override
     public void removeEffect(String effectName) {
     Iterator<Effect<Player>> iterator = activeEffects.iterator();
     while (iterator.hasNext()) {
@@ -166,6 +168,7 @@ public abstract class Player implements Iwarrior {
         }
     }
 
+    @Override
     public void removeEffectsOfType(Class<?> effectType) {
     Iterator<Effect<Player>> iterator = activeEffects.iterator();
     while (iterator.hasNext()) {
@@ -174,11 +177,6 @@ public abstract class Player implements Iwarrior {
             iterator.remove();
             }
         }
-    }
-
-  
-    public List<Effect<Player>> getActiveEffects() {
-        return Collections.unmodifiableList(activeEffects);
     }
 
     @Override

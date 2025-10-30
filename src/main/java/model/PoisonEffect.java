@@ -2,7 +2,7 @@ package model;
 
 public class PoisonEffect implements PoisonTypeEffect { // Implement the marker interface
     public static final String EFFECT_NAME = "Poison";
-    private int damagePerTurn;
+    private final int damagePerTurn;
     private int remainingDuration;
 
     public PoisonEffect(int damagePerTurn, int duration) {
