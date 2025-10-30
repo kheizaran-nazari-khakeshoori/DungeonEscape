@@ -4,14 +4,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-public class RuleEngine implements Cloneable {//for making copy of it safely (the class i mean)
-
-    // Using a Map allows for adding new rules without changing the class structure.
-    //like a page of rule-book 
-    //each rule has a title (string) and a value (double)
+public class RuleEngine implements Cloneable {
+   
     private Map<String, Double> rules = new HashMap<>();
 
-    // Rule Keys - Using constants prevents typos.
+  
     public static final String ENEMY_CHANCE = "ENEMY_CHANCE";
     public static final String TRAP_CHANCE = "TRAP_CHANCE";
     public static final String FLEE_CHANCE = "FLEE_CHANCE";
@@ -21,34 +18,33 @@ public class RuleEngine implements Cloneable {//for making copy of it safely (th
     public static final String SUPER_POWER = "SUPER_POWER";
 
     public RuleEngine() {
-        // In the future, this constructor could load rules from a file. but in the future ok ?? 
-        // Default Game Rules 
-        rules.put(ENEMY_CHANCE, 0.75); // 75% chance for an enemy
-        rules.put(TRAP_CHANCE, 0.15); // 15% chance for a trap. (10% chance for an empty room)
-        rules.put(FLEE_CHANCE, 0.5); // 50% chance to flee successfully
-        rules.put(ENEMY_HEALTH_SCALING, 0.2); // +20% health per level
-        rules.put(ENEMY_DAMAGE_SCALING, 0.1); // +10% damage per level
-        rules.put(POISON_RESISTANCE, 1.0); // Default: 100% damage taken
+       
+        rules.put(ENEMY_CHANCE, 0.75); 
+        rules.put(TRAP_CHANCE, 0.15); 
+        rules.put(FLEE_CHANCE, 0.5); 
+        rules.put(ENEMY_HEALTH_SCALING, 0.2); 
+        rules.put(ENEMY_DAMAGE_SCALING, 0.1); 
+        rules.put(POISON_RESISTANCE, 1.0); 
         rules.put(SUPER_POWER , 0.85);
 
     }
 
-    public double getRule(String key) {//look up a rule in the book
+    public double getRule(String key) {
         return rules.getOrDefault(key, 0.0);
     }
 
-    public void setRule(String key, double value) {//change ruke 
+    public void setRule(String key, double value) {
         rules.put(key, value);
     }
 
-    @Override  // creating new ruleEngine object and new hashmap 
-    public RuleEngine clone() {// i do not want to give all the characters the same rule-book 
+    @Override  
+    public RuleEngine clone() throws CloneNotSupportedException {
         try {
-            RuleEngine cloned = (RuleEngine) super.clone();//shallow copy (making the cover)
-            cloned.rules = new HashMap<>(this.rules);//make the copy deep 
+            RuleEngine cloned = (RuleEngine) super.clone();
+            cloned.rules = new HashMap<>(this.rules);
             return cloned;
         } catch (CloneNotSupportedException e) {
-            throw new AssertionError(); // Can't happen cause the class implement cloneable , i gave the permission already 
+            throw new AssertionError();  
         }
     }
 }

@@ -23,19 +23,19 @@ public class LevelManager {
 
     public LevelManager(DiceRoller dice) {
         this.dice = dice;
-        this.gameLevels = new ArrayList<>(); // fine for first time (only first time) do not forget final key word 
+        this.gameLevels = new ArrayList<>(); 
         this.currentLevelIndex = 0;
         initializeLevels();
     }
 
     private void initializeLevels() {
-        // Level 1: The Goblin Warrens
+
         gameLevels.add(new Level<>("The Goblin Warrens", "images/ui/TwoDoors.png",
             List.of(Goblin::new, Goblin::new, SkeletonWarrior::new)));
-        // Level 2: The Haunted Halls
+       
         gameLevels.add(new Level<>("The Haunted Halls", "images/ui/HauntedHalls.png",
             List.of(SkeletonWarrior::new, Ghost::new, Ghost::new, ShadowAssassin::new)));
-        // Level 3: The Creature Caves
+       
         gameLevels.add(new Level<>("The Creature Caves", "images/ui/CreatureCaves.png",
             List.of(PoisonSpider::new, SlimeBlob::new, StoneMan::new, MimicChest::new)));
     }
@@ -44,7 +44,7 @@ public class LevelManager {
         return gameLevels.get(currentLevelIndex);
     }
 
-    public List<Supplier<Enemy>> getShuffledEncounterDeck() {
+    public List<Supplier<Enemy>> getRandomizedEnemySuppliers() {
         return getCurrentLevel().getShuffledDeck(dice);
     }
 

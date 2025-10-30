@@ -18,7 +18,7 @@ public class TrapManager {
 
     public TrapResult handleTrap(Player player) {
         TrapResult result = new TrapResult();
-        // Initial damage from finding trap
+    
         player.takeDamage(5);
         result.addMessage("The stress of finding a trap takes a toll on you...");
         result.addMessage("You lose 5 HP!");
@@ -26,12 +26,12 @@ public class TrapManager {
             result.playerDied = true;
             return result;
         }
-        // Generate trap
+        
         Trap trap = trapFactory.createRandomTrap();
         result.trap = trap;
         result.addMessage(trap.getTriggerMessage());
         result.imagePath = "images/ui/Trap.png";
-        // Ask player to disarm
+        
         int disarmChancePercent = (int) (player.getTrapDisarmChance() * 100);
         int choice = JOptionPane.showConfirmDialog(
             null,
@@ -41,11 +41,11 @@ public class TrapManager {
         );
         boolean attemptDisarm = (choice == JOptionPane.YES_OPTION);
         if (attemptDisarm && dice.getRandom().nextDouble() < player.getTrapDisarmChance()) {
-            // Success
+           
             result.addMessage("Success! You deftly avoid the " + trap.getName() + ".");
             result.trapDisarmed = true;
         } else {
-            // Failure
+            
             if (attemptDisarm) {
                 result.addMessage("You failed to disarm the trap!");
             }
@@ -58,17 +58,17 @@ public class TrapManager {
         return result;
     }
 
-    public static class TrapResult { // Changed from record to class
-        public StringBuilder messages = new StringBuilder(); // No longer final
-        public Trap trap; // No longer final
-        public String imagePath; // No longer final
-        public boolean trapDisarmed = false; // No longer final
-        public boolean playerDied = false; // No longer final
+    public static class TrapResult { 
+        public StringBuilder messages = new StringBuilder(); 
+        public Trap trap; 
+        public String imagePath; 
+        public boolean trapDisarmed = false; 
+        public boolean playerDied = false;
 
         public void addMessage(String msg) {
             messages.append(msg).append("\n");
         }
 
-        public String getAllMessages() { return messages.toString().trim(); } // No change here
+        public String getAllMessages() { return messages.toString().trim(); } 
     }
 }

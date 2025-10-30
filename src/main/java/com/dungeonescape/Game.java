@@ -126,7 +126,7 @@ public class Game {
         Level<Enemy> level = levelManager.getCurrentLevel();
         uiManager.loadBackgroundImage(level.getBackgroundImagePath());
         uiManager.getLogPanel().addMessage("\n--- You have entered " + level.getName() + " ---");
-        doorManager.setencounters(levelManager.getShuffledEncounterDeck());
+        doorManager.setencounters(levelManager.getRandomizedEnemySuppliers());
         uiManager.setDoorMode();
         updateGUI();
     }
