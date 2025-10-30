@@ -8,7 +8,7 @@ public class PoisonDartTrap extends Trap {
 
     @Override
     public String trigger(Player player) {
-        player.addEffect(new PoisonEffect(5, 3)); // 5 damage for 3 turns
+        player.addEffect(new PoisonEffect(5, 3)); 
         return "The dart hits you! You feel a venomous sting. You have been poisoned!";
     }
 }

@@ -5,70 +5,79 @@ import java.util.Map;
 import java.util.function.Supplier;
 
 import model.Enemy;
-import model.EnemyFactory;
 import model.Player;
 import utils.DiceRoller;
 
 public class DoorManager {
     private final DiceRoller dice;
-    private final EnemyFactory enemyFactory;
-    private final Map<String, Integer> enemyEncounterCount;
-    private List<Supplier<Enemy>> currentEncounterDeck;
+    private final Map<String, Integer> enemyCount;
+    private List<Supplier<Enemy>> encounters;
 
-    public DoorManager(DiceRoller dice, EnemyFactory enemyFactory, Map<String, Integer> enemyEncounterCount) {
+    public DoorManager(DiceRoller dice, Map<String, Integer> enemyCount) {
         this.dice = dice;
-        this.enemyFactory = enemyFactory;
-        this.enemyEncounterCount = enemyEncounterCount;
+
+        this.enemyCount = enemyCount;
     }
 
-    public void setCurrentEncounterDeck(List<Supplier<Enemy>> deck) {
-        this.currentEncounterDeck = deck;
+    public void setencounters(List<Supplier<Enemy>> enemySuppliers) {
+        this.encounters = enemySuppliers;
     }
 
  
     public EncounterResult generateEncounter(Player player, String enemyToAvoid) {
+
         double encounterRoll = dice.getRandom().nextDouble();
         double enemyChance = player.getRuleEngine().getRule(RuleEngine.ENEMY_CHANCE);
-        if (encounterRoll < enemyChance) {
-            // Enemy encounter
-            if (currentEncounterDeck.isEmpty()) {
+
+   
+        if (encounterRoll < enemyChance) 
+        {
+            if (encounters.isEmpty()) 
+            {
                 return new EncounterResult(EncounterType.LEVEL_COMPLETE, null);
             }
-            Supplier<Enemy> enemySupplier = currentEncounterDeck.remove(0);
-            Enemy enemy = enemySupplier.get();
-            // Avoid specific enemy if fleeing
-            if (enemyToAvoid != null && enemy.getName().equals(enemyToAvoid)) {
-                // Find the first different enemy in the deck to swap with
-                for (int i = 0; i < currentEncounterDeck.size(); i++) {
-                    if (!currentEncounterDeck.get(i).get().getName().equals(enemyToAvoid)) {
-                        Supplier<Enemy> differentEnemySupplier = currentEncounterDeck.remove(i);
-                        currentEncounterDeck.add(i, enemySupplier); // Put the original back
-                        enemySupplier = differentEnemySupplier; // Use the new one
-                        break; // Stop searching
-                    }
+
+        Supplier<Enemy> enemySupplier = encounters.remove(0);
+        Enemy enemy = enemySupplier.get();
+
+        if (enemyToAvoid != null && enemy.getName().equals(enemyToAvoid))
+        {
+            for (int i = 0; i < encounters.size(); i++) {
+                Enemy nextEnemy = encounters.get(i).get();
+                if (!nextEnemy.getName().equals(enemyToAvoid)) {
+                    
+                    Supplier<Enemy> differentEnemySupplier = encounters.remove(i);
+                    encounters.add(i, enemySupplier); 
+                    enemySupplier = differentEnemySupplier; 
+                    break;
                 }
-                enemy = enemySupplier.get();
             }
-            // Strengthen enemy based on previous encounters
-            String enemyName = enemy.getName();
-            int encounterLevel = enemyEncounterCount.getOrDefault(enemyName, 0);
-            if (encounterLevel > 0) {
-                enemy.strengthen(encounterLevel, player.getRuleEngine());
-            }
-            return new EncounterResult(EncounterType.ENEMY, enemy);
-        } else if (encounterRoll < enemyChance + player.getRuleEngine().getRule(RuleEngine.TRAP_CHANCE)) {
-            return new EncounterResult(EncounterType.TRAP, null);
-        } else {
-            return new EncounterResult(EncounterType.EMPTY_ROOM, null);
+            enemy = enemySupplier.get();
         }
+
+        String enemyName = enemy.getName();
+        int previousEncounters = enemyCount.getOrDefault(enemyName, 0);
+        if (previousEncounters > 0) {
+            enemy.strengthen(previousEncounters, player.getRuleEngine());
+        }
+
+        return new EncounterResult(EncounterType.ENEMY, enemy);
     }
 
-    public void incrementEnemyCount(String enemyName) {
-        int newCount = enemyEncounterCount.getOrDefault(enemyName, 0) + 1;
-        enemyEncounterCount.put(enemyName, newCount);
+    double trapChance = player.getRuleEngine().getRule(RuleEngine.TRAP_CHANCE);
+    if (encounterRoll < enemyChance + trapChance) {
+        return new EncounterResult(EncounterType.TRAP, null);
     }
 
-    // Inner classes for return types
+    return new EncounterResult(EncounterType.EMPTY_ROOM, null);
+}
+
+
+    public void Enemy_Appearance_count(String enemyName) {
+        int newCount = enemyCount.getOrDefault(enemyName, 0) + 1;
+        enemyCount.put(enemyName, newCount);
+    }
+
     public enum EncounterType { ENEMY, TRAP, EMPTY_ROOM, LEVEL_COMPLETE }
 
     public record EncounterResult(EncounterType type, Enemy enemy) {}

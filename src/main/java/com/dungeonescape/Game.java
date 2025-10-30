@@ -15,7 +15,6 @@ import exceptions.InvalidMoveException;
 import model.Bean;
 import model.Elfo;
 import model.Enemy;
-import model.EnemyFactory;
 import model.Item;
 import model.Level;
 import model.Lucy;
@@ -66,9 +65,8 @@ public class Game {
         //instantiation 
         this.enemyEncounterCount = new HashMap<>();
         // Initialize managers
-        EnemyFactory enemyFactory = new EnemyFactory(dice);
         TrapFactory trapFactory = new TrapFactory(dice);
-        this.doorManager = new DoorManager(dice, enemyFactory, enemyEncounterCount);
+        this.doorManager = new DoorManager(dice, enemyEncounterCount);
         this.trapManager = new TrapManager(trapFactory, dice);
         this.levelManager = new LevelManager(dice);
         this.itemUsageManager = itemUsageManager;
@@ -128,7 +126,7 @@ public class Game {
         Level<Enemy> level = levelManager.getCurrentLevel();
         uiManager.loadBackgroundImage(level.getBackgroundImagePath());
         uiManager.getLogPanel().addMessage("\n--- You have entered " + level.getName() + " ---");
-        doorManager.setCurrentEncounterDeck(levelManager.getShuffledEncounterDeck());
+        doorManager.setencounters(levelManager.getShuffledEncounterDeck());
         uiManager.setDoorMode();
         updateGUI();
     }
@@ -274,7 +272,7 @@ public class Game {
         uiManager.getLogPanel().addMessage("You defeated the " + enemyName + "!");
 
         // Update encounter count
-        doorManager.incrementEnemyCount(enemyName);
+        doorManager.Enemy_Appearance_count(enemyName);
 
         // Award loot
         Item loot = currentEnemy.dropLoot(dice);

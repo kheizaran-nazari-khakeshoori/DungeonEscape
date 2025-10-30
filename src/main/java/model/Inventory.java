@@ -2,7 +2,7 @@ package model;
 
 import java.util.ArrayList;
 import java.util.List;
-//one responsiblity >> manage collection of item 
+
 public class Inventory {
     private final List<Item> items = new ArrayList<>();
 
@@ -14,12 +14,12 @@ public class Inventory {
         items.remove(item);
     }
 
-    // Return a copy of the items list for safe access
-    public List<Item> getItems() {//get all item 
+    
+    public List<Item> getItems() {
         return new ArrayList<>(items);
     }
 
-    // Find an item by name >> check if it need to be deleted 
+    
     public Item findItem(String name) {
         for (Item item : items) {
             if (item.getName().equalsIgnoreCase(name)) {
@@ -29,11 +29,13 @@ public class Inventory {
         return null;
     }
     
-    public List<String> getItemNames() {
-        return items.stream()
-                    .map(Item::getName)
-                    .toList();
+  public List<String> getItemNames() {
+    List<String> names = new ArrayList<>();
+    for (Item item : items) {
+        names.add(item.getName());
+    }
+    return names;
     }
 }
 
-//the two type of polymorphism must be considered for this line >> private List<Item> items = new ArrayList<>();
+

@@ -1,7 +1,7 @@
 package model;
 
 
-public class GoblinPoisonEffect implements PoisonTypeEffect { // Implement the marker interface
+public class GoblinPoisonEffect implements PoisonTypeEffect { 
     public static final String EFFECT_NAME = "Goblin Poison";
     private final int damagePerTurn;
     private int remainingDuration;

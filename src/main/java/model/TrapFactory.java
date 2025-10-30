@@ -12,7 +12,6 @@ public class TrapFactory {
 
     public TrapFactory(DiceRoller dice) {
         this.dice = dice;
-        // Register all available trap types here.
         trapSuppliers.add(SpikeTrap::new);
         trapSuppliers.add(PoisonDartTrap::new);
     }
