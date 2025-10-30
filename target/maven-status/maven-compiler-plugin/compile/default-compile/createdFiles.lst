@@ -9,7 +9,6 @@ model/PoisonDartTrap.class
 com/dungeonescape/GameState.class
 model/SpikeTrap.class
 controller/RuleEngine.class
-model/ActiveEffect.class
 model/MimicChest.class
 model/PoisonTypeEffect.class
 model/TrapFactory.class
@@ -46,6 +45,7 @@ controller/TrapManager.class
 controller/LevelManager.class
 model/Elfo.class
 view/DungeonPanel.class
+model/Slow_Heal_Effect.class
 model/InvisibilityEffect.class
 model/IDefensiveEffect.class
 model/StaminaElixir.class
@@ -53,7 +53,6 @@ model/StoneMan.class
 view/InventoryPanel.class
 model/Ghost.class
 controller/DoorManager$EncounterType.class
-model/DefensiveStanceEffect.class
 model/Player.class
 model/Weapon.class
 view/ControlPanel.class
@@ -62,6 +61,7 @@ utils/DiceRoller.class
 model/PoisonEffect.class
 model/PoisonSpider.class
 model/ShopEncounter.class
+model/Defensive_type_Effect.class
 model/Trap.class
 model/SkeletonWarrior.class
 model/IOperation_on_Effect.class

@@ -1,18 +1,16 @@
 package model;
 
 
-public class DefensiveStanceEffect implements Effect<Player>, IDefensiveEffect {
+public class Defensive_type_Effect implements Effect<Player> ,IDefensiveEffect {
     public static final String EFFECT_NAME = "Defensive Stance";
     private int remainingDuration;
 
-    public DefensiveStanceEffect(int duration) {
+    public Defensive_type_Effect(int duration) {
         this.remainingDuration = duration;
     }
 
     @Override
     public String apply(Player player) {
-        // This effect's primary logic is in applyDefense.
-        // We just decrement its duration each turn.
         if (!isFinished()) {
             remainingDuration--;
         }
@@ -31,6 +29,6 @@ public class DefensiveStanceEffect implements Effect<Player>, IDefensiveEffect {
 
     @Override
     public int applyDefense(int incomingDamage) {
-        return incomingDamage / 2; // Reduce damage by 50%
+        return incomingDamage / 2; 
     }
 }

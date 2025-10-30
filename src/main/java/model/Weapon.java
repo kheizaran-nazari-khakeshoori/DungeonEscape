@@ -3,7 +3,7 @@ package model;
 public class Weapon extends Item {
     private final int damage;
     private int durability;
-    private final DamageType damageType;//final key word prevent bugs 
+    private final DamageType damageType;
 
     public Weapon(String name, String description, int damage, int durability, DamageType damageType, String imagePath, int cost) {
         super(name, description, imagePath, cost);
@@ -39,7 +39,7 @@ public class Weapon extends Item {
 
     @Override
     public boolean isConsumable() {
-        return false; // Weapons are not consumed when you 'use' (equip) them.
+        return false; 
     }
 
     @Override

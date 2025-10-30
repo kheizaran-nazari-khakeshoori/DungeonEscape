@@ -16,7 +16,7 @@ public class Bean extends Player {
     public String useSpecialAbility(Enemy enemy) {
         int healAmount = 15;
         this.heal(healAmount);
-        this.addEffect(new DefensiveStanceEffect(1));
+        this.addEffect(new Defensive_type_Effect(1));
         putSpecialAbilityOnCooldown(); 
         return "Bean scoffs, 'Is that all you've got?' She recovers " + healAmount + " health and braces for the next attack.";
     }

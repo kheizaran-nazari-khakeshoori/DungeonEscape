@@ -10,12 +10,11 @@ public class InvisibilityEffect implements Effect<Player> {
 
     @Override
     public String apply(Player player) {
-        // This effect is passive. It's checked by other game mechanics.
-        // We just decrement its duration each turn.
-        if (!isFinished()) {
-            remainingDuration--;
+        remainingDuration--;
+        if (isFinished()) {
+            return "Your invisibility wears off.";
         }
-        return ""; // Passive effects don't need to log anything each turn
+        return "You are invisible.";
     }
 
     @Override
@@ -24,7 +23,7 @@ public class InvisibilityEffect implements Effect<Player> {
     }
 
     @Override
-    public String getName() {
-        return EFFECT_NAME;
-    }
+    public String getName() { return EFFECT_NAME; }
+
+   
 }

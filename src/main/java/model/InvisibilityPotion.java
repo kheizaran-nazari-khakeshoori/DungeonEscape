@@ -8,7 +8,6 @@ public class InvisibilityPotion extends Potion {
 
     @Override
     public void use(Player player) {
-        // The specific action is to apply the Invisibility effect for 2 turns.
         player.addEffect(new InvisibilityEffect(2));
     }
 

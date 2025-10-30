@@ -70,7 +70,7 @@ public abstract class Enemy implements Iwarrior, ITakeable,IOperation_on_Effect<
         int finalDamage = amount;
         for (Effect<Enemy> effect : activeEffects)
         {
-            if(effect instanceof  IDefensiveEffect  iDefensiveEffect)
+             if(effect instanceof IDefensiveEffect iDefensiveEffect)
             {
                 finalDamage = iDefensiveEffect.applyDefense(finalDamage);
             }

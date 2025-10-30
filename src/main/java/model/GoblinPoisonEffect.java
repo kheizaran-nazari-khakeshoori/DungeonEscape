@@ -26,4 +26,6 @@ public class GoblinPoisonEffect implements PoisonTypeEffect { // Implement the m
 
     @Override
     public String getName() { return EFFECT_NAME; }
+
+   
 }
