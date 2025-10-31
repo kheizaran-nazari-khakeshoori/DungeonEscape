@@ -28,9 +28,10 @@ public class PlayerSelectionWindow extends JFrame {
         setTitle("Choose Your Hero");
         setSize(700, 450);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLocationRelativeTo(null);
-        setLayout(new GridLayout(1, 3, 10, 10));
-        ((JPanel) getContentPane()).setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        setLocationRelativeTo(null);//center the window on the screen 
+        setLayout(new GridLayout(1, 3, 10, 10));//one row three columns the 10 pixlels of space between them 
+        JPanel contentPanel = (JPanel) getContentPane();
+        contentPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         // Bean Panel
         add(createCharacterPanel(
@@ -63,17 +64,36 @@ public class PlayerSelectionWindow extends JFrame {
 
         JLabel nameLabel = new JLabel(name, SwingConstants.CENTER);
         nameLabel.setFont(new Font("Serif", Font.BOLD, 24));
+        panel.add(nameLabel, BorderLayout.NORTH);
 
-        ImageIcon icon = null;
-        java.net.URL imgURL = getClass().getClassLoader().getResource(imagePath);
-        if (imgURL != null) {
-            icon = new ImageIcon(imgURL);
-            Image image = icon.getImage().getScaledInstance(128, 128, Image.SCALE_SMOOTH);
-            icon = new ImageIcon(image);
+        JLabel imageLabel;
+        try {
+        // Try to load the image from the resources folder
+            java.net.URL imgURL = getClass().getClassLoader().getResource(imagePath);
+
+            if (imgURL != null) {
+                ImageIcon icon = new ImageIcon(imgURL);
+            // Resize image to 128x128 pixels to make it fit nicely
+                Image image = icon.getImage().getScaledInstance(128, 128, Image.SCALE_SMOOTH);
+                imageLabel = new JLabel(new ImageIcon(image), SwingConstants.CENTER);
+            }    
+            else
+            {  
+                // If the image isn't found, show a placeholder text instead
+                imageLabel = new JLabel("[Image not found]", SwingConstants.CENTER);
+            }
+        }   
+        catch (Exception e) 
+        {
+            imageLabel = new JLabel("[Error loading image]", SwingConstants.CENTER);
         }
-        JLabel imageLabel = new JLabel(icon, SwingConstants.CENTER);
+        panel.add(imageLabel, BorderLayout.CENTER);
 
+
+        JPanel bottomPanel = new JPanel(new BorderLayout());
         JTextArea descArea = new JTextArea(description);
+
+    
         descArea.setWrapStyleWord(true);
         descArea.setLineWrap(true);
         descArea.setEditable(false);
@@ -82,6 +102,7 @@ public class PlayerSelectionWindow extends JFrame {
         descArea.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
         JButton selectButton = new JButton("Select " + name);
+
         selectButton.addActionListener(e -> {
             Player selectedPlayer = playerSupplier.get();
             this.setVisible(false);
@@ -89,14 +110,9 @@ public class PlayerSelectionWindow extends JFrame {
             this.dispose();
         });
 
-        panel.add(nameLabel, BorderLayout.NORTH);
-        panel.add(imageLabel, BorderLayout.CENTER);
-        
-        JPanel southPanel = new JPanel(new BorderLayout());
-        southPanel.add(descArea, BorderLayout.CENTER);
-        southPanel.add(selectButton, BorderLayout.SOUTH);
-        
-        panel.add(southPanel, BorderLayout.SOUTH);
+        bottomPanel.add(descArea, BorderLayout.CENTER);
+        bottomPanel.add(selectButton, BorderLayout.SOUTH);
+        panel.add(bottomPanel, BorderLayout.SOUTH);
 
         return panel;
     }
