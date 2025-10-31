@@ -1,6 +1,7 @@
 package view;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Image;
@@ -24,16 +25,15 @@ import model.Player;
 
 public class PlayerSelectionWindow extends JFrame {
 
+    //frame
     public PlayerSelectionWindow() {
         setTitle("Choose Your Hero");
         setSize(700, 450);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);//center the window on the screen 
         setLayout(new GridLayout(1, 3, 10, 10));//one row three columns the 10 pixlels of space between them 
-        JPanel contentPanel = (JPanel) getContentPane();
-        contentPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-
-        // Bean Panel
+        
+        //using add to add component like the panes to the window 
         add(createCharacterPanel(
             "Bean",
             "A rebellious princess from Dreamland, surprisingly tough and handy with a sword.",
@@ -41,7 +41,7 @@ public class PlayerSelectionWindow extends JFrame {
             Bean::new
         ));
 
-        // Elfo Panel
+       
         add(createCharacterPanel(
             "Elfo",
             "An optimistic elf who left Elfwood for adventure. Not a fighter, but he tries.",
@@ -49,7 +49,7 @@ public class PlayerSelectionWindow extends JFrame {
             Elfo::new
         ));
 
-        // Lucy Panel
+        
         add(createCharacterPanel(
             "Lucy",
             "Bean's personal demon. Fragile but powerful. Do it, do it, do it!",
@@ -58,12 +58,13 @@ public class PlayerSelectionWindow extends JFrame {
         ));
     }
 
+    //characters
     private JPanel createCharacterPanel(String name, String description, String imagePath, Supplier<Player> playerSupplier) {
-        JPanel panel = new JPanel(new BorderLayout(5, 10));
-        panel.setBorder(BorderFactory.createEtchedBorder());
+        JPanel panel = new JPanel(new BorderLayout(5, 10));//You are saying: “This panel will use a BorderLayout to arrange its components.”
+        panel.setBorder(BorderFactory.createLineBorder(Color.BLACK,3));
 
         JLabel nameLabel = new JLabel(name, SwingConstants.CENTER);
-        nameLabel.setFont(new Font("Serif", Font.BOLD, 24));
+        nameLabel.setFont(new Font("MV Boli", Font.PLAIN, 20));
         panel.add(nameLabel, BorderLayout.NORTH);
 
         JLabel imageLabel;
@@ -73,8 +74,8 @@ public class PlayerSelectionWindow extends JFrame {
 
             if (imgURL != null) {
                 ImageIcon icon = new ImageIcon(imgURL);
-            // Resize image to 128x128 pixels to make it fit nicely
-                Image image = icon.getImage().getScaledInstance(128, 128, Image.SCALE_SMOOTH);
+            
+                Image image = icon.getImage().getScaledInstance(300, 300, Image.SCALE_SMOOTH);
                 imageLabel = new JLabel(new ImageIcon(image), SwingConstants.CENTER);
             }    
             else
@@ -93,13 +94,14 @@ public class PlayerSelectionWindow extends JFrame {
         JPanel bottomPanel = new JPanel(new BorderLayout());
         JTextArea descArea = new JTextArea(description);
 
-    
+        //text 
         descArea.setWrapStyleWord(true);
         descArea.setLineWrap(true);
         descArea.setEditable(false);
-        descArea.setOpaque(false);
-        descArea.setFont(new Font("SansSerif", Font.PLAIN, 14));
-        descArea.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        descArea.setForeground(Color.black);
+        descArea.setOpaque(true);//backgrounf color
+        descArea.setFont(new Font("MV Boli", Font.PLAIN, 20));
+        descArea.setBorder(BorderFactory.createEmptyBorder(0,0,0,0));
 
         JButton selectButton = new JButton("Select " + name);
 
@@ -107,7 +109,7 @@ public class PlayerSelectionWindow extends JFrame {
             Player selectedPlayer = playerSupplier.get();
             this.setVisible(false);
             new ItemSelectionWindow(selectedPlayer).setVisible(true);
-            this.dispose();
+            this.dispose(); // This closes and destroys the current PlayerSelectionWindow so it is removed from memory and the user only sees the next window.
         });
 
         bottomPanel.add(descArea, BorderLayout.CENTER);

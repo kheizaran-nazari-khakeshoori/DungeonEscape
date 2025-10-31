@@ -31,7 +31,7 @@ import model.Weapon;
 import view.GameWindow;
 
 public class ItemSelectionWindow extends JFrame {
-
+    //are used to store the player decision 
     private final Player selectedPlayer;
     private Weapon selectedWeapon;
     private Potion selectedPotion;
@@ -44,7 +44,7 @@ public class ItemSelectionWindow extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout(10, 10));
-        ((JPanel) getContentPane()).setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        
 
         // --- WEAPON SELECTION ---
         JPanel weaponPanel = new JPanel(new GridLayout(0, 3, 10, 10)); // 3 columns, as many rows as needed
