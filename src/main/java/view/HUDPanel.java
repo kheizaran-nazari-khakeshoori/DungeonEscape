@@ -16,23 +16,22 @@ import model.Player;
 
 public class HUDPanel extends JPanel {
     // Player components
+    private final JPanel playerPanel;
     private final JLabel playerNameLabel;
     private final JProgressBar playerHealthBar;
     private final JLabel goldLabel;
 
     // Enemy components
+    private final JPanel enemyPanel;
     private final JLabel enemyNameLabel;
     private final JProgressBar enemyHealthBar;
-    private final JPanel enemyPanel;
+    
 
     public HUDPanel() {
-        setLayout(new GridLayout(2, 1, 5, 5)); // Two rows, one for player, one for enemy
+        setLayout(new GridLayout(2, 1, 5, 5)); 
         setBorder(BorderFactory.createTitledBorder("Status"));
 
-        // --- Player Panel ---
-        JPanel playerPanel = new JPanel(new BorderLayout(10, 5));
-
-        // Create a sub-panel for the labels to stack vertically
+        playerPanel = new JPanel(new BorderLayout(10, 5));
         JPanel playerInfoPanel = new JPanel();
         playerInfoPanel.setLayout(new BoxLayout(playerInfoPanel, BoxLayout.Y_AXIS));
 
@@ -40,7 +39,7 @@ public class HUDPanel extends JPanel {
         playerNameLabel.setFont(new Font("SansSerif", Font.BOLD, 14));
         goldLabel = new JLabel("Gold: 0");
         goldLabel.setFont(new Font("SansSerif", Font.BOLD, 12));
-        goldLabel.setForeground(new Color(218, 165, 32)); // Gold color
+        goldLabel.setForeground(new Color(218, 165, 32)); 
         playerInfoPanel.add(playerNameLabel);
         playerInfoPanel.add(goldLabel);
 
@@ -49,7 +48,7 @@ public class HUDPanel extends JPanel {
         playerPanel.add(playerInfoPanel, BorderLayout.WEST);
         playerPanel.add(playerHealthBar, BorderLayout.CENTER);
 
-        // --- Enemy Panel ---
+        
         enemyPanel = new JPanel(new BorderLayout(10, 0));
         enemyNameLabel = new JLabel();
         enemyNameLabel.setFont(new Font("SansSerif", Font.BOLD, 14));

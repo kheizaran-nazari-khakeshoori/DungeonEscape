@@ -4,10 +4,6 @@ import java.util.List;
 
 import javax.swing.JOptionPane;
 
-/**
- * A dedicated view component for handling the inventory selection dialog.
- * This separates UI logic from the main game controller.
- */
 public class InventoryDialog {
 
     public String showAndGetSelectedItem(List<String> itemNames) {

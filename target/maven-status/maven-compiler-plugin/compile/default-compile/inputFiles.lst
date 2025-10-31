@@ -1,4 +1,3 @@
-/home/kheizaran/Github/DungeonEscape/src/main/java/view/PartyPanel.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/Enemy.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/view/InventoryDialog.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/controller/ItemUsageManager.java
@@ -36,6 +35,7 @@
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/SkeletonWarrior.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/Antidote.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/controller/TrapManager.java
+/home/kheizaran/Github/DungeonEscape/src/main/java/view/PlayerListPanel.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/Ghost.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/Potion.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/controller/RuleEngine.java

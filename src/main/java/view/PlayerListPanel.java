@@ -1,25 +1,38 @@
 package view;
 
-import model.Player;
-import javax.swing.*;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.GridLayout;
 import java.util.List;
 
-public class PartyPanel extends JPanel {
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.SwingConstants;
+
+import model.Player;
+
+public class PlayerListPanel extends JPanel {
     private final JPanel playersContainer;
 
-    public PartyPanel() {
+    public PlayerListPanel() {
         setLayout(new BorderLayout());
-        setBorder(BorderFactory.createTitledBorder("Party"));
+        setBorder(BorderFactory.createTitledBorder("Players"));
         setPreferredSize(new Dimension(200, 300));
 
         playersContainer = new JPanel();
         playersContainer.setLayout(new BoxLayout(playersContainer, BoxLayout.Y_AXIS));
-        add(new JScrollPane(playersContainer), BorderLayout.CENTER);
+        JScrollPane scrollPane = new JScrollPane(playersContainer);
+        add(scrollPane, BorderLayout.CENTER);
     }
 
-    public void updateParty(Player activePlayer, List<Player> allPlayers) {
-        playersContainer.removeAll();
+    public void updatePlayerList(Player activePlayer, List<Player> allPlayers) {
+        playersContainer.removeAll();//clears the old visual components 
 
         for (Player p : allPlayers) {
             JPanel playerCard = new JPanel(new GridLayout(2, 1));

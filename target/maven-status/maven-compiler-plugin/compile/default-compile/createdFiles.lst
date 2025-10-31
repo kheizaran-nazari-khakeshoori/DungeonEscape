@@ -21,7 +21,6 @@ model/Goblin.class
 controller/ItemUsageManager$ItemUseResult.class
 model/SlimeBlob.class
 view/ShopDialog.class
-view/PartyPanel.class
 com/dungeonescape/Game.class
 controller/ItemUsageManager.class
 view/InventoryDialog.class
@@ -57,6 +56,7 @@ model/Player.class
 model/Weapon.class
 view/ControlPanel.class
 model/Lucy.class
+view/PlayerListPanel.class
 utils/DiceRoller.class
 model/PoisonEffect.class
 model/PoisonSpider.class

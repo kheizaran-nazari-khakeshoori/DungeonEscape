@@ -10,7 +10,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
 public class LogPanel extends JPanel {
-    private JTextArea logArea;
+    private final JTextArea logArea;
 
     public LogPanel() {
         setLayout(new BorderLayout());

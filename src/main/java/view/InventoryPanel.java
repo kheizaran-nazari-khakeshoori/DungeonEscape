@@ -1,13 +1,19 @@
 package view;
 
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.Insets;
+
+import javax.swing.BorderFactory;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+
 import model.Item;
 import model.Player;
 
-import javax.swing.*;
-import java.awt.*;
-
 public class InventoryPanel extends JPanel {
-    private JTextArea inventoryArea;
+    private final JTextArea inventoryArea;
 
     public InventoryPanel() {
         setLayout(new BorderLayout());
@@ -16,7 +22,8 @@ public class InventoryPanel extends JPanel {
 
         inventoryArea = new JTextArea();
         inventoryArea.setEditable(false);
-        inventoryArea.setMargin(new Insets(5, 5, 5, 5));
+        inventoryArea.setMargin(new Insets(5, 5, 5, 5));//It adds 5 pixels of padding inside the text area on all sides.
+        
         add(new JScrollPane(inventoryArea), BorderLayout.CENTER);
     }
 

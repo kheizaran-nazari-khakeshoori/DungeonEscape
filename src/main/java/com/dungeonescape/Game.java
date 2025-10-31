@@ -30,7 +30,7 @@ import view.HUDPanel;
 import view.InventoryDialog;
 import view.InventoryPanel;
 import view.LogPanel;
-import view.PartyPanel;
+import view.PlayerListPanel;
 import view.ShopDialog;
 
 /**
@@ -55,7 +55,7 @@ public class Game {
     // decleration 
     private final Map<String, Integer> enemyEncounterCount;//the variable type is map (interface)
 
-    public Game(Player player, GameWindow gameWindow, PartyPanel partyPanel, DungeonPanel dungeonPanel, InventoryPanel inventoryPanel, LogPanel logPanel, ControlPanel controlPanel, HUDPanel hudPanel,ItemUsageManager itemUsageManager) {
+    public Game(Player player, GameWindow gameWindow, PlayerListPanel PlayerListPanel, DungeonPanel dungeonPanel, InventoryPanel inventoryPanel, LogPanel logPanel, ControlPanel controlPanel, HUDPanel hudPanel,ItemUsageManager itemUsageManager) {
         // Initialize player and party
         this.activePlayer = player;
         this.party = new ArrayList<>();
@@ -71,7 +71,7 @@ public class Game {
         this.levelManager = new LevelManager(dice);
         this.itemUsageManager = itemUsageManager;
         this.uiManager = new UIStateManager(dungeonPanel, controlPanel, inventoryPanel,
-                                            hudPanel, partyPanel, logPanel);
+                                            hudPanel, PlayerListPanel, logPanel);
         this.shopEncounter = new ShopEncounter();
         // Setup UI listeners
         setupListeners(dungeonPanel, controlPanel);

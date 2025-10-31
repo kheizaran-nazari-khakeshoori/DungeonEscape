@@ -7,24 +7,24 @@ import view.DungeonPanel;
 import view.HUDPanel;
 import view.InventoryPanel;
 import view.LogPanel;
-import view.PartyPanel;
+import view.PlayerListPanel;
 
 public class UIStateManager {
     private final DungeonPanel dungeonPanel;
     private final ControlPanel controlPanel;
     private final InventoryPanel inventoryPanel;
     private final HUDPanel hudPanel;
-    private final PartyPanel partyPanel;
+    private final PlayerListPanel PlayerListPanel;
     private final LogPanel logPanel;
 
     public UIStateManager(DungeonPanel dungeonPanel, ControlPanel controlPanel,
                           InventoryPanel inventoryPanel, HUDPanel hudPanel,
-                          PartyPanel partyPanel, LogPanel logPanel) {
+                          PlayerListPanel PlayerListPanel, LogPanel logPanel) {
         this.dungeonPanel = dungeonPanel;
         this.controlPanel = controlPanel;
         this.inventoryPanel = inventoryPanel;
         this.hudPanel = hudPanel;
-        this.partyPanel = partyPanel;
+        this.PlayerListPanel = PlayerListPanel;
         this.logPanel = logPanel;
     }
 
@@ -55,7 +55,7 @@ public class UIStateManager {
         controlPanel.setShopButtonVisible(true);
     }
 
-    public void setPostEncounterMode() {
+    public void setPostEncounterMode() {//trap and luck encounter 
         dungeonPanel.door1Button.setVisible(false);
         dungeonPanel.door2Button.setVisible(false);
         controlPanel.setAttackButtonVisible(false);
@@ -75,19 +75,30 @@ public class UIStateManager {
         inventoryPanel.updateInventory(activePlayer);
         hudPanel.updateStatus(activePlayer);
         hudPanel.updateEnemyStatus(currentEnemy);
-        partyPanel.updateParty(activePlayer, party);
+        PlayerListPanel.updatePlayerList(activePlayer, party);
     }
 
     public void updateSpecialAbilityButton(Player player) {
-        controlPanel.setSpecialButtonEnabled(player.isSpecialAbilityReady());
-        controlPanel.setSpecialButtonColor(player.isSpecialAbilityReady() ?
-            java.awt.Color.CYAN : java.awt.Color.LIGHT_GRAY);
+        boolean ready = player.isSpecialAbilityReady();
+        controlPanel.setSpecialButtonEnabled(ready);
+        if (ready) 
+        {
+            controlPanel.setSpecialButtonColor(java.awt.Color.CYAN);
+        }      
+        else 
+        {
+            controlPanel.setSpecialButtonColor(java.awt.Color.LIGHT_GRAY);
+        }
+
     }
 
     public void displayImage(String imagePath) {
-        try {
+        try 
+        {
             dungeonPanel.displayImage(imagePath);
-        } catch (Exception e) {
+        }
+        catch (Exception e) 
+        {
             logPanel.addMessage("[SYSTEM] Warning: Could not load image. Error: " +
                 e.getClass().getSimpleName());
         }

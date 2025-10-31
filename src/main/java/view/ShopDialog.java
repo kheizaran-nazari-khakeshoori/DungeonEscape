@@ -1,6 +1,7 @@
 package view;
 
 import java.awt.BorderLayout;
+import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
@@ -27,19 +28,21 @@ public class ShopDialog extends JDialog {
     private final JPanel itemsPanel;
 
     public ShopDialog(Game game, ShopEncounter shopEncounter) {
-        super((JFrame) null, "Welcome to the Shop!", true); // true for modal
+        super((JFrame) null, "Welcome to the Shop!", true); 
         this.game = game;
         this.shopEncounter = shopEncounter;
 
         setLayout(new BorderLayout(10, 10));
         setSize(800, 600);
-        ((JPanel) getContentPane()).setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        Container contentPane = getContentPane();//what does it return ? 
+        JPanel panel = (JPanel) contentPane;
+        panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-        // Items Panel
         itemsPanel = new JPanel(new GridLayout(0, 3, 10, 10)); // 3 columns
         refreshShopItems();
 
-        add(new JScrollPane(itemsPanel), BorderLayout.CENTER);
+        JScrollPane scrollPane = new JScrollPane(itemsPanel);
+        this.add(scrollPane, BorderLayout.CENTER);
         
         pack();
         setLocationRelativeTo(null); // Center the dialog
@@ -48,26 +51,25 @@ public class ShopDialog extends JDialog {
     private void attemptPurchase(Item item) {
         int itemCost = item.getCost();
         if (game.getActivePlayer().getGold() >= itemCost) {
-            // Player can afford it
-            game.getActivePlayer().addGold(-itemCost); // Deduct gold
-            game.getActivePlayer().pickItem(item); // Add item to inventory
+           
+            game.getActivePlayer().addGold(-itemCost); 
+            game.getActivePlayer().pickItem(item); 
             game.getLogPanel().addMessage("You bought " + item.getName() + " for " + itemCost + " gold.");
-            // Refresh display to show updated inventory and gold
+            
             refreshShopItems();
-            game.updateGUI(); // Update all panels
+            game.updateGUI(); 
         } else {
-            // Player cannot afford it
+
             game.getLogPanel().addMessage("Not enough gold to buy " + item.getName() + ".");
         }
     }
     
     private void refreshShopItems() {
-        itemsPanel.removeAll(); // Clear old items before refreshing
+        itemsPanel.removeAll(); 
         for (Item item : shopEncounter.getAvailableItems()) {
             JPanel card = createShopItemCard(item);
             itemsPanel.add(card);
         }
-        // Re-validate and repaint the panel to show the new cards
         itemsPanel.revalidate();
         itemsPanel.repaint();
     }
@@ -91,7 +93,7 @@ public class ShopDialog extends JDialog {
         }
 
         String descriptionText = item.getDescription();
-        String statsText = item.getStatsString(); // OCP in action!
+        String statsText = item.getStatsString();
         String fullDescription = "<html><div style='text-align: center;'>" + descriptionText + "<br>" + statsText + "</div></html>";
         JLabel descLabel = new JLabel(fullDescription, SwingConstants.CENTER);
 

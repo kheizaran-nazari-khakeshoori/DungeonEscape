@@ -12,8 +12,8 @@ public class ControlPanel extends JPanel {
     private final JButton attackButton;
     private final JButton fleeButton;
     private final JButton specialButton;
-    private final JButton shopButton; // New shop button
-    private final JButton continueButton; // New button for continuing after non-combat encounters
+    private final JButton shopButton; 
+    private final JButton continueButton; 
     private final JButton exitButton;
 
     public ControlPanel() {
@@ -26,26 +26,28 @@ public class ControlPanel extends JPanel {
         specialButton = new JButton("Special");
         specialButton.setOpaque(true); // Make sure background color is visible
         specialButton.setBackground(java.awt.Color.CYAN); // Default to ready (blue)
-        specialButton.setBorderPainted(false); // Optional: remove border for cleaner look
         shopButton = new JButton("Shop"); // Initialize the shop button
         continueButton = new JButton("Continue"); // Initialize the continue button
         exitButton = new JButton("Exit Game");
 
         add(inventoryButton);
         add(attackButton);
-        add(shopButton); // Add the shop button to the panel
+        add(shopButton); 
         add(specialButton);
-        add(continueButton); // Add the continue button to the panel
+        add(continueButton); 
         add(fleeButton);
         add(exitButton);
     }
 
+    //It keeps the buttons private (encapsulation).
+    //Other classes can react to button clicks by providing a listener, but cannot modify the buttons directly.
+    //It makes your code safer and easier to maintain.
     // Public methods to add listeners without exposing the buttons themselves
     public void addInventoryListener(ActionListener listener) { inventoryButton.addActionListener(listener); }
     public void addAttackListener(ActionListener listener) { attackButton.addActionListener(listener); }
     public void addFleeListener(ActionListener listener) { fleeButton.addActionListener(listener); }
-    public void addShopListener(ActionListener listener) { shopButton.addActionListener(listener); } // New listener for shop
-    public void addContinueListener(ActionListener listener) { continueButton.addActionListener(listener); } // New listener for continue button
+    public void addShopListener(ActionListener listener) { shopButton.addActionListener(listener); } 
+    public void addContinueListener(ActionListener listener) { continueButton.addActionListener(listener); } 
     public void addSpecialListener(ActionListener listener) { specialButton.addActionListener(listener); }
     public void addExitListener(ActionListener listener) { exitButton.addActionListener(listener); }
 
@@ -53,8 +55,8 @@ public class ControlPanel extends JPanel {
     public void setAttackButtonVisible(boolean visible) { attackButton.setVisible(visible); }
     public void setFleeButtonVisible(boolean visible) { fleeButton.setVisible(visible); }
     public void setSpecialButtonVisible(boolean visible) { specialButton.setVisible(visible); }
-    public void setShopButtonVisible(boolean visible) { shopButton.setVisible(visible); } // New method for shop button visibility
-    public void setContinueButtonVisible(boolean visible) { continueButton.setVisible(visible); } // New method for continue button visibility
+    public void setShopButtonVisible(boolean visible) { shopButton.setVisible(visible); } 
+    public void setContinueButtonVisible(boolean visible) { continueButton.setVisible(visible); } 
 
     public void setInventoryButtonEnabled(boolean enabled) { inventoryButton.setEnabled(enabled); }
     public void setAttackButtonEnabled(boolean enabled) { attackButton.setEnabled(enabled); }
