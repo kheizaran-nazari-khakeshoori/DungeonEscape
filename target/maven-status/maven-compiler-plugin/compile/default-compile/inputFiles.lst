@@ -49,7 +49,7 @@
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/Effect.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/Level.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/PoisonDartTrap.java
-/home/kheizaran/Github/DungeonEscape/src/main/java/com/dungeonescape/ItemSelectionWindow.java
+/home/kheizaran/Github/DungeonEscape/src/main/java/view/ItemSelectionWindow.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/Inventory.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/utils/DiceRoller.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/Item.java

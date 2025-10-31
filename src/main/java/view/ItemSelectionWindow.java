@@ -1,4 +1,4 @@
-package com.dungeonescape;
+package  view;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -28,7 +28,6 @@ import model.Player;
 import model.Potion;
 import model.StaminaElixir;
 import model.Weapon;
-import view.GameWindow;
 
 public class ItemSelectionWindow extends JFrame {
     //are used to store the player decision 
@@ -51,10 +50,12 @@ public class ItemSelectionWindow extends JFrame {
         // --- IMPROVEMENT: Add color to the border title ---
         TitledBorder weaponBorder = BorderFactory.createTitledBorder("Choose Your Weapon");
         weaponBorder.setTitleColor(new Color(0, 70, 200)); // A strong blue color
+        weaponBorder.setBorder(BorderFactory.createLineBorder(Color.black,3));
         weaponPanel.setBorder(weaponBorder);
+        
 
         List<Weapon> availableWeapons = createAvailableWeapons();
-        ButtonGroup weaponGroup = new ButtonGroup();
+        ButtonGroup weaponGroup = new ButtonGroup();//one weapon can be selected at a time
         for (Weapon weapon : availableWeapons) {
             JPanel itemCard = createItemCard(weapon, weaponGroup);
             weaponPanel.add(itemCard);
@@ -62,9 +63,11 @@ public class ItemSelectionWindow extends JFrame {
 
         // --- POTION SELECTION ---
         JPanel potionPanel = new JPanel(new GridLayout(0, 3, 10, 10)); // 3 columns, as many rows as needed
+        
         // --- IMPROVEMENT: Add color to the border title ---
         TitledBorder potionBorder = BorderFactory.createTitledBorder("Choose Your Potion");
         potionBorder.setTitleColor(new Color(120, 0, 180)); // A magical purple color
+        potionBorder.setBorder(BorderFactory.createLineBorder(Color.gray,3));
         potionPanel.setBorder(potionBorder);
 
         List<Potion> availablePotions = createAvailablePotions();
@@ -79,15 +82,20 @@ public class ItemSelectionWindow extends JFrame {
         startButton.setFont(new Font("Serif", Font.BOLD, 18));
         startButton.addActionListener(e -> startGame());
 
-        // Set default selections
+        // Set default weapon selection
         if (!availableWeapons.isEmpty()) {
             selectedWeapon = availableWeapons.get(0);
-            ((JRadioButton)((JPanel)weaponPanel.getComponent(0)).getComponent(0)).setSelected(true);
+            JPanel firstWeaponPanel = (JPanel) weaponPanel.getComponent(0);
+            JRadioButton firstWeaponButton = (JRadioButton) firstWeaponPanel.getComponent(0);
+            firstWeaponButton.setSelected(true);
         }
         if (!availablePotions.isEmpty()) {
             selectedPotion = availablePotions.get(0);
-            ((JRadioButton)((JPanel)potionPanel.getComponent(0)).getComponent(0)).setSelected(true);
+            JPanel firstPotionPanel = (JPanel) potionPanel.getComponent(0);
+            JRadioButton firstPotionButton = (JRadioButton) firstPotionPanel.getComponent(0);
+            firstPotionButton.setSelected(true);
         }
+
 
         // Add panels to frame
         JPanel selectionContainer = new JPanel(new GridLayout(2, 1, 10, 10));
@@ -121,6 +129,7 @@ public class ItemSelectionWindow extends JFrame {
     private JPanel createItemCard(Item item, ButtonGroup group) {
         JPanel card = new JPanel(new BorderLayout(5, 5));
         card.setBorder(BorderFactory.createEtchedBorder());
+
 
         JRadioButton selectRadio = new JRadioButton(item.getName());
         selectRadio.setFont(new Font("Serif", Font.BOLD, 16));

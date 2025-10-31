@@ -1,3 +1,4 @@
+view/ItemSelectionWindow.class
 model/EnemyFactory.class
 model/GoblinPoisonEffect.class
 view/DungeonPanel$ImagePanel.class
@@ -25,7 +26,6 @@ com/dungeonescape/Game.class
 controller/ItemUsageManager.class
 view/InventoryDialog.class
 model/Iwarrior.class
-com/dungeonescape/ItemSelectionWindow.class
 model/Enemy.class
 controller/CombatManager$FleeResult.class
 view/HUDPanel.class
