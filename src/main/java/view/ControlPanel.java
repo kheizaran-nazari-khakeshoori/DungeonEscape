@@ -69,9 +69,9 @@ public class ControlPanel extends JPanel {
         inventoryButton.setEnabled(enabled);
         attackButton.setEnabled(enabled);
         fleeButton.setEnabled(enabled);
-        shopButton.setEnabled(enabled); // Enable/disable shop button
+        shopButton.setEnabled(enabled); 
         specialButton.setEnabled(enabled);
-        continueButton.setEnabled(enabled); // Enable/disable continue button
-        exitButton.setEnabled(enabled);
+        continueButton.setEnabled(enabled);
+        //exitButton.setEnabled(enabled);
     }
 }

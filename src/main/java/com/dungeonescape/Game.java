@@ -33,12 +33,11 @@ import view.LogPanel;
 import view.PlayerListPanel;
 import view.ShopDialog;
 
-/**
- * The main controller for the game, coordinating between managers.
- */
+//class is responsible for overall game flow and coordination (managing encounters, UI updates, game state)
+
 public class Game {
     
-    private Player activePlayer;//association 
+    private final Player activePlayer;//association 
     private final List<Player> party;
     private Enemy currentEnemy;//association 
 
@@ -81,10 +80,20 @@ public class Game {
 
     private void initializeParty() {
         this.party.add(this.activePlayer);
-        if (!(activePlayer instanceof Elfo)) party.add(new Elfo());
-        if (!(activePlayer instanceof Bean)) party.add(new Bean());
-        if (!(activePlayer instanceof Lucy)) party.add(new Lucy());
+        List<Player> allCharacters = new ArrayList<>();
+        allCharacters.add(new Elfo());
+        allCharacters.add(new Bean());
+        allCharacters.add(new Lucy());
+
+        for (Player character : allCharacters)
+        {
+            if (!character.getClass().equals(activePlayer.getClass())) 
+            {
+                party.add(character);
+            }
+        }
     }
+
 
     private void setupListeners(DungeonPanel dungeonPanel, ControlPanel controlPanel) {
         dungeonPanel.door1Button.addActionListener(e -> chooseDoor(1));
@@ -165,11 +174,9 @@ public class Game {
     }
 
     private void handleEnemyEncounter(Enemy enemy) {
-        if (enemy.getName().equals(currentEnemy != null ? currentEnemy.getName() : "")) {
-            uiManager.getLogPanel().addMessage("...but you manage to dodge into a different corridor!");
-        }
         enterCombat(enemy);
     }
+    
 
     private void handleTrapEncounter() {
         // Delegate to TrapManager
@@ -237,9 +244,13 @@ public class Game {
         // After the round, check the results
         if (!activePlayer.isAlive()) {
             endGame();
-        } else if (!currentEnemy.isAlive()) {
+        } 
+        else if (!currentEnemy.isAlive())
+        {
             winCombat();
-        } else {
+        }
+        else 
+        {
             uiManager.updateSpecialAbilityButton(activePlayer);
             updateGUI();
         }
@@ -257,10 +268,10 @@ public class Game {
         // Check results after the ability and potential enemy counter-attack
         if (!activePlayer.isAlive()) {
             endGame();
-            return;
+        
         } else if (!currentEnemy.isAlive()) {
             winCombat();
-            return;
+    
         } else {
             uiManager.updateSpecialAbilityButton(activePlayer);
             updateGUI();
@@ -346,6 +357,7 @@ public class Game {
         }
     }
 
+//seperation of concern design pattern 
     public void updateGUI() {
         uiManager.updateAllPanels(activePlayer, party, currentEnemy);
     }
