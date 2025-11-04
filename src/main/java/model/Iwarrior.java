@@ -1,6 +1,6 @@
 package model;
 import utils.DiceRoller;
-public interface Iwarrior {
+public interface Iwarrior  {
     String getName();
     int getHealth();
     int getMaxHealth();
