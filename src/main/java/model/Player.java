@@ -1,6 +1,6 @@
 package model;
 
-//"I use generics (Effect<Player>) to make the effect system reusable. The same Effect class can work with different types (Player, Enemy) while maintaining type safety."
+import controller.AttackAction;
 import controller.EffectManager;
 import controller.RuleEngine; 
 import exceptions.InvalidMoveException;
@@ -114,29 +114,7 @@ public abstract class Player implements Iwarrior,IOperation_on_Effect<Player>{
 
     @Override
     public String attack(Iwarrior target, DiceRoller dice) throws InvalidMoveException {
-        if (equippedWeapon != null) {
-            int baseDamage = equippedWeapon.getDamage();
-            
-            
-            String effectivenessMessage = target.takeDamage(baseDamage, equippedWeapon.getDamageType());
-            
-            equippedWeapon.decreaseDurability();
-
-            String result = name + " attacks " + target.getName() + " with " + equippedWeapon.getName() +
-                    " for " + baseDamage + " damage! " + effectivenessMessage;
-
-            if (equippedWeapon.getDurability() <= 0) {
-                inventory.removeItem(equippedWeapon);
-                String brokenWeaponName = equippedWeapon.getName();
-                setEquippedWeapon(null); 
-                result += "\nYour " + brokenWeaponName + " broke!";
-            }
-            return result;
-        }   
-        else
-        {
-            throw new InvalidMoveException("You have no weapon equipped to attack!");
-        }
+        return AttackAction.performWeaponAttack(this, target, equippedWeapon, inventory);
     }
     @Override
     public void addEffect(Effect<Player> effect) { 
