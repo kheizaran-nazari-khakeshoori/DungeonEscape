@@ -4,14 +4,14 @@ import java.util.List;
 import java.util.function.Supplier;
 
 import utils.DiceRoller;
-
+//factory pattern that create random enemy instance (i centralized the enemy creation)
 public class EnemyFactory {
     private final DiceRoller dice;
-    private final List<Supplier<Enemy>> enemySuppliers = new ArrayList<>();
+    private final List<Supplier<Enemy>> enemySuppliers ;
 
     public EnemyFactory(DiceRoller dice) {
         this.dice = dice;
-        
+        this.enemySuppliers = new ArrayList<>();
         enemySuppliers.add(Goblin::new);
         enemySuppliers.add(Ghost::new);
         enemySuppliers.add(StoneMan::new);
@@ -29,8 +29,8 @@ public class EnemyFactory {
             return new Goblin();
         }
         
-        int index = dice.rollIndex(enemySuppliers.size());
+        int index = dice.rollIndex(enemySuppliers.size());//returning random index
         return enemySuppliers.get(index).get();
-    }                           
+    }                        //get from list  get from supplier 
 
 }
