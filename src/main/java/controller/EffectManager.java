@@ -6,12 +6,10 @@ import java.util.List;
 
 import model.Effect;
 
-/**
- * EffectManager is a helper class that manages a collection of effects.
- * It can be reused by both Player and Enemy classes.
- * 
- * @param <T> The type of target the effects apply to (Player or Enemy)
- */
+
+//EffectManager is a helper class that manages a collection of effects.
+
+
 public class EffectManager<T> {
     private final List<Effect<T>> activeEffects;
     
@@ -19,16 +17,11 @@ public class EffectManager<T> {
         this.activeEffects = new ArrayList<>();
     }
     
-    /**
-     * Adds an effect to the active effects list
-     */
     public void addEffect(Effect<T> effect) {
         activeEffects.add(effect);
     }
     
-    /**
-     * Checks if an effect with the given name is currently active
-     */
+
     public boolean hasEffect(String effectName) {
         for (Effect<T> effect : activeEffects) {
             if (effect.getName().equals(effectName)) {
@@ -38,9 +31,6 @@ public class EffectManager<T> {
         return false;
     }
     
-    /**
-     * Removes an effect with the given name
-     */
     public void removeEffect(String effectName) {
         Iterator<Effect<T>> iterator = activeEffects.iterator();
         while (iterator.hasNext()) {
@@ -52,9 +42,6 @@ public class EffectManager<T> {
         }
     }
     
-    /**
-     * Removes all effects of a specific type (e.g., all PoisonEffect instances)
-     */
     public void removeEffectsOfType(Class<?> effectType) {
         Iterator<Effect<T>> iterator = activeEffects.iterator();
         while (iterator.hasNext()) {
@@ -65,11 +52,6 @@ public class EffectManager<T> {
         }
     }
     
-    /**
-     * Applies all active effects to the target and removes finished effects
-     * @param target The entity (Player or Enemy) to apply effects to
-     * @return A message describing what effects were applied
-     */
     public String applyAllEffects(T target) {
         if (activeEffects.isEmpty()) {
             return "";
@@ -89,7 +71,6 @@ public class EffectManager<T> {
                 effectsResult.append(result);
             }
             
-            // Remove effect if it's finished
             if (effect.isFinished()) {
                 iterator.remove();
             }
@@ -98,9 +79,6 @@ public class EffectManager<T> {
         return effectsResult.toString();
     }
     
-    /**
-     * Returns a copy of the active effects list (for read-only access)
-     */
     public List<Effect<T>> getActiveEffects() {
         return new ArrayList<>(activeEffects);
     }

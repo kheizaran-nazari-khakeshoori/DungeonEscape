@@ -6,6 +6,7 @@
 /home/kheizaran/Github/DungeonEscape/src/main/java/view/ControlPanel.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/StaminaElixir.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/Weapon.java
+/home/kheizaran/Github/DungeonEscape/src/main/java/controller/AttackAction.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/controller/UIStateManager.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/view/ShopDialog.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/IOperation_on_Effect.java

@@ -11,22 +11,21 @@ public class Goblin extends Enemy {
 
    @Override
     public String attack(Iwarrior target, DiceRoller dice) throws exceptions.InvalidMoveException {
-    
-    Player player = (Player) target;
-    
+ 
     target.takeDamage(this.baseDamage);
     String result = this.name + " attacks you for " + this.baseDamage + " damage.";
     
-    
-    int poisonChance = dice.roll( 4);  
-    
-    if (poisonChance == 1) {  
+    if (target instanceof Player player)
+    {
+        int poisonChance = dice.roll(4);
+        if (poisonChance == 1) {  
         
         int poisonDamage = 2;
         int poisonDuration = 2;
         player.addEffect(new GoblinPoisonEffect(poisonDamage, poisonDuration));
         
         result += "\nYou are hit by a rusty weapon. Now you are poisoned!";
+    }
     }
     
     return result;

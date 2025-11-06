@@ -62,6 +62,7 @@ model/InvisibilityEffect.class
 model/StoneMan.class
 view/InventoryPanel.class
 controller/DoorManager$EncounterType.class
+controller/AttackAction.class
 model/Player.class
 view/ControlPanel.class
 model/Lucy.class
