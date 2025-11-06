@@ -1,6 +1,7 @@
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/Enemy.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/view/InventoryDialog.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/controller/ItemUsageManager.java
+/home/kheizaran/Github/DungeonEscape/src/main/java/controller/EffectManager.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/StoneMan.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/view/ControlPanel.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/StaminaElixir.java

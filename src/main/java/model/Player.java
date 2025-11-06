@@ -1,10 +1,8 @@
 package model;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
-import controller.RuleEngine;
+//"I use generics (Effect<Player>) to make the effect system reusable. The same Effect class can work with different types (Player, Enemy) while maintaining type safety."
+import controller.EffectManager;
+import controller.RuleEngine; 
 import exceptions.InvalidMoveException;
 import utils.DiceRoller;
 
@@ -13,10 +11,10 @@ public abstract class Player implements Iwarrior,IOperation_on_Effect<Player>{
     private final int maxHealth;
     private int health;
     private final Inventory inventory;
-    private final List<Effect<Player>> activeEffects;
+    
     private Weapon equippedWeapon;
     private int gold; 
-    
+    private final EffectManager<Player> effectManager;
     
     protected int specialAbilityCooldownTurns;
     protected int currentSpecialAbilityCooldown;
@@ -27,7 +25,7 @@ public abstract class Player implements Iwarrior,IOperation_on_Effect<Player>{
         this.maxHealth = maxHealth;
         this.health = this.maxHealth;
         this.inventory = new Inventory(); 
-        this.activeEffects = new ArrayList<>();
+        this.effectManager = new EffectManager<>();
         this.equippedWeapon = null;
         this.gold = 0; 
         this.specialAbilityCooldownTurns = 3; 
@@ -53,9 +51,7 @@ public abstract class Player implements Iwarrior,IOperation_on_Effect<Player>{
         this.gold = gold + amount ;
         if (this.gold < 0) this.gold = 0;
     }
-  
-
-    
+   
     public boolean spendGold(int amount) {
         if (amount > 0 && this.gold >= amount) {
             this.gold = gold - amount;
@@ -82,7 +78,7 @@ public abstract class Player implements Iwarrior,IOperation_on_Effect<Player>{
     @Override
     public String takeDamage(int amount, DamageType type) {
         int finalDamage = amount;
-        for (Effect<Player> effect : activeEffects)
+        for (Effect<Player> effect : effectManager.getActiveEffects())
         {
             if(effect instanceof IDefensiveEffect iDefensiveEffect)
             {
@@ -91,7 +87,7 @@ public abstract class Player implements Iwarrior,IOperation_on_Effect<Player>{
         }
         this.health = health - finalDamage ;
         if(this.health < 0 ) this.health = 0;
-        return ""; // do not forget that player does not have type effectiveness  
+        return ""; 
     }
 
     public void heal(int amount) {
@@ -136,69 +132,35 @@ public abstract class Player implements Iwarrior,IOperation_on_Effect<Player>{
                 result += "\nYour " + brokenWeaponName + " broke!";
             }
             return result;
-        } else {
+        }   
+        else
+        {
             throw new InvalidMoveException("You have no weapon equipped to attack!");
         }
     }
     @Override
     public void addEffect(Effect<Player> effect) { 
-        activeEffects.add(effect);
+       effectManager.addEffect(effect);
     }
 
     @Override
     public boolean hasEffect(String effectName) {
-    for (Effect<Player> effect : activeEffects) {
-        
-        if (effect.getName().equals(effectName)) {
-            return true;  
-            }
-        }
-        return false;
+        return effectManager.hasEffect(effectName);
     }
 
     @Override
     public void removeEffect(String effectName) {
-    Iterator<Effect<Player>> iterator = activeEffects.iterator();
-    while (iterator.hasNext()) {
-        Effect<Player> effect = iterator.next();
-        if (effect.getName().equals(effectName)) {
-            iterator.remove();
-            break;
-            }
-        }
+        effectManager.removeEffect(effectName);
     }
 
     @Override
     public void removeEffectsOfType(Class<?> effectType) {
-    Iterator<Effect<Player>> iterator = activeEffects.iterator();
-    while (iterator.hasNext()) {
-        Effect<Player> effect = iterator.next();
-        if (effectType.isInstance(effect)) {
-            iterator.remove();
-            }
-        }
+        effectManager.removeEffectsOfType(effectType);
     }
 
     @Override
     public String applyTurnEffects() { 
-        if (activeEffects.isEmpty()) {
-            return "";
-        }
-        
-        StringBuilder effectsResult = new StringBuilder();
-        Iterator<Effect<Player>> iterator = activeEffects.iterator(); 
-        while (iterator.hasNext()) {
-            Effect<Player> effect = iterator.next();
-            String result = effect.apply(this); 
-            if (result != null && !result.isEmpty()) {
-                if (effectsResult.length() > 0) effectsResult.append("\n");
-                effectsResult.append(result);
-            }
-            if (effect.isFinished()) {
-                iterator.remove();
-            }
-        }
-        return effectsResult.toString();
+        return effectManager.applyAllEffects(this);
     }
 
     

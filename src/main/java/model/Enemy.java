@@ -1,11 +1,9 @@
 package model;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 
+import controller.EffectManager;
 import controller.RuleEngine;
 import utils.DiceRoller;
 
@@ -17,9 +15,10 @@ public abstract class Enemy implements Iwarrior, ITakeable,IOperation_on_Effect<
     protected int goldValue;
     protected String imagePath;
     protected DamageType damageType;
-    private final List<Effect<Enemy>> activeEffects;
+    private final EffectManager<Enemy> effectManager;
     protected final Map<DamageType, Double> weaknesses;
     protected final Map<DamageType, Double> resistances;
+    
 
     public Enemy(String name, int maxHealth, int baseDamage, int goldValue, String imagePath, DamageType damageType) {
         this.name = name;
@@ -31,7 +30,7 @@ public abstract class Enemy implements Iwarrior, ITakeable,IOperation_on_Effect<
         this.damageType = damageType;
         this.weaknesses = new HashMap<>();
         this.resistances = new HashMap<>();
-        this.activeEffects = new ArrayList<>();
+        this.effectManager = new EffectManager<>();
     }
 
     
@@ -68,7 +67,7 @@ public abstract class Enemy implements Iwarrior, ITakeable,IOperation_on_Effect<
     
     public void takeDamage(int amount) {
         int finalDamage = amount;
-        for (Effect<Enemy> effect : activeEffects)
+        for (Effect<Enemy> effect : effectManager.getActiveEffects())
         {
              if(effect instanceof IDefensiveEffect iDefensiveEffect)
             {
@@ -94,7 +93,7 @@ public abstract class Enemy implements Iwarrior, ITakeable,IOperation_on_Effect<
         }
         int damagecaused = (int) (amount * multiplier); 
         int finalDamage = damagecaused;
-       for (Effect<Enemy> effect : activeEffects)
+       for (Effect<Enemy> effect : effectManager.getActiveEffects())
         {
             if (effect instanceof  IDefensiveEffect  iDefensiveEffect)
             {
@@ -135,28 +134,7 @@ public abstract class Enemy implements Iwarrior, ITakeable,IOperation_on_Effect<
     
     @Override
     public String applyTurnEffects() {
-        if (activeEffects.isEmpty())
-        {
-            return "";
-        }
-
-    StringBuilder effectsResult = new StringBuilder();
-    Iterator<Effect<Enemy>> iterator = activeEffects.iterator();
-    
-    while (iterator.hasNext()) {
-        Effect<Enemy> effect = iterator.next();
-        String result = effect.apply(this);
-        
-        if (result != null && !result.isEmpty()) {
-            if (effectsResult.length() > 0) effectsResult.append("\n");
-            effectsResult.append(result);
-        }
-        
-        if (effect.isFinished()) {
-            iterator.remove();
-        }
-    }
-    return effectsResult.toString();
+         return effectManager.applyAllEffects(this);
        
     }
 
@@ -185,42 +163,24 @@ public abstract class Enemy implements Iwarrior, ITakeable,IOperation_on_Effect<
 
     @Override
     public void addEffect(Effect<Enemy> effect) {
-        activeEffects.add(effect);
+       effectManager.addEffect(effect);
     }
 
 
     @Override
     public boolean hasEffect(String effectName) {
-        for (Effect<Enemy> effect : activeEffects) {
-            if (effect.getName().equals(effectName)) {
-            return true;
-            }
-        }
-        return false;
+        return effectManager.hasEffect(effectName);
     }
 
     @Override
     public void removeEffect(String effectName) {
-        Iterator<Effect<Enemy>> iterator = activeEffects.iterator();
-        while (iterator.hasNext()) {
-            Effect<Enemy> effect = iterator.next();
-            if (effect.getName().equals(effectName)) {
-                iterator.remove();
-                break;
-                }
-            }
+         effectManager.removeEffect(effectName);
         }
 
 
     @Override
     public void removeEffectsOfType(Class<?> effectType) {
-        Iterator<Effect<Enemy>> iterator = activeEffects.iterator();
-        while (iterator.hasNext()) {
-            Effect<Enemy> effect = iterator.next();
-            if (effectType.isInstance(effect)) {
-                iterator.remove();
-            }
-        }
+        effectManager.removeEffectsOfType(effectType);
     }
 
 }
