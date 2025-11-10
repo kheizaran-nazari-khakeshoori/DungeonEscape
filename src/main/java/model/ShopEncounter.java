@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ShopEncounter {
-    private final List<Item> availableItems;
+    private final List<Item> availableItems;//repository pattern 
 
     public ShopEncounter() {
         this.availableItems = new ArrayList<>();
@@ -31,9 +31,18 @@ public class ShopEncounter {
         return new ArrayList<>(availableItems); 
     }
 
-    public Item getItemByName(String name) {
-        return availableItems.stream().filter(item -> item.getName().equals(name)).findFirst().orElse(null);
+   public Item getItemByName(String name) {
+
+        for (Item item : availableItems) {
+           
+            if (item.getName().equals(name)) {
+               
+                return item;
+            }
+        }
+        return null;
     }
+
 
     public String getEnterMessage() {
         return "You enter a dimly lit shop. A shady merchant eyes you suspiciously.";
