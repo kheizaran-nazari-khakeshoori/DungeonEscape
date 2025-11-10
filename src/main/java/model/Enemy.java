@@ -66,16 +66,7 @@ public abstract class Enemy implements Iwarrior, ITakeable,IOperation_on_Effect<
     @Override
     
     public void takeDamage(int amount) {
-        int finalDamage = amount;
-        for (Effect<Enemy> effect : effectManager.getActiveEffects())
-        {
-             if(effect instanceof IDefensiveEffect iDefensiveEffect)
-            {
-                finalDamage = iDefensiveEffect.applyDefense(finalDamage);
-            }
-        }
-        this.health = health - finalDamage;
-        if (this.health < 0) this.health = 0;
+        takeDamage(amount, null);
     }
 
     @Override
@@ -87,19 +78,13 @@ public abstract class Enemy implements Iwarrior, ITakeable,IOperation_on_Effect<
             multiplier = weaknesses.get(type); 
             effectiveness = "It's super effective!";
 
-        } else if (resistances.containsKey(type)) {
+        } 
+        else if (resistances.containsKey(type)) {
             multiplier = resistances.get(type); 
             effectiveness = "It's not very effective...";
         }
         int damagecaused = (int) (amount * multiplier); 
-        int finalDamage = damagecaused;
-       for (Effect<Enemy> effect : effectManager.getActiveEffects())
-        {
-            if (effect instanceof  IDefensiveEffect  iDefensiveEffect)
-            {
-                finalDamage = iDefensiveEffect.applyDefense(finalDamage);
-            }
-        }
+        int finalDamage = damagecaused;    
         this.health -= finalDamage;
         if (this.health < 0) this.health = 0;
     

@@ -1,8 +1,9 @@
 package model;
 
 
-public class Defensive_type_Effect implements Effect<Player> ,IDefensiveEffect {
-    public static final String EFFECT_NAME = "Defensive Stance";
+public class Defensive_type_Effect implements Effect<Player>  {
+    //static : Belongs to the CLASS, not to individual objects
+    public static final String EFFECT_NAME = "Defensive Stance";//is a constant - a value that never changes and is shared by all instances of the class.
     private int remainingDuration;
 
     public Defensive_type_Effect(int duration) {
@@ -27,7 +28,6 @@ public class Defensive_type_Effect implements Effect<Player> ,IDefensiveEffect {
         return EFFECT_NAME;
     }
 
-    @Override
     public int applyDefense(int incomingDamage) {
         return incomingDamage / 2; 
     }

@@ -20,5 +20,5 @@ public class TrapFactory {
     public Trap createRandomTrap() {
         int index = dice.rollIndex(trapSuppliers.size());
         return trapSuppliers.get(index).get();
-    }
+    }//DiceRoller randomly selects a supplier, then calls get() to create instance
 }

@@ -78,16 +78,17 @@ public abstract class Player implements Iwarrior,IOperation_on_Effect<Player>{
     @Override
     public String takeDamage(int amount, DamageType type) {
         int finalDamage = amount;
+        String message = "";
+        this.health = health - finalDamage ;
         for (Effect<Player> effect : effectManager.getActiveEffects())
         {
-            if(effect instanceof IDefensiveEffect iDefensiveEffect)
-            {
-                finalDamage = iDefensiveEffect.applyDefense(finalDamage);
+            if (effect instanceof Defensive_type_Effect defensive) {
+                finalDamage = (int)(finalDamage - (defensive.applyDefense(amount)));
+                message = " (Reduced by Defensive Stance!)";
             }
         }
-        this.health = health - finalDamage ;
         if(this.health < 0 ) this.health = 0;
-        return ""; 
+        return message; 
     }
 
     public void heal(int amount) {

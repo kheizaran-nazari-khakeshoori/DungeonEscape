@@ -15,11 +15,11 @@ public class StaminaElixir extends Potion {
 
     @Override
     public String getUseMessage(Player user) {
-        return "You drink the " + getName() + " and feel invigorated.";
+        return "You drink the " + getName() + " and feel great.";
     }
 
     @Override
     public String getStatsString() {
-        return "<b>Heals: " + getHealAmount() + " + Regen</b>";
+        return "Heals for : " + getHealAmount() + "amount";
     }
 }

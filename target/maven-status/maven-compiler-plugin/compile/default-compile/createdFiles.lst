@@ -27,7 +27,6 @@ model/Bean.class
 controller/TrapManager.class
 model/Elfo.class
 model/Slow_Heal_Effect.class
-model/IDefensiveEffect.class
 model/StaminaElixir.class
 model/Ghost.class
 model/Weapon.class

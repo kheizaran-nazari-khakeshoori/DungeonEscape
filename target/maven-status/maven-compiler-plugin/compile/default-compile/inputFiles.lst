@@ -19,7 +19,6 @@
 /home/kheizaran/Github/DungeonEscape/src/main/java/com/dungeonescape/GameState.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/InvisibilityPotion.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/Iwarrior.java
-/home/kheizaran/Github/DungeonEscape/src/main/java/model/IDefensiveEffect.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/exceptions/InvalidMoveException.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/Goblin.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/controller/LevelManager.java

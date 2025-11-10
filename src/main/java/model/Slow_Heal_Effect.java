@@ -1,6 +1,6 @@
 package model;
 
-public class Slow_Heal_Effect implements Effect<Player>, IDefensiveEffect {
+public class Slow_Heal_Effect implements Effect<Player>{
     public static final String EFFECT_NAME = "Slow Heal";
     private final int healPerTurn;
     private int remainingDuration;
@@ -25,7 +25,5 @@ public class Slow_Heal_Effect implements Effect<Player>, IDefensiveEffect {
 
     @Override
     public String getName() { return EFFECT_NAME; }
-
-    @Override
-    public int applyDefense(int initialDamage) { return initialDamage; } // Not a defensive effect
+    
 }
