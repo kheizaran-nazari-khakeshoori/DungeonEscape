@@ -18,7 +18,7 @@ public abstract class Player implements Iwarrior,IOperation_on_Effect<Player>{
     
     protected int specialAbilityCooldownTurns;
     protected int currentSpecialAbilityCooldown;
-    protected RuleEngine ruleEngine; 
+    protected final RuleEngine ruleEngine; 
 
     public Player(String name, int maxHealth) {
         this.name = name;
@@ -177,3 +177,4 @@ public abstract class Player implements Iwarrior,IOperation_on_Effect<Player>{
     
     protected void putSpecialAbilityOnCooldown() { this.currentSpecialAbilityCooldown = this.specialAbilityCooldownTurns; } 
 }
+//
