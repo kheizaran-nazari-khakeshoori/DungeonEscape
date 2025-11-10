@@ -1,5 +1,4 @@
 package model;
-import utils.DiceRoller;
 
 public class ShadowAssassin extends Enemy {
      public ShadowAssassin() {
@@ -9,11 +8,10 @@ public class ShadowAssassin extends Enemy {
 
 
     @Override
-    public String attack(Iwarrior target, DiceRoller dice) throws exceptions.InvalidMoveException {
-       
-        int variation= this.baseDamage + dice.roll(5) - 2; 
-        return this.name + " strikes from the shadows for " + variation + " variation!";
+    protected String getAttackMessage() {
+        return this.name + " shadow assasin causes damage for " + this.baseDamage + " damage!";
     }
+
 
     @Override
     public String getHint() {

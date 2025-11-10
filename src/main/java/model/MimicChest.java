@@ -1,5 +1,4 @@
 package model;
-import utils.DiceRoller;
 
 public class MimicChest extends Enemy {
    public MimicChest() {
@@ -10,11 +9,9 @@ public class MimicChest extends Enemy {
     }
 
     @Override
-    public String attack(Iwarrior target, DiceRoller dice) throws exceptions.InvalidMoveException {
-       target.takeDamage(this.baseDamage);
+    protected String getAttackMessage() {
         return this.name + " reveals its teeth and chomps down on you for " + this.baseDamage + " damage!";
     }
-
 
     @Override
     public String getHint() {

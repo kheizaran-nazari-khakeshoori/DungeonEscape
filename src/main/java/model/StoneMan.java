@@ -1,7 +1,5 @@
 package model;
 
-import utils.DiceRoller;
-
 public class StoneMan extends Enemy {
     public StoneMan() {
         
@@ -14,10 +12,10 @@ public class StoneMan extends Enemy {
     }
 
     @Override
-    public String attack(Iwarrior target, DiceRoller dice) throws exceptions.InvalidMoveException {
-       target.takeDamage(this.baseDamage);
-        return this.name + " slams you for " + this.baseDamage + " heavy damage.";
+    protected String getAttackMessage() {
+        return this.name + " slams you for damage " + this.baseDamage + " damage!";
     }
+
 
 
     @Override

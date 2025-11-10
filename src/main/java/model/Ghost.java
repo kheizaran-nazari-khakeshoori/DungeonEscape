@@ -1,5 +1,4 @@
 package model;
-import utils.DiceRoller;
 
 public class Ghost extends Enemy {
     public Ghost() {
@@ -12,10 +11,10 @@ public class Ghost extends Enemy {
     }
 
     @Override
-    public String attack(Iwarrior target, DiceRoller dice) throws exceptions.InvalidMoveException {
-        target.takeDamage(this.baseDamage);
-        return this.name + " phases through you, dealing " + this.baseDamage + " chilling damage.";
+    protected String getAttackMessage() {
+        return this.name + "can ruin you for" + this.baseDamage + " damage!";
     }
+
 
     @Override
     public String getHint() {

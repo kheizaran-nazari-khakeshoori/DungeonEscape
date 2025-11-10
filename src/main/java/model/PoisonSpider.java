@@ -21,6 +21,10 @@ public class PoisonSpider extends Enemy {
         }
         return result;
     }
+    @Override
+    protected String getAttackMessage() {
+        return this.name + " bites you for " + this.baseDamage + " damage.";
+    }
 
     @Override
     public String getHint() {

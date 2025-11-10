@@ -143,9 +143,10 @@ public abstract class Enemy implements Iwarrior, ITakeable,IOperation_on_Effect<
     @Override 
     public String attack(Iwarrior target, DiceRoller dice) throws exceptions.InvalidMoveException{
         target.takeDamage(this.baseDamage);
-        return this.name + " attacks " + target.getName() + " for " + this.baseDamage + " damage.";
+        return getAttackMessage();
     }
 
+    protected abstract String getAttackMessage();
     @Override
     public void addEffect(Effect<Enemy> effect) {
        effectManager.addEffect(effect);

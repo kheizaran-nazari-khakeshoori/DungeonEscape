@@ -31,6 +31,13 @@ public class Goblin extends Enemy {
     return result;
 }
 
+    
+    @Override
+    protected String getAttackMessage() {
+        return this.name + " attacks you for " + this.baseDamage + " damage.";
+    }
+
+
     @Override
     public String getHint() {
         return "Hint: This creature looks straightforward. A standard weapon should suffice.";
