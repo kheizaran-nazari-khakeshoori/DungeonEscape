@@ -24,11 +24,11 @@ public class Potion extends Item {
 
     @Override
     public String getUseMessage(Player user) {
-        return "Used " + getName() + ".";
-    }
+        return user.getName() + "used" + getName() + ".";//getname is inherited no super needed to use 
+    }//you use super only when you are overriding and wanting parent's version  here i am not overrifing the getname i am inheriting from parent 
 
     @Override
     public String getStatsString() {
-        return "<b>Heals: " + getHealAmount() + " HP</b>";
+        return "<b>Heals: " + getHealAmount() + " HP</b>";//potion is calling its own method no need to super 
     }
 }

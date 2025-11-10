@@ -3,7 +3,7 @@ package model;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Inventory {//does not have constructor 
+public class Inventory {
     private final List<Item> items;
 
     public Inventory()

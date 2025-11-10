@@ -1,4 +1,4 @@
-package  view;
+package view;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -6,7 +6,6 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Image;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.BorderFactory;
@@ -20,13 +19,10 @@ import javax.swing.JRadioButton;
 import javax.swing.SwingConstants;
 import javax.swing.border.TitledBorder;
 
-import model.Antidote;
-import model.DamageType;
-import model.InvisibilityPotion;
 import model.Item;
+import model.ItemFactory;
 import model.Player;
 import model.Potion;
-import model.StaminaElixir;
 import model.Weapon;
 
 public class ItemSelectionWindow extends JFrame {
@@ -39,38 +35,39 @@ public class ItemSelectionWindow extends JFrame {
         this.selectedPlayer = player;
 
         setTitle("Choose Your Starting Gear");
-        setSize(800, 900); // Increased height to accommodate all items
+        setSize(800, 900);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout(10, 10));
         
+        // --- CREATE PANELS FIRST ---
+        JPanel weaponPanel = new JPanel(new GridLayout(0, 3, 10, 10)); // 3 columns
+        JPanel potionPanel = new JPanel(new GridLayout(0, 3, 10, 10)); // 3 columns
 
         // --- WEAPON SELECTION ---
-        JPanel weaponPanel = new JPanel(new GridLayout(0, 3, 10, 10)); // 3 columns, as many rows as needed
+        List<Weapon> availableWeapons = ItemFactory.createStartingWeapons(); 
+        
         // --- IMPROVEMENT: Add color to the border title ---
         TitledBorder weaponBorder = BorderFactory.createTitledBorder("Choose Your Weapon");
         weaponBorder.setTitleColor(new Color(0, 70, 200)); // A strong blue color
-        weaponBorder.setBorder(BorderFactory.createLineBorder(Color.black,3));
+        weaponBorder.setBorder(BorderFactory.createLineBorder(Color.BLACK, 3));
         weaponPanel.setBorder(weaponBorder);
         
-
-        List<Weapon> availableWeapons = createAvailableWeapons();
-        ButtonGroup weaponGroup = new ButtonGroup();//one weapon can be selected at a time
+        ButtonGroup weaponGroup = new ButtonGroup(); //one weapon can be selected at a time
         for (Weapon weapon : availableWeapons) {
             JPanel itemCard = createItemCard(weapon, weaponGroup);
             weaponPanel.add(itemCard);
         }
 
         // --- POTION SELECTION ---
-        JPanel potionPanel = new JPanel(new GridLayout(0, 3, 10, 10)); // 3 columns, as many rows as needed
+        List<Potion> availablePotions = ItemFactory.createStartingPotions();
         
         // --- IMPROVEMENT: Add color to the border title ---
         TitledBorder potionBorder = BorderFactory.createTitledBorder("Choose Your Potion");
         potionBorder.setTitleColor(new Color(120, 0, 180)); // A magical purple color
-        potionBorder.setBorder(BorderFactory.createLineBorder(Color.gray,3));
+        potionBorder.setBorder(BorderFactory.createLineBorder(Color.GRAY, 3));
         potionPanel.setBorder(potionBorder);
 
-        List<Potion> availablePotions = createAvailablePotions();
         ButtonGroup potionGroup = new ButtonGroup();
         for (Potion potion : availablePotions) {
             JPanel itemCard = createItemCard(potion, potionGroup);
@@ -96,7 +93,6 @@ public class ItemSelectionWindow extends JFrame {
             firstPotionButton.setSelected(true);
         }
 
-
         // Add panels to frame
         JPanel selectionContainer = new JPanel(new GridLayout(2, 1, 10, 10));
         selectionContainer.add(weaponPanel);
@@ -106,30 +102,9 @@ public class ItemSelectionWindow extends JFrame {
         add(startButton, BorderLayout.SOUTH);
     }
 
-    private List<Weapon> createAvailableWeapons() {
-        List<Weapon> weapons = new ArrayList<>();
-        weapons.add(new Weapon("Greatsword", "A heavy two-handed sword. High damage, but average durability.", 15, 30, DamageType.SLASHING, "images/weapons/Greatsword.png", 0));
-        weapons.add(new Weapon("Runic Bow", "A bow etched with runes. Good damage and durability.", 14, 35, DamageType.PIERCING, "images/weapons/RunicBow.png", 0));
-        weapons.add(new Weapon("Dual Daggers", "A pair of quick daggers. Lower damage, but very durable.", 8, 40, DamageType.PIERCING, "images/weapons/DualDaggers.png", 0));
-        weapons.add(new Weapon("Enchanted Staff", "A staff crackling with fire. High damage, but fragile.", 18, 20, DamageType.FIRE, "images/weapons/EnchantedStaff.png", 0));
-        weapons.add(new Weapon("War Axe", "A brutal axe that cleaves through armor. Good damage, low durability.", 16, 25, DamageType.SLASHING, "images/weapons/WarAxe.png", 0));
-        weapons.add(new Weapon("Crossbow", "A powerful crossbow that hits hard but is very fragile.", 20, 15, DamageType.PIERCING, "images/weapons/CrossBow.png", 0));
-        return weapons;
-    }
-
-    private List<Potion> createAvailablePotions() {
-        List<Potion> potions = new ArrayList<>();
-        potions.add(new Potion("Health Potion", "A swirling blue liquid that restores 25 health.", 25, 1, "images/potions/ManaPotion.png", 0));
-        potions.add(new StaminaElixir("Stamina Elixir", "Restores 20 health and grants regeneration for 3 turns.", 20, "images/potions/StaminaElixir.png", 0));
-        potions.add(new InvisibilityPotion("Invisibility Potion", "Guarantees a successful escape from your next fight.", "images/potions/InvisibilityPotion.png", 0));
-        potions.add(new Antidote("Antidote", "A chalky fluid that cures poison.", "images/potions/Antidote.png", 0));
-        return potions;
-    }
-
     private JPanel createItemCard(Item item, ButtonGroup group) {
         JPanel card = new JPanel(new BorderLayout(5, 5));
         card.setBorder(BorderFactory.createEtchedBorder());
-
 
         JRadioButton selectRadio = new JRadioButton(item.getName());
         selectRadio.setFont(new Font("Serif", Font.BOLD, 16));

@@ -4,6 +4,7 @@ controller/UIStateManager.class
 model/Potion.class
 controller/CombatManager.class
 model/Antidote.class
+model/ItemFactory.class
 model/SpikeTrap.class
 controller/RuleEngine.class
 model/MimicChest.class
