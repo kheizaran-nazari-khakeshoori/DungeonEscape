@@ -16,6 +16,7 @@ public class RuleEngine implements Cloneable {
     public static final String ENEMY_DAMAGE_SCALING = "ENEMY_DAMAGE_SCALING";
     public static final String POISON_RESISTANCE = "POISON_RESISTANCE";
     public static final String SUPER_POWER = "SUPER_POWER";
+    
 
     public RuleEngine() {
        

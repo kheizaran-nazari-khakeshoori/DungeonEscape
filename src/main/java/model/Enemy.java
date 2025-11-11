@@ -147,6 +147,7 @@ public abstract class Enemy implements Iwarrior, ITakeable,IOperation_on_Effect<
     }
 
     protected abstract String getAttackMessage();
+    
     @Override
     public void addEffect(Effect<Enemy> effect) {
        effectManager.addEffect(effect);

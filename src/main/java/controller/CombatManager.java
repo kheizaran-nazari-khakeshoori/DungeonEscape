@@ -1,9 +1,13 @@
 package controller;
 
+import exceptions.InvalidMoveException;
 import model.Enemy;
+import model.InvisibilityEffect;
 import model.Iwarrior;
 import model.Player;
 import utils.DiceRoller;
+
+//Controller class that coordinates combat interactions between Player and Iwarrior implementations
 public class CombatManager {
     private final Player player;
     private final Iwarrior enemy;
@@ -39,6 +43,7 @@ public class CombatManager {
         if (!playerEffects.isEmpty()) {
             combatLog.append("\n").append(playerEffects);
         }
+
         String enemyEffects = enemy.applyTurnEffects();
         if (!enemyEffects.isEmpty()) {
             combatLog.append("\n").append(enemyEffects);
@@ -70,11 +75,12 @@ public class CombatManager {
 
     public FleeResult attemptFlee() {
         
-        if (player.hasEffect("Invisibility")) {
+        if (player.hasEffect(InvisibilityEffect.EFFECT_NAME)) {
            
-            player.removeEffect("Invisibility");
+            player.removeEffect(InvisibilityEffect.EFFECT_NAME);
             return new FleeResult(true, "Your invisibility allows you to slip away unnoticed!");
         }  
+        
         double chance = dice.getRandom().nextDouble();
         double fleeChance = player.getRuleEngine().getRule(RuleEngine.FLEE_CHANCE);
 
@@ -84,12 +90,15 @@ public class CombatManager {
         } 
         else
         {
-            int damageTaken = 15; // Penalty for failing to flee
-            player.takeDamage(damageTaken);
-            String message = "You failed to escape! " 
-                + enemy.getName() + " attacks you for " 
-                + damageTaken + " damage.";
-            return new FleeResult(false, message);
+            try {
+                String attackResult = enemy.attack(player, dice);
+                String message = "You failed to escape!\n" + attackResult;
+                return new FleeResult(false, message);
+            }       
+            catch (InvalidMoveException e) 
+            {
+            return new FleeResult(false, "You failed to escape!");
+        }
         }
     }
 
