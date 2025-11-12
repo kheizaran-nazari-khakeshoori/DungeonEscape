@@ -5,7 +5,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import controller.*;
+import controller.CombatManager;
+import controller.DoorManager;
+import controller.EncounterType;
+import controller.ItemUsageManager;
+import controller.LevelManager;
+import controller.TrapManager;
+import controller.TrapResult;
+import controller.UIStateManager;
 import exceptions.InvalidMoveException;
 import model.Bean;
 import model.Elfo;
@@ -175,11 +182,13 @@ public class Game {
 
     private void handleTrapEncounter() {
         // Delegate to TrapManager
-        TrapManager.TrapResult result = trapManager.handleTrap(activePlayer);
-        uiManager.getLogPanel().addMessage(result.getAllMessages());
-        uiManager.displayImage(result.imagePath);
+        TrapResult result = trapManager.handleTrap(activePlayer,true);
+        uiManager.getLogPanel().addMessage("\n=== TRAP ENCOUNTERED ===");
+        uiManager.displayImage(result.imagePath());
+        uiManager.getLogPanel().addMessage("========================\n");
         updateGUI();
-        if (result.playerDied) {
+
+        if (result.playerDied()) {
             endGame();
         } else {
             uiManager.setPostEncounterMode();

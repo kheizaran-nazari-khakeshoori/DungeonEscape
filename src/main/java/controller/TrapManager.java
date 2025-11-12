@@ -1,6 +1,6 @@
 package controller;
 
-import javax.swing.JOptionPane;
+
 
 import model.Player;
 import model.Trap;
@@ -8,6 +8,7 @@ import model.TrapFactory;
 import utils.DiceRoller;
 
 public class TrapManager {
+     private static final int TRAP_STRESS_DAMAGE = 5;
     private final TrapFactory trapFactory;
     private final DiceRoller dice;
 
@@ -16,59 +17,40 @@ public class TrapManager {
         this.dice = dice;
     }
 
-    public TrapResult handleTrap(Player player) {
-        TrapResult result = new TrapResult();
+    public TrapResult handleTrap(Player player,boolean attemptDisarm) {
+        StringBuilder messages = new StringBuilder();
     
-        player.takeDamage(5);
-        result.addMessage("The stress of finding a trap takes a toll on you...");
-        result.addMessage("You lose 5 HP!");
+        player.takeDamage(TRAP_STRESS_DAMAGE);
+        messages.append("The stress of finding a trap takes a toll on you...");
+        messages.append("You lose 5").append(TRAP_STRESS_DAMAGE).append(" HP\n");
         if (!player.isAlive()) {
-            result.playerDied = true;
-            return result;
+           return TrapResult.playerDiedEarly(messages.toString());
         }
         
         Trap trap = trapFactory.createRandomTrap();
-        result.trap = trap;
-        result.addMessage(trap.getTriggerMessage());
-        result.imagePath = "images/ui/Trap.png";
+        messages.append(trap.getTriggerMessage()).append("\n");
         
-        int disarmChancePercent = (int) (player.getTrapDisarmChance() * 100);
-        int choice = JOptionPane.showConfirmDialog(
-            null,
-            "A " + trap.getName() + "!\nAttempt to disarm/avoid it? (Chance: " + disarmChancePercent + "%)",
-            "It's a Trap!",
-            JOptionPane.YES_NO_OPTION
-        );
-        boolean attemptDisarm = (choice == JOptionPane.YES_OPTION);
+
         if (attemptDisarm && dice.getRandom().nextDouble() < player.getTrapDisarmChance()) {
            
-            result.addMessage("Success! You deftly avoid the " + trap.getName() + ".");
-            result.trapDisarmed = true;
-        } else {
+            messages.append("Success! You deftly avoid the ").append(trap.getName()).append(".");
+            return TrapResult.disarmed(trap, messages.toString());
+        } 
+        else {
             
             if (attemptDisarm) {
-                result.addMessage("You failed to disarm the trap!");
+                messages.append("You failed to disarm the trap!\n");
             }
+
             String triggerResult = trap.trigger(player);
-            result.addMessage(triggerResult);
-            if (!player.isAlive()) {
-                result.playerDied = true;
-            }
+            messages.append(triggerResult);
+            boolean playerDied = !player.isAlive();
+            return TrapResult.triggered(trap, messages.toString(), playerDied);
         }
-        return result;
+    
     }
 
-    public static class TrapResult { 
-        public StringBuilder messages = new StringBuilder(); 
-        public Trap trap; 
-        public String imagePath; 
-        public boolean trapDisarmed = false; 
-        public boolean playerDied = false;
-
-        public void addMessage(String msg) {
-            messages.append(msg).append("\n");
-        }
-
-        public String getAllMessages() { return messages.toString().trim(); } 
+    public int getDisarmChancePercent(Player player) {
+        return (int) (player.getTrapDisarmChance() * 100);
     }
 }

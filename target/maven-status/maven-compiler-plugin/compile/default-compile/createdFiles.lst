@@ -35,6 +35,7 @@ utils/DiceRoller.class
 model/PoisonSpider.class
 controller/EncounterType.class
 model/ShopEncounter.class
+controller/TrapResult.class
 model/Defensive_type_Effect.class
 model/Trap.class
 model/IOperation_on_Effect.class
@@ -51,7 +52,6 @@ controller/ItemUsageManager$ItemUseResult.class
 view/ShopDialog.class
 view/InventoryDialog.class
 model/Level.class
-controller/TrapManager$TrapResult.class
 model/Inventory.class
 model/DamageType.class
 controller/DoorManager$EncounterResult.class
