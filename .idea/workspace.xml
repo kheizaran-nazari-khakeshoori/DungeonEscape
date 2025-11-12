@@ -5,12 +5,126 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2a7852b6-cf9d-4aaf-8fae-d76fea1a08a5" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/src/main/java/model/Item.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/model/Item.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/controller/EncounterType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.vscode/settings.json" beforeDir="false" afterPath="$PROJECT_DIR$/.vscode/settings.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/dungeonescape/Game.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/dungeonescape/Game.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/controller/DoorManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/DoorManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/controller/EffectManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/EffectManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/controller/LevelManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/LevelManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/dungeonescape/Game.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/dungeonescape/GameState.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/dungeonescape/Main.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/controller/AttackAction.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/controller/CombatManager$FleeResult.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/controller/CombatManager.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/controller/DoorManager$EncounterResult.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/controller/DoorManager$EncounterType.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/controller/DoorManager.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/controller/EffectManager.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/controller/ItemUsageManager$ItemUseResult.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/controller/ItemUsageManager.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/controller/LevelManager.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/controller/RuleEngine.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/controller/TrapManager$TrapResult.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/controller/TrapManager.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/controller/UIStateManager.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/exceptions/InvalidMoveException.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/enemies/Ghost.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/enemies/Goblin.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/enemies/MimicChest.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/enemies/PoisonSpider.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/enemies/ShadowAssassin.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/enemies/SkeletonWarrior.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/enemies/SlimeBlob.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/enemies/StoneMan.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/players/Bean.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/players/Elfo.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/players/Lucy.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/potions/Antidote.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/potions/InvisibilityPotion.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/potions/ManaPotion.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/potions/StaminaElixir.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/ui/CreatureCaves.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/ui/EmptyRoom.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/ui/GameOver.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/ui/HauntedHalls.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/ui/Trap.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/ui/TwoDoors.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/ui/Victory.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/weapons/CrossBow.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/weapons/DualDaggers.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/weapons/EnchantedStaff.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/weapons/Greatsword.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/weapons/RunicBow.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/weapons/WarAxe.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/model/Antidote.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/model/Bean.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/model/DamageType.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/model/Defensive_type_Effect.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/model/Effect.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/model/Elfo.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/model/Enemy.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/model/EnemyFactory.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/model/Ghost.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/model/Goblin.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/model/GoblinPoisonEffect.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/model/IOperation_on_Effect.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/model/ITakeable.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/model/Inventory.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/model/InvisibilityEffect.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/model/InvisibilityPotion.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/model/Item.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/model/ItemFactory.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/model/Iwarrior.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/model/Level.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/model/Lucy.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/model/MimicChest.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/model/Player.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/model/PoisonDartTrap.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/model/PoisonEffect.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/model/PoisonSpider.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/model/PoisonTypeEffect.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/model/Potion.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/model/ShadowAssassin.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/model/ShopEncounter.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/model/SkeletonWarrior.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/model/SlimeBlob.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/model/Slow_Heal_Effect.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/model/SpikeTrap.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/model/StaminaElixir.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/model/StoneMan.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/model/Trap.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/model/TrapFactory.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/model/Weapon.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/utils/DiceRoller.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/view/ControlPanel.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/view/DungeonPanel$ImagePanel.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/view/DungeonPanel.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/view/GameWindow.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/view/HUDPanel.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/view/InventoryDialog.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/view/InventoryPanel.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/view/ItemSelectionWindow.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/view/LogPanel.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/view/PlayerListPanel.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/view/PlayerSelectionWindow.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/view/ShopDialog.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+        <option value="Enum" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -18,25 +132,34 @@
   <component name="ProblemsViewState">
     <option name="selectedTabId" value="CurrentFile" />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 5
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 5
+}</component>
   <component name="ProjectId" id="358rXFLQRgJxW24kjvoBCoOsKbi" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "main",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "/home/kheizaran/Github/DungeonEscape"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.Main.executor&quot;: &quot;Run&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/kheizaran/Github/DungeonEscape&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.editor&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager">
+    <configuration name="Main" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="com.dungeonescape.Main" />
+      <module name="job-quest-game" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration default="true" type="JetRunConfigurationType">
       <module name="DungeonEscape" />
       <method v="2">
@@ -58,5 +181,16 @@
       <updated>1762502577734</updated>
     </task>
     <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
 </project>

@@ -1,5 +1,6 @@
 package controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
@@ -7,30 +8,30 @@ import java.util.function.Supplier;
 import model.Enemy;
 import model.Player;
 import utils.DiceRoller;
+//this class is for managing the encounters when a player goes through a door
 
 public class DoorManager {
     private final DiceRoller dice;
     private final Map<String, Integer> enemyCount;
-    private List<Supplier<Enemy>> encounters;
+    private final List<Supplier<Enemy>> encounters;
 
     public DoorManager(DiceRoller dice, Map<String, Integer> enemyCount) {
         this.dice = dice;
-
+        this.encounters = new ArrayList<>();
         this.enemyCount = enemyCount;
     }
 
-    public void setencounters(List<Supplier<Enemy>> enemySuppliers) {
-        this.encounters = enemySuppliers;
+    public void setEncounters(List<Supplier<Enemy>> encounters) {
+        this.encounters.clear();
+        this.encounters.addAll(encounters);
     }
-
- 
     public EncounterResult generateEncounter(Player player, String enemyToAvoid) {
 
-        double encounterRoll = dice.getRandom().nextDouble();
+        double randomChanceValue = dice.getRandom().nextDouble();
         double enemyChance = player.getRuleEngine().getRule(RuleEngine.ENEMY_CHANCE);
 
    
-        if (encounterRoll < enemyChance) 
+        if (randomChanceValue < enemyChance) 
         {
             if (encounters.isEmpty()) 
             {
@@ -40,15 +41,15 @@ public class DoorManager {
         Supplier<Enemy> enemySupplier = encounters.remove(0);
         Enemy enemy = enemySupplier.get();
 
-        if (enemyToAvoid != null && enemy.getName().equals(enemyToAvoid))
+        if (enemy.getName().equals(enemyToAvoid))
         {
             for (int i = 0; i < encounters.size(); i++) {
                 Enemy nextEnemy = encounters.get(i).get();
                 if (!nextEnemy.getName().equals(enemyToAvoid)) {
-                    
+
                     Supplier<Enemy> differentEnemySupplier = encounters.remove(i);
-                    encounters.add(i, enemySupplier); 
-                    enemySupplier = differentEnemySupplier; 
+                    encounters.add(i, enemySupplier);
+                    enemySupplier = differentEnemySupplier;
                     break;
                 }
             }
@@ -56,7 +57,7 @@ public class DoorManager {
         }
 
         String enemyName = enemy.getName();
-        int previousEncounters = enemyCount.getOrDefault(enemyName, 0);
+        int previousEncounters = enemyCount.getOrDefault(enemyName, 0);//return the value if the key exists, otherwise return 0
         if (previousEncounters > 0) {
             enemy.strengthen(previousEncounters, player.getRuleEngine());
         }
@@ -65,7 +66,7 @@ public class DoorManager {
     }
 
     double trapChance = player.getRuleEngine().getRule(RuleEngine.TRAP_CHANCE);
-    if (encounterRoll < enemyChance + trapChance) {
+    if (randomChanceValue < enemyChance + trapChance) {
         return new EncounterResult(EncounterType.TRAP, null);
     }
 
@@ -78,7 +79,7 @@ public class DoorManager {
         enemyCount.put(enemyName, newCount);
     }
 
-    public enum EncounterType { ENEMY, TRAP, EMPTY_ROOM, LEVEL_COMPLETE }
+
 
     public record EncounterResult(EncounterType type, Enemy enemy) {}
 }

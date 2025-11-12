@@ -65,7 +65,7 @@ public class EffectManager<T> {
             String result = effect.apply(target);
             
             if (result != null && !result.isEmpty()) {
-                if (effectsResult.length() > 0) {
+                if (!effectsResult.isEmpty()) {
                     effectsResult.append("\n");
                 }
                 effectsResult.append(result);

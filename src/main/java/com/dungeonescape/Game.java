@@ -5,12 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import controller.CombatManager;
-import controller.DoorManager;
-import controller.ItemUsageManager;
-import controller.LevelManager;
-import controller.TrapManager;
-import controller.UIStateManager;
+import controller.*;
 import exceptions.InvalidMoveException;
 import model.Bean;
 import model.Elfo;
@@ -51,10 +46,10 @@ public class Game {
     private CombatManager combatManager;
     private final ShopEncounter shopEncounter;
 
-    // decleration 
+
     private final Map<String, Integer> enemyEncounterCount;//the variable type is map (interface)
 
-    public Game(Player player, GameWindow gameWindow, PlayerListPanel PlayerListPanel, DungeonPanel dungeonPanel, InventoryPanel inventoryPanel, LogPanel logPanel, ControlPanel controlPanel, HUDPanel hudPanel,ItemUsageManager itemUsageManager) {
+    public Game(Player player, GameWindow gameWindow, PlayerListPanel PlayerListPanel, DungeonPanel dungeonPanel, InventoryPanel inventoryPanel, LogPanel logPanel, ControlPanel controlPanel, HUDPanel hudPanel, ItemUsageManager itemUsageManager) {
         // Initialize player and party
         this.activePlayer = player;
         this.party = new ArrayList<>();
@@ -133,9 +128,9 @@ public class Game {
 
     private void startNextLevel() {
         Level<Enemy> level = levelManager.getCurrentLevel();
+        doorManager.setEncounters(levelManager.getRandomizedEnemySuppliers());
         uiManager.loadBackgroundImage(level.getBackgroundImagePath());
         uiManager.getLogPanel().addMessage("\n--- You have entered " + level.getName() + " ---");
-        doorManager.setencounters(levelManager.getRandomizedEnemySuppliers());
         uiManager.setDoorMode();
         updateGUI();
     }
@@ -159,16 +154,16 @@ public class Game {
         uiManager.getLogPanel().addMessage("\nYou open the " + doorName + " door...");
         // Delegate encounter generation to DoorManager
         DoorManager.EncounterResult encounter = doorManager.generateEncounter(activePlayer, enemyToAvoid);
-        
-        
+
+
         var encounterType = encounter.type();
-        if (encounterType == DoorManager.EncounterType.ENEMY) {
+        if (encounterType == EncounterType.ENEMY) {
             handleEnemyEncounter(encounter.enemy());
-        } else if (encounterType == DoorManager.EncounterType.TRAP) {
+        } else if (encounterType == EncounterType.TRAP) {
             handleTrapEncounter();
-        } else if (encounterType == DoorManager.EncounterType.EMPTY_ROOM) {
+        } else if (encounterType ==EncounterType.EMPTY_ROOM) {
             handleEmptyRoom();
-        } else if (encounterType == DoorManager.EncounterType.LEVEL_COMPLETE) {
+        } else if (encounterType ==EncounterType.LEVEL_COMPLETE) {
             handleLevelComplete();
         }
     }

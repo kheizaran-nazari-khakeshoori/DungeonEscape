@@ -29,9 +29,9 @@ public class LevelManager {
     }
 
     private void initializeLevels() {
-
+        //This is called method reference syntax (specifically constructor reference).
         gameLevels.add(new Level<>("The Goblin Warrens", "images/ui/TwoDoors.png",
-            List.of(Goblin::new, Goblin::new, SkeletonWarrior::new)));
+            List.of(Goblin::new, Goblin::new, SkeletonWarrior::new))); //Goblin::new is a reference to the Goblin constructor  like writing ->  new Goblin()
        
         gameLevels.add(new Level<>("The Haunted Halls", "images/ui/HauntedHalls.png",
             List.of(SkeletonWarrior::new, Ghost::new, Ghost::new, ShadowAssassin::new)));

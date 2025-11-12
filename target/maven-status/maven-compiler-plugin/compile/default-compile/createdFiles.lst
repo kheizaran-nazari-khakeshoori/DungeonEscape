@@ -33,6 +33,7 @@ model/Weapon.class
 view/PlayerListPanel.class
 utils/DiceRoller.class
 model/PoisonSpider.class
+controller/EncounterType.class
 model/ShopEncounter.class
 model/Defensive_type_Effect.class
 model/Trap.class
@@ -61,7 +62,6 @@ view/DungeonPanel.class
 model/InvisibilityEffect.class
 model/StoneMan.class
 view/InventoryPanel.class
-controller/DoorManager$EncounterType.class
 controller/AttackAction.class
 model/Player.class
 view/ControlPanel.class
