@@ -7,7 +7,6 @@
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/StaminaElixir.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/Weapon.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/controller/AttackAction.java
-/home/kheizaran/Github/DungeonEscape/src/main/java/controller/UIStateManager.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/view/ShopDialog.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/IOperation_on_Effect.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/view/HUDPanel.java
@@ -43,6 +42,7 @@
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/Potion.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/controller/RuleEngine.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/PoisonSpider.java
+/home/kheizaran/Github/DungeonEscape/src/main/java/view/UIStateManager.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/view/GameWindow.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/controller/DoorManager.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/view/DungeonPanel.java

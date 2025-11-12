@@ -12,10 +12,9 @@ public record TrapResult(
     String messages,
     boolean trapDisarmed,
     boolean playerDied
-) {
-    /**
-     * Creates a TrapResult for a successfully disarmed trap.
-     */
+) 
+{
+    
     public static TrapResult disarmed(Trap trap, String messages) {
         return new TrapResult(
             trap,
@@ -26,9 +25,7 @@ public record TrapResult(
         );
     }
     
-    /**
-     * Creates a TrapResult for a triggered trap.
-     */
+   
     public static TrapResult triggered(Trap trap, String messages, boolean playerDied) {
         return new TrapResult(
             trap,
@@ -39,9 +36,7 @@ public record TrapResult(
         );
     }
     
-    /**
-     * Creates a TrapResult for player death before trap interaction.
-     */
+  
     public static TrapResult playerDiedEarly(String messages) {
         return new TrapResult(
             null,  // no trap

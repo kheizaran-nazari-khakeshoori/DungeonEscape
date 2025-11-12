@@ -1,6 +1,5 @@
 model/GoblinPoisonEffect.class
 view/DungeonPanel$ImagePanel.class
-controller/UIStateManager.class
 model/Potion.class
 controller/CombatManager.class
 model/Antidote.class
@@ -48,6 +47,7 @@ com/dungeonescape/GameState.class
 view/LogPanel.class
 model/Effect.class
 com/dungeonescape/Main.class
+view/UIStateManager.class
 controller/ItemUsageManager$ItemUseResult.class
 view/ShopDialog.class
 view/InventoryDialog.class

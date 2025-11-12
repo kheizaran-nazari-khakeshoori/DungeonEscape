@@ -21,7 +21,7 @@ public class DiceRoller {
         return random.nextInt(sides) + 1;
     }
 
-
+    
     public int rollIndex(int bound) {
         if (bound <= 0) throw new IllegalArgumentException("Bound must be positive");
         return random.nextInt(bound);

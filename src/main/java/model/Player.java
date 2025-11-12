@@ -79,7 +79,7 @@ public abstract class Player implements Iwarrior,IOperation_on_Effect<Player>{
     public String takeDamage(int amount, DamageType type) {
         int finalDamage = amount;
         String message = "";
-        this.health = health - finalDamage ;
+        this.health = health - finalDamage ;//health method must be added 
         for (Effect<Player> effect : effectManager.getActiveEffects())
         {
             if (effect instanceof Defensive_type_Effect defensive) {

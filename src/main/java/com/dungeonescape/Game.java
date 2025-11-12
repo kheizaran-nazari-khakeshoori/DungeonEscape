@@ -12,7 +12,6 @@ import controller.ItemUsageManager;
 import controller.LevelManager;
 import controller.TrapManager;
 import controller.TrapResult;
-import controller.UIStateManager;
 import exceptions.InvalidMoveException;
 import model.Bean;
 import model.Elfo;
@@ -34,6 +33,7 @@ import view.InventoryPanel;
 import view.LogPanel;
 import view.PlayerListPanel;
 import view.ShopDialog;
+import view.UIStateManager;
 
 //class is responsible for overall game flow and coordination (managing encounters, UI updates, game state)
 

@@ -22,7 +22,7 @@ public class TrapManager {
     
         player.takeDamage(TRAP_STRESS_DAMAGE);
         messages.append("The stress of finding a trap takes a toll on you...");
-        messages.append("You lose 5").append(TRAP_STRESS_DAMAGE).append(" HP\n");
+        messages.append("You lose ").append(TRAP_STRESS_DAMAGE).append(" HP\n");
         if (!player.isAlive()) {
            return TrapResult.playerDiedEarly(messages.toString());
         }
