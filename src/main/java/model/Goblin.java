@@ -12,8 +12,8 @@ public class Goblin extends Enemy {
    @Override
     public String attack(Iwarrior target, DiceRoller dice) throws exceptions.InvalidMoveException {
  
-    target.takeDamage(this.baseDamage);
-    String result = this.name + " attacks you for " + this.baseDamage + " damage.";
+    target.takeDamage(getBaseDamage());
+    String result = this.name + " attacks you for " + getBaseDamage() + " damage.";
     
     if (target instanceof Player player)
     {
@@ -34,7 +34,7 @@ public class Goblin extends Enemy {
     
     @Override
     protected String getAttackMessage() {
-        return this.name + " attacks you for " + this.baseDamage + " damage.";
+        return this.name + " attacks you for " + getBaseDamage() + " damage.";
     }
 
 

@@ -9,7 +9,7 @@ public class ShadowAssassin extends Enemy {
 
     @Override
     protected String getAttackMessage() {
-        return this.name + " shadow assasin causes damage for " + this.baseDamage + " damage!";
+        return this.name + " shadow assasin causes damage for " + getBaseDamage()+ " damage!";
     }
 
 

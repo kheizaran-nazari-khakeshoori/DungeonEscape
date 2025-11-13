@@ -9,9 +9,9 @@ import utils.DiceRoller;
 
 public abstract class Enemy implements Iwarrior, ITakeable,IOperation_on_Effect<Enemy> {
     protected String name;
-    protected int maxHealth;
-    protected int health;
-    protected int baseDamage;
+    private int maxHealth;
+    private  int health;
+    private int baseDamage;
     protected int goldValue;
     protected String imagePath;
     protected DamageType damageType;
@@ -42,6 +42,59 @@ public abstract class Enemy implements Iwarrior, ITakeable,IOperation_on_Effect<
     protected void addResistance(DamageType type, double multiplier) {
         this.resistances.put(type, multiplier);
     }
+
+    protected void setHealth(int health)
+    {
+
+        if(health < 0)
+        {
+            this.health = 0;
+        }
+        else if (health > maxHealth)
+        {
+            this.health = maxHealth;
+        }
+        else
+        {
+            this.health = health;
+        }
+        
+    }
+
+    protected void setBaseDamage(int baseDamage)
+    {
+        if(baseDamage < 0)
+        {
+            this.baseDamage = 0;
+        }
+        else if (baseDamage > 100)
+        {
+            this.baseDamage = 100;
+        }
+
+        else
+        {
+            this.baseDamage = baseDamage;
+        }
+    }
+    
+
+   
+
+    protected void setMaxHealth(int maxHealth) 
+    {
+        if (maxHealth <= 0) 
+        {
+            throw new IllegalArgumentException("Max health must be positive");
+        }
+        this.maxHealth = maxHealth;
+    
+        // Keep health within bounds:
+        if (this.health > this.maxHealth) {
+            this.health = this.maxHealth;
+         }
+    }
+
 
     @Override
     public String getName() {
@@ -107,14 +160,28 @@ public abstract class Enemy implements Iwarrior, ITakeable,IOperation_on_Effect<
 
     public void strengthen(int level , RuleEngine ruleEngine)
     {
-        double health_scaling = ruleEngine.getRule (RuleEngine.ENEMY_HEALTH_SCALING);
-        double damage_scaling = ruleEngine.getRule (RuleEngine.ENEMY_DAMAGE_SCALING);
+        if(level < 1)
+        {
+            throw new IllegalArgumentException(" level must start from 1");
+        }
 
-        int healthIncrease = (int) (this.maxHealth * health_scaling * level);
-        this.maxHealth = maxHealth + healthIncrease;
+        double health_scaling = ruleEngine.getRule(RuleEngine.ENEMY_HEALTH_SCALING);
+        double damage_scaling = ruleEngine.getRule(RuleEngine.ENEMY_DAMAGE_SCALING);
 
-        int damageIncrease = (int) (this.baseDamage * damage_scaling * level );
-        this.baseDamage = baseDamage + damageIncrease ;
+        for(int i = 1 ; i < level ; i++)
+        {
+            int newMaxHealth = (int) (getMaxHealth() * health_scaling);
+            this.maxHealth = newMaxHealth;
+            setHealth(getMaxHealth());
+
+            int newDamage = (int)(getBaseDamage() * damage_scaling);
+            setBaseDamage(newDamage);
+
+        }
+
+        if (level > 1) {
+        this.name = this.name + " Lv" + level;
+        }
     }
     
     @Override

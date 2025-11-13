@@ -13,7 +13,7 @@ public class SlimeBlob extends Enemy {
 
     @Override
     protected String getAttackMessage() {
-        return this.name + " gooy cuases damage " + this.baseDamage + " damage!";
+        return this.name + " gooy cuases damage " + getBaseDamage() + " damage!";
     }
 
 

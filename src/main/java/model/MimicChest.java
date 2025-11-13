@@ -10,7 +10,7 @@ public class MimicChest extends Enemy {
 
     @Override
     protected String getAttackMessage() {
-        return this.name + " reveals its teeth and chomps down on you for " + this.baseDamage + " damage!";
+        return this.name + " reveals its teeth and chomps down on you for " +getBaseDamage()+ " damage!";
     }
 
     @Override

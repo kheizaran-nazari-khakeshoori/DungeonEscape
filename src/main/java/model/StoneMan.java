@@ -13,7 +13,7 @@ public class StoneMan extends Enemy {
 
     @Override
     protected String getAttackMessage() {
-        return this.name + " slams you for damage " + this.baseDamage + " damage!";
+        return this.name + " slams you for damage " + getBaseDamage() + " damage!";
     }
 
 

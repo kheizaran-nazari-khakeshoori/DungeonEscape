@@ -12,7 +12,7 @@ public class SkeletonWarrior extends Enemy {
 
    @Override
     protected String getAttackMessage() {
-        return this.name + " can kill you by " + this.baseDamage + " damage!";
+        return this.name + " can kill you by " + getBaseDamage() + " damage!";
     }
 
 
