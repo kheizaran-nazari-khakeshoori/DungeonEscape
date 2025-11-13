@@ -12,7 +12,7 @@ public class Ghost extends Enemy {
 
     @Override
     protected String getAttackMessage() {
-        return this.name + "can ruin you for" + getBaseDamage() + " damage!";
+        return getName() + "can ruin you for" + getBaseDamage() + " damage!";
     }
 
 

@@ -185,6 +185,7 @@ public class Game {
         TrapResult result = trapManager.handleTrap(activePlayer,true);
         uiManager.getLogPanel().addMessage("\n=== TRAP ENCOUNTERED ===");
         uiManager.displayImage(result.imagePath());
+        uiManager.getLogPanel().addMessage(result.messages());
         uiManager.getLogPanel().addMessage("========================\n");
         updateGUI();
 

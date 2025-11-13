@@ -13,7 +13,7 @@ public class Goblin extends Enemy {
     public String attack(Iwarrior target, DiceRoller dice) throws exceptions.InvalidMoveException {
  
     target.takeDamage(getBaseDamage());
-    String result = this.name + " attacks you for " + getBaseDamage() + " damage.";
+    String result = getName() + " attacks you for " + getBaseDamage() + " damage.";
     
     if (target instanceof Player player)
     {
@@ -34,7 +34,7 @@ public class Goblin extends Enemy {
     
     @Override
     protected String getAttackMessage() {
-        return this.name + " attacks you for " + getBaseDamage() + " damage.";
+        return getName() + " attacks you for " + getBaseDamage() + " damage.";
     }
 
 

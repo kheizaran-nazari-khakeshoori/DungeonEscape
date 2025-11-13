@@ -8,7 +8,7 @@ import controller.RuleEngine;
 import utils.DiceRoller;
 
 public abstract class Enemy implements Iwarrior, ITakeable,IOperation_on_Effect<Enemy> {
-    protected String name;
+    private String name;
     private int maxHealth;
     private  int health;
     private int baseDamage;
@@ -77,9 +77,16 @@ public abstract class Enemy implements Iwarrior, ITakeable,IOperation_on_Effect<
             this.baseDamage = baseDamage;
         }
     }
-    
 
-   
+    protected void setName(String name)
+    {
+        if (name == null || name.isEmpty())
+        {
+            throw new IllegalArgumentException("Name cannot be empty!");
+        }
+        this.name = name;
+    }
+    
 
     protected void setMaxHealth(int maxHealth) 
     {

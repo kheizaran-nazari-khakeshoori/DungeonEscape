@@ -12,7 +12,7 @@ public class PoisonSpider extends Enemy {
     public String attack(Iwarrior target, DiceRoller dice) throws exceptions.InvalidMoveException {
        Player player = (Player) target;
        target.takeDamage(getBaseDamage());
-        String result = this.name + " bites you for " + getBaseDamage() + " damage.";
+        String result = getName() + " bites you for " + getBaseDamage() + " damage.";
 
         // 75% chance to apply a nasty poison
         if (dice.roll(4) <= 3) {
@@ -23,7 +23,7 @@ public class PoisonSpider extends Enemy {
     }
     @Override
     protected String getAttackMessage() {
-        return this.name + " bites you for " + getBaseDamage()+ " damage.";
+        return getName() + " bites you for " + getBaseDamage()+ " damage.";
     }
 
     @Override
