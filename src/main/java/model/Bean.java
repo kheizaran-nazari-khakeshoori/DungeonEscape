@@ -13,7 +13,8 @@ public class Bean extends Player {
 
    
     @Override
-    public String useSpecialAbility(Enemy enemy) {
+    public String useSpecialAbility(Iwarrior target) {
+        // Note: Bean's ability is self-targeted (defensive), doesn't use target parameter
         int healAmount = 15;
         this.heal(healAmount);
         this.addEffect(new Defensive_type_Effect(1));

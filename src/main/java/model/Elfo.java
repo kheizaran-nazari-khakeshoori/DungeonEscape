@@ -15,13 +15,13 @@ public class Elfo extends Player {
     }
 
     @Override
-    public String useSpecialAbility(Enemy enemy) {
+    public String useSpecialAbility(Iwarrior target) {
         if (getEquippedWeapon() == null) {
             return "Elfo tries to aim, but has nothing to shoot with!";
         }
 
         int bonusDamage = 10;
-        String effectiveness = enemy.takeDamage(bonusDamage, DamageType.PIERCING); 
+        String effectiveness = target.takeDamage(bonusDamage, DamageType.PIERCING); 
 
         putSpecialAbilityOnCooldown(); 
 

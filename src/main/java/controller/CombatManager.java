@@ -35,7 +35,13 @@ public class CombatManager {
         if (enemy.isAlive()) {
             try {
                 combatLog.append("\n").append(enemy.attack(player, dice));
-            } catch (exceptions.InvalidMoveException e) {}
+            } catch (exceptions.InvalidMoveException e) {
+                    combatLog.append("\n")
+                    .append(enemy.getName())
+                    .append(" is unable to attack! (")
+                    .append(e.getMessage())
+                    .append(")");
+            }
         }
 
         

@@ -157,7 +157,7 @@ public abstract class Player implements Iwarrior,IOperation_on_Effect<Player>{
     }
 
    
-    public abstract String useSpecialAbility(Enemy enemy);
+    public abstract String useSpecialAbility(Iwarrior target);
 
     
     public boolean isSpecialAbilityReady() {

@@ -17,11 +17,11 @@ public class Lucy extends Player {
 
     
     @Override
-    public String useSpecialAbility(Enemy enemy) {
+    public String useSpecialAbility(Iwarrior target) {
         int damage = 35;
         int penalty = 10;
 
-        String effectiveness = enemy.takeDamage(damage, DamageType.PHYSICAL);
+        String effectiveness = target.takeDamage(damage, DamageType.PHYSICAL);
         this.takeDamage(penalty); 
         putSpecialAbilityOnCooldown();
         return "Lucy unleashes a reckless flurry, dealing a massive " + damage + " damage! " + effectiveness + "\nShe takes " + penalty + " damage from the exertion.";

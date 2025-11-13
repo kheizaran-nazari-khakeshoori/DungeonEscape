@@ -32,7 +32,7 @@ public record TrapResult(
             "images/ui/Trap.png",
             messages,
             false,  // trapDisarmed
-            playerDied
+            playerDied // there is two possible outcome wheter true or false 
         );
     }
     
