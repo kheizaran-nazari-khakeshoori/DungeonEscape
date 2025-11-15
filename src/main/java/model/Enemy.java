@@ -1,5 +1,5 @@
 package model;
-
+//encapdulation
 import java.util.HashMap;
 import java.util.Map;
 

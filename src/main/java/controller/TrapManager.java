@@ -8,7 +8,7 @@ import model.TrapFactory;
 import utils.DiceRoller;
 
 public class TrapManager {
-     private static final int TRAP_STRESS_DAMAGE = 5;
+    private static final int TRAP_STRESS_DAMAGE = 5;
     private final TrapFactory trapFactory;
     private final DiceRoller dice;
 

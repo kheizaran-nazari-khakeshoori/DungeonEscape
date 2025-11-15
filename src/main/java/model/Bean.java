@@ -8,7 +8,7 @@ public class Bean extends Player {
         
         super("Bean", 100);
         
-        this.ruleEngine.setRule(RuleEngine.POISON_RESISTANCE, 0.5);
+       getRuleEngine().setRule(RuleEngine.POISON_RESISTANCE, 0.5);
     }
 
    

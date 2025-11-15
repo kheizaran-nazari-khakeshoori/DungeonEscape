@@ -1,5 +1,5 @@
 package model;
-
+//encapsulation
 import controller.AttackAction;
 import controller.EffectManager;
 import controller.RuleEngine; 
@@ -7,18 +7,18 @@ import exceptions.InvalidMoveException;
 import utils.DiceRoller;
 
 public abstract class Player implements Iwarrior,IOperation_on_Effect<Player>{
+    private static final int COOLDOWN_TURNS = 3;
+    
     private final String name;
     private final int maxHealth;
     private int health;
     private final Inventory inventory;
-    
     private Weapon equippedWeapon;
     private int gold; 
     private final EffectManager<Player> effectManager;
     
-    protected int specialAbilityCooldownTurns;
-    protected int currentSpecialAbilityCooldown;
-    protected final RuleEngine ruleEngine; 
+    private int currentSpecialAbilityCooldown;
+    private final RuleEngine ruleEngine; 
 
     public Player(String name, int maxHealth) {
         this.name = name;
@@ -28,7 +28,6 @@ public abstract class Player implements Iwarrior,IOperation_on_Effect<Player>{
         this.effectManager = new EffectManager<>();
         this.equippedWeapon = null;
         this.gold = 0; 
-        this.specialAbilityCooldownTurns = 3; 
         this.currentSpecialAbilityCooldown = 0; 
         this.ruleEngine = new RuleEngine(); 
     }
@@ -47,6 +46,7 @@ public abstract class Player implements Iwarrior,IOperation_on_Effect<Player>{
     public int getGold() {
         return gold;
     }
+
     public void addGold(int amount) {
         this.gold = gold + amount ;
         if (this.gold < 0) this.gold = 0;
@@ -171,11 +171,7 @@ public abstract class Player implements Iwarrior,IOperation_on_Effect<Player>{
         }
     }
 
-    public int getCurrentSpecialAbilityCooldown() {
-        return currentSpecialAbilityCooldown;
-    }
-
     
-    protected void putSpecialAbilityOnCooldown() { this.currentSpecialAbilityCooldown = this.specialAbilityCooldownTurns; } 
+    protected void putSpecialAbilityOnCooldown() { this.currentSpecialAbilityCooldown = COOLDOWN_TURNS; } 
 }
 //

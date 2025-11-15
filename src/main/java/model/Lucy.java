@@ -7,7 +7,7 @@ public class Lucy extends Player {
     public Lucy() {
         super("Lucy", 85);
        
-        this.ruleEngine.setRule(RuleEngine.FLEE_CHANCE, 0.25); 
+        getRuleEngine().setRule(RuleEngine.FLEE_CHANCE, 0.25); 
     }
 
     @Override 

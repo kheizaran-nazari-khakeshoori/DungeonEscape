@@ -6,7 +6,7 @@ public class Elfo extends Player {
     public Elfo() {
         super("Elfo", 75);
     
-        this.ruleEngine.setRule(RuleEngine.FLEE_CHANCE, 0.75); 
+       getRuleEngine().setRule(RuleEngine.FLEE_CHANCE, 0.75); 
     }
 
     @Override

@@ -9,5 +9,11 @@ public class Main {
         SwingUtilities.invokeLater(() -> {
             new PlayerSelectionWindow().setVisible(true);
         });
+        
+
+    }
+    public static String println(String name)
+    {
+        return name;
     }
 }
