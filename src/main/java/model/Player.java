@@ -1,5 +1,5 @@
 package model;
-//encapsulation
+
 import controller.AttackAction;
 import controller.EffectManager;
 import controller.RuleEngine; 

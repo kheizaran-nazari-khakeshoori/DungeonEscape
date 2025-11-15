@@ -6,9 +6,9 @@ public class SlimeBlob extends Enemy {
         super("Slime Blob", 60, 9, 20, "images/enemies/SlimeBlob.png", model.DamageType.ACID);
 
     
-        resistances.put(DamageType.SLASHING, 0.5);
-        resistances.put(DamageType.PIERCING, 0.5);
-        resistances.put(DamageType.FIRE, 1.5);
+        addResistance(DamageType.SLASHING, 0.5);
+        addResistance(DamageType.PIERCING, 0.5);
+        addResistance(DamageType.FIRE, 1.5);
     }
 
     @Override

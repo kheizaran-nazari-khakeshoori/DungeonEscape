@@ -1,5 +1,5 @@
 package model;
-//encapdulation
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -12,12 +12,12 @@ public abstract class Enemy implements Iwarrior, ITakeable,IOperation_on_Effect<
     private int maxHealth;
     private  int health;
     private int baseDamage;
-    protected int goldValue;
-    protected String imagePath;
-    protected DamageType damageType;
+    private final int goldValue;
+    private final String imagePath;
+    private final DamageType damageType;
     private final EffectManager<Enemy> effectManager;
-    protected final Map<DamageType, Double> weaknesses;
-    protected final Map<DamageType, Double> resistances;
+    private  final Map<DamageType, Double> weaknesses;
+    private final Map<DamageType, Double> resistances;
     
 
     public Enemy(String name, int maxHealth, int baseDamage, int goldValue, String imagePath, DamageType damageType) {
