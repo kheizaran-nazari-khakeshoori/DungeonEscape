@@ -1,5 +1,6 @@
 package model;
-
+//more specific 
+//extends items and add one more field and behavior 
 public class Potion extends Item {
     private final int healAmount;
 

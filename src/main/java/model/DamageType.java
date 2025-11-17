@@ -1,5 +1,5 @@
 package model;
-
+// enum for a set of damage type the variable can take 
 public enum DamageType {
     PHYSICAL,
     SLASHING,
@@ -11,5 +11,5 @@ public enum DamageType {
     SHADOW,
     MAGIC,
     HOLY,
-    NONE // A default or neutral type
+    
 }

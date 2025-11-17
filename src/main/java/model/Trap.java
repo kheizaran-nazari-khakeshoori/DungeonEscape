@@ -1,8 +1,8 @@
 package model;
 //encapsulation
 public abstract class Trap {
-    protected String name;
-    protected String triggerMessage;
+    private final String name;
+    private final String triggerMessage;
 
     public Trap(String name, String triggerMessage) {
         this.name = name;

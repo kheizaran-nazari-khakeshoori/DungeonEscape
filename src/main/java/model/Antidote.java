@@ -1,5 +1,5 @@
 package model;
-
+//most specific so Antitide is an item that heals 
 public class Antidote extends Potion {
 
     public Antidote(String name, String description, String imagePath, int cost) {
@@ -9,7 +9,7 @@ public class Antidote extends Potion {
     @Override
     public void use(Player player) {
         super.use(player); 
-        player.removeEffectsOfType(PoisonTypeEffect.class);
+        player.removeEffectsOfType(PoisonTypeEffect.class);//add extra behavior 
     }
 
     @Override

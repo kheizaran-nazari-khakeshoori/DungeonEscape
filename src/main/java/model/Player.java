@@ -6,6 +6,7 @@ import controller.RuleEngine;
 import exceptions.InvalidMoveException;
 import utils.DiceRoller;
 
+//this class manages the satates and the behaviors that a player must have  
 public abstract class Player implements Iwarrior,IOperation_on_Effect<Player>{
     private static final int COOLDOWN_TURNS = 3;
     
@@ -79,7 +80,7 @@ public abstract class Player implements Iwarrior,IOperation_on_Effect<Player>{
     public String takeDamage(int amount, DamageType type) {
         int finalDamage = amount;
         String message = "";
-        this.health = health - finalDamage ;//health method must be added 
+        this.health = health - finalDamage ;
         for (Effect<Player> effect : effectManager.getActiveEffects())
         {
             if (effect instanceof Defensive_type_Effect defensive) {
@@ -113,10 +114,12 @@ public abstract class Player implements Iwarrior,IOperation_on_Effect<Player>{
         return equippedWeapon;
     }
 
+
     @Override
     public String attack(Iwarrior target, DiceRoller dice) throws InvalidMoveException {
         return AttackAction.performWeaponAttack(this, target, equippedWeapon, inventory);
     }
+    
     @Override
     public void addEffect(Effect<Player> effect) { 
        effectManager.addEffect(effect);

@@ -1,5 +1,6 @@
 model/GoblinPoisonEffect.class
 view/DungeonPanel$ImagePanel.class
+controller/EncounterResult.class
 model/Potion.class
 controller/CombatManager.class
 model/Antidote.class
@@ -16,7 +17,6 @@ com/dungeonescape/Game.class
 controller/ItemUsageManager.class
 model/Iwarrior.class
 model/Enemy.class
-controller/CombatManager$FleeResult.class
 view/HUDPanel.class
 model/ITakeable.class
 view/GameWindow.class
@@ -25,9 +25,11 @@ view/PlayerSelectionWindow.class
 model/Bean.class
 controller/TrapManager.class
 model/Elfo.class
+controller/ItemUseResult.class
 model/Slow_Heal_Effect.class
 model/StaminaElixir.class
 model/Ghost.class
+controller/FleeResult.class
 model/Weapon.class
 view/PlayerListPanel.class
 utils/DiceRoller.class
@@ -48,13 +50,11 @@ view/LogPanel.class
 model/Effect.class
 com/dungeonescape/Main.class
 view/UIStateManager.class
-controller/ItemUsageManager$ItemUseResult.class
 view/ShopDialog.class
 view/InventoryDialog.class
 model/Level.class
 model/Inventory.class
 model/DamageType.class
-controller/DoorManager$EncounterResult.class
 model/Item.class
 model/ShadowAssassin.class
 controller/LevelManager.class

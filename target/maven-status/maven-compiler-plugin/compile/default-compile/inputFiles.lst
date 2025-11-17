@@ -26,6 +26,7 @@
 /home/kheizaran/Github/DungeonEscape/src/main/java/view/LogPanel.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/SpikeTrap.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/Lucy.java
+/home/kheizaran/Github/DungeonEscape/src/main/java/controller/EncounterResult.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/ShopEncounter.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/ItemFactory.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/view/InventoryPanel.java
@@ -46,6 +47,7 @@
 /home/kheizaran/Github/DungeonEscape/src/main/java/view/GameWindow.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/controller/DoorManager.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/view/DungeonPanel.java
+/home/kheizaran/Github/DungeonEscape/src/main/java/controller/FleeResult.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/SlimeBlob.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/PoisonTypeEffect.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/Bean.java
@@ -60,6 +62,7 @@
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/Defensive_type_Effect.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/TrapFactory.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/ITakeable.java
+/home/kheizaran/Github/DungeonEscape/src/main/java/controller/ItemUseResult.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/Player.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/Slow_Heal_Effect.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/MimicChest.java

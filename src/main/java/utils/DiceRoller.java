@@ -1,7 +1,7 @@
 package utils;
 
 import java.util.Random;
-
+//conceret class only for randomness 
 
 public class DiceRoller {
     private final Random random;
@@ -24,6 +24,6 @@ public class DiceRoller {
     
     public int rollIndex(int bound) {
         if (bound <= 0) throw new IllegalArgumentException("Bound must be positive");
-        return random.nextInt(bound);
+        return random.nextInt(bound); //returns a random integer greater than or equal to 0 and less than
     }
 }

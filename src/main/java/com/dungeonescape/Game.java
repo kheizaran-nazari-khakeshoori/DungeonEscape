@@ -7,8 +7,11 @@ import java.util.Map;
 
 import controller.CombatManager;
 import controller.DoorManager;
+import controller.EncounterResult;
 import controller.EncounterType;
+import controller.FleeResult;
 import controller.ItemUsageManager;
+import controller.ItemUseResult;
 import controller.LevelManager;
 import controller.TrapManager;
 import controller.TrapResult;
@@ -125,8 +128,8 @@ public class Game {
             .orElse(null);
         if (startingWeapon != null) {
             try {
-                ItemUsageManager.ItemUseResult result = itemUsageManager.useItem(activePlayer, startingWeapon.getName());
-                uiManager.getLogPanel().addMessage(result.message());
+                ItemUseResult result = itemUsageManager.useItem(activePlayer, startingWeapon.getName());
+                uiManager.getLogPanel().addMessage(result.getMessage());
             } catch (InvalidMoveException e) {
                 uiManager.getLogPanel().addMessage("Error equipping starting weapon: " + e.getMessage());
             }
@@ -160,12 +163,12 @@ public class Game {
         String doorName = (doorNumber == 1) ? "left" : "right";
         uiManager.getLogPanel().addMessage("\nYou open the " + doorName + " door...");
         // Delegate encounter generation to DoorManager
-        DoorManager.EncounterResult encounter = doorManager.generateEncounter(activePlayer, enemyToAvoid);
+        EncounterResult encounter = doorManager.generateEncounter(activePlayer, enemyToAvoid);
 
 
-        var encounterType = encounter.type();
+        var encounterType = encounter.getType();
         if (encounterType == EncounterType.ENEMY) {
-            handleEnemyEncounter(encounter.enemy());
+            handleEnemyEncounter(encounter.getEnemy());
         } else if (encounterType == EncounterType.TRAP) {
             handleTrapEncounter();
         } else if (encounterType ==EncounterType.EMPTY_ROOM) {
@@ -316,10 +319,10 @@ public class Game {
         if (combatManager == null) return;
 
         // Delegate flee logic to the CombatManager
-        CombatManager.FleeResult result = combatManager.attemptFlee();
-        uiManager.getLogPanel().addMessage(result.logMessage());
+        FleeResult result = combatManager.attemptFlee();
+        uiManager.getLogPanel().addMessage(result.getLogMessage());
 
-        if (result.success()) {
+        if (result.isSuccess()) {
             String fledEnemyName = currentEnemy.getName();
             this.currentEnemy = null;
             this.combatManager = null;
@@ -352,9 +355,9 @@ public class Game {
 
         // Try to use the item by calling the dedicated manager
         try {
-            ItemUsageManager.ItemUseResult result = itemUsageManager.useItem(activePlayer, selectedItem);
-            uiManager.getLogPanel().addMessage(result.message());
-            if (result.success()) {
+            ItemUseResult result = itemUsageManager.useItem(activePlayer, selectedItem);
+            uiManager.getLogPanel().addMessage(result.getMessage());
+            if (result.isSuccess()) {
                 updateGUI(); // Update UI only on successful use
             }
         } catch (InvalidMoveException e) {

@@ -1,14 +1,14 @@
 package model;
-
+//this class stores shop item , provides access to items and search for item 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ShopEncounter {
-    private final List<Item> availableItems;//repository pattern 
+    private final List<Item> availableItems;//list depends on abstract class
 
     public ShopEncounter() {
         this.availableItems = new ArrayList<>();
-        populateShopItems();
+        populateShopItems();//delegates setup
     }
 
     private void populateShopItems() {
@@ -45,6 +45,9 @@ public class ShopEncounter {
 
 
     public String getEnterMessage() {
-        return "You enter a dimly lit shop. A shady merchant eyes you suspiciously.";
+        return "You enter the shop.";
     }
 }
+//"In my project, the shop always uses the same set of items, so I kept the item list hardcoded inside the class for simplicity.
+//If I needed different shops or wanted to load items from outside, I would use dependency injection."
+//By using dependency injection (passing the list of items to the constructor), the ShopEncounter class no longer needs to be modified to add, remove, or change shop items; instead, new or different item lists can be provided from outside the class, making it open for extension but closed for modification, thus satisfying the Open/Closed Principle.

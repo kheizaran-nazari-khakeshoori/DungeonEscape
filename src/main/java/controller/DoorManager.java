@@ -81,5 +81,5 @@ public class DoorManager {
 
 
 
-    public record EncounterResult(EncounterType type, Enemy enemy) {}
+   
 }

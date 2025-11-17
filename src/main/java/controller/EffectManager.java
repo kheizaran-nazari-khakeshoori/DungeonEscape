@@ -52,6 +52,7 @@ public class EffectManager<T> {
         }
     }
     
+    //It applies ALL active effects to the target, removes finished effects, and returns a summary message. 
     public String applyAllEffects(T target) {
         if (activeEffects.isEmpty()) {
             return "";

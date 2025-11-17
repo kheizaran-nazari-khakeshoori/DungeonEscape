@@ -6,7 +6,6 @@ import model.InvisibilityEffect;
 import model.Iwarrior;
 import model.Player;
 import utils.DiceRoller;
-
 //Controller class that coordinates combat interactions between Player and Iwarrior implementations
 public class CombatManager {
     private final Player player;
@@ -36,11 +35,7 @@ public class CombatManager {
             try {
                 combatLog.append("\n").append(enemy.attack(player, dice));
             } catch (exceptions.InvalidMoveException e) {
-                    combatLog.append("\n")
-                    .append(enemy.getName())
-                    .append(" is unable to attack! (")
-                    .append(e.getMessage())
-                    .append(")");
+                    combatLog.append("\n").append(enemy.getName()).append(" is unable to attack! (").append(e.getMessage()).append(")");
             }
         }
 
@@ -78,7 +73,9 @@ public class CombatManager {
     }
 
     
-
+    // Attempts to flee from combat. If the player has the Invisibility effect, fleeing always succeeds and the effect is removed.
+    // Otherwise, a random chance is compared to the player's flee chance rule. If the flee fails, the enemy gets a free attack.
+    // Returns a FleeResult indicating whether the escape was successful and a message describing the outcome.
     public FleeResult attemptFlee() {
         
         if (player.hasEffect(InvisibilityEffect.EFFECT_NAME)) {
@@ -89,7 +86,7 @@ public class CombatManager {
         
         double chance = dice.getRandom().nextDouble();
         double fleeChance = player.getRuleEngine().getRule(RuleEngine.FLEE_CHANCE);
-
+        //This is the standard way to check for a percentage chance in programming.
         if (chance < fleeChance) 
         {
             return new FleeResult(true, "You successfully escaped!");
@@ -100,13 +97,13 @@ public class CombatManager {
                 String attackResult = enemy.attack(player, dice);
                 String message = "You failed to escape!\n" + attackResult;
                 return new FleeResult(false, message);
-            }       
+                }       
             catch (InvalidMoveException e) 
             {
             return new FleeResult(false, "You failed to escape!");
-        }
+            }
         }
     }
 
-    public record FleeResult(boolean success, String logMessage) {}
+    
 }

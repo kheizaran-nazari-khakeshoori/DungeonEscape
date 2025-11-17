@@ -19,8 +19,8 @@ public class ItemUsageManager {
             player.getInventory().removeItem(usedItem);
         }
 
-        return new ItemUseResult(usedItem.getUseMessage(player), true, false, false);
+        return new ItemUseResult(true,usedItem.getUseMessage(player));
     }
 
-    public record ItemUseResult(String message, boolean success, boolean cancelled, boolean error) {}
+   
 }

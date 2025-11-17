@@ -1,10 +1,11 @@
 package model;
-//encapsulation
+//more general
+//this is class is like a blueprint for different type of items 
 public abstract class Item {
     private final String name;
-    protected String imagePath;
-    protected String description;
-    protected int cost; 
+    private final String imagePath;
+    private final String description;
+    private final int cost; 
 
     public Item(String name, String description, String imagePath, int cost) {
         this.name = name;

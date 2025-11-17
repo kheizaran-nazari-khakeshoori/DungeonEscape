@@ -124,7 +124,6 @@ public abstract class Enemy implements Iwarrior, ITakeable,IOperation_on_Effect<
     }
 
     @Override
-    
     public void takeDamage(int amount) {
         takeDamage(amount, null);
     }
@@ -215,7 +214,7 @@ public abstract class Enemy implements Iwarrior, ITakeable,IOperation_on_Effect<
 
     
     @Override 
-    public String attack(Iwarrior target, DiceRoller dice) throws exceptions.InvalidMoveException{
+    public String attack(Iwarrior target, DiceRoller dice) {
         target.takeDamage(this.baseDamage);
         return getAttackMessage();
     }

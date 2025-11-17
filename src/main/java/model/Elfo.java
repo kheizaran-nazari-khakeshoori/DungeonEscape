@@ -9,6 +9,7 @@ public class Elfo extends Player {
        getRuleEngine().setRule(RuleEngine.FLEE_CHANCE, 0.75); 
     }
 
+    //Because it's NOT setting data - it's CALCULATING/RETURNING a value! 
     @Override
     public double getTrapDisarmChance() { 
         return 0.66; 

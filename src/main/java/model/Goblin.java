@@ -10,8 +10,9 @@ public class Goblin extends Enemy {
 
 
    @Override
-    public String attack(Iwarrior target, DiceRoller dice) throws exceptions.InvalidMoveException {
+    public String attack(Iwarrior target, DiceRoller dice) {
  
+    //apply poison is boring so diece roller help me to make it as a special case 
     target.takeDamage(getBaseDamage());
     String result = getName() + " attacks you for " + getBaseDamage() + " damage.";
     
@@ -25,7 +26,7 @@ public class Goblin extends Enemy {
         player.addEffect(new GoblinPoisonEffect(poisonDamage, poisonDuration));
         
         result += "\nYou are hit by a rusty weapon. Now you are poisoned!";
-    }
+        }
     }
     
     return result;

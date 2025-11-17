@@ -9,7 +9,7 @@ public class PoisonSpider extends Enemy {
 
 
     @Override
-    public String attack(Iwarrior target, DiceRoller dice) throws exceptions.InvalidMoveException {
+    public String attack(Iwarrior target, DiceRoller dice)  {
        Player player = (Player) target;
        target.takeDamage(getBaseDamage());
         String result = getName() + " bites you for " + getBaseDamage() + " damage.";
