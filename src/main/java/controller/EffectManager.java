@@ -42,8 +42,9 @@ public class EffectManager<T> {
         }
     }
     
+    //remove all the effects of one type in the list of activeeffect 
     public void removeEffectsOfType(Class<?> effectType) {
-        Iterator<Effect<T>> iterator = activeEffects.iterator();
+        Iterator<Effect<T>> iterator = activeEffects.iterator();//do not forget that iterator is a tool for  interating through a collection like list 
         while (iterator.hasNext()) {
             Effect<T> effect = iterator.next();
             if (effectType.isInstance(effect)) {
@@ -66,9 +67,6 @@ public class EffectManager<T> {
             String result = effect.apply(target);
             
             if (result != null && !result.isEmpty()) {
-                if (!effectsResult.isEmpty()) {
-                    effectsResult.append("\n");
-                }
                 effectsResult.append(result);
             }
             

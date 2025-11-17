@@ -3,10 +3,11 @@ package controller;
 import java.util.HashMap;
 import java.util.Map;
 
-
-public class RuleEngine implements Cloneable {
+// RuleEngine manages configurable game rules and probabilities (like enemy chance, trap chance, etc.).
+// It allows getting and setting rule values dynamically for flexible gameplay adjustments.
+public class RuleEngine {
    
-    private Map<String, Double> rules = new HashMap<>();
+    private final Map<String, Double> rules = new HashMap<>();
 
   
     public static final String ENEMY_CHANCE = "ENEMY_CHANCE";
@@ -38,14 +39,5 @@ public class RuleEngine implements Cloneable {
         rules.put(key, value);
     }
 
-    @Override  
-    public RuleEngine clone() throws CloneNotSupportedException {
-        try {
-            RuleEngine cloned = (RuleEngine) super.clone();
-            cloned.rules = new HashMap<>(this.rules);
-            return cloned;
-        } catch (CloneNotSupportedException e) {
-            throw new AssertionError();  
-        }
-    }
+   
 }

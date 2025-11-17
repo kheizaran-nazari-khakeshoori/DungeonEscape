@@ -30,7 +30,7 @@ public class DoorManager {
         double randomChanceValue = dice.getRandom().nextDouble();
         double enemyChance = player.getRuleEngine().getRule(RuleEngine.ENEMY_CHANCE);
 
-   
+        //level complete
         if (randomChanceValue < enemyChance) 
         {
             if (encounters.isEmpty()) 
@@ -40,13 +40,15 @@ public class DoorManager {
 
         Supplier<Enemy> enemySupplier = encounters.remove(0);
         Enemy enemy = enemySupplier.get();
-
+        
+        //enemy encounter
         if (enemy.getName().equals(enemyToAvoid))
         {
+            //interating trough all remaining enemy suppliers in the list 
             for (int i = 0; i < encounters.size(); i++) {
-                Enemy nextEnemy = encounters.get(i).get();
+                Enemy nextEnemy = encounters.get(i).get();//getting supplier enemy at index i from the ecnounters , second one calls the method of  the supplier >> so the result is enemy 
                 if (!nextEnemy.getName().equals(enemyToAvoid)) {
-
+                    //swaping with the one we want to avoid 
                     Supplier<Enemy> differentEnemySupplier = encounters.remove(i);
                     encounters.add(i, enemySupplier);
                     enemySupplier = differentEnemySupplier;
@@ -56,15 +58,17 @@ public class DoorManager {
             enemy = enemySupplier.get();
         }
 
+        //for making the enemy more strong cause it appears for two or more than once
         String enemyName = enemy.getName();
         int previousEncounters = enemyCount.getOrDefault(enemyName, 0);//return the value if the key exists, otherwise return 0
         if (previousEncounters > 0) {
-            enemy.strengthen(previousEncounters, player.getRuleEngine());
+            enemy.strengthen(previousEncounters, player.getRuleEngine());//the game logic (based on the player) control the appearance of the enemy 
         }
 
         return new EncounterResult(EncounterType.ENEMY, enemy);
     }
 
+    //trap encounter 
     double trapChance = player.getRuleEngine().getRule(RuleEngine.TRAP_CHANCE);
     if (randomChanceValue < enemyChance + trapChance) {
         return new EncounterResult(EncounterType.TRAP, null);

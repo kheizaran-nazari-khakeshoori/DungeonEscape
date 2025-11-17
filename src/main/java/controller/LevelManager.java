@@ -1,5 +1,6 @@
 package controller;
 
+//organizes, tracks, and provides access to the game’s levels and their enemies, and handles moving from one level to the next.
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
@@ -44,6 +45,7 @@ public class LevelManager {
         return gameLevels.get(currentLevelIndex);
     }
 
+    //randomizing the order of the enemy supplier for each level 
     public List<Supplier<Enemy>> getRandomizedEnemySuppliers() {
         return getCurrentLevel().getShuffledDeck(dice);
     }
