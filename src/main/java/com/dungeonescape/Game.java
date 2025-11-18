@@ -1,5 +1,10 @@
 package com.dungeonescape;
 
+// The Game class is the main controller for the entire game.
+// It coordinates all major components and managers, connecting the game logic (combat, traps, levels, inventory, shop, etc.)
+// with the user interface panels and handling the overall game flow.
+// This class acts as the "brain" of the game, responding to user actions, updating the UI, and managing the state of the player, party, and encounters.
+// It brings together different packages (model, controller, view) to ensure the game runs smoothly from start to finish.
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -42,9 +47,9 @@ import view.UIStateManager;
 
 public class Game {
     
-    private final Player activePlayer;//association 
+    private final Player activePlayer;
     private final List<Player> party;
-    private Enemy currentEnemy;//association 
+    private Enemy currentEnemy;
 
     // Managers (single responsibility classes)
     private final DiceRoller dice;
@@ -57,18 +62,15 @@ public class Game {
     private final ShopEncounter shopEncounter;
 
 
-    private final Map<String, Integer> enemyEncounterCount;//the variable type is map (interface)
+    private final Map<String, Integer> enemyEncounterCount;
 
     public Game(Player player, GameWindow gameWindow, PlayerListPanel PlayerListPanel, DungeonPanel dungeonPanel, InventoryPanel inventoryPanel, LogPanel logPanel, ControlPanel controlPanel, StatusPanel hudPanel, ItemUsageManager itemUsageManager) {
-        // Initialize player and party
+        
         this.activePlayer = player;
         this.party = new ArrayList<>();
         initializeParty();
-        // Initialize utilities
         this.dice = new DiceRoller();
-        //instantiation 
-        this.enemyEncounterCount = new HashMap<>();
-        // Initialize managers
+        this.enemyEncounterCount = new HashMap<>();  
         TrapFactory trapFactory = new TrapFactory(dice);
         this.doorManager = new DoorManager(dice, enemyEncounterCount);
         this.trapManager = new TrapManager(trapFactory);
@@ -99,7 +101,7 @@ public class Game {
         }
     }
 
-
+    // connects the game's user interface buttons to the game logic using action listeners.
     private void setupListeners(DungeonPanel dungeonPanel, ControlPanel controlPanel) {
         dungeonPanel.door1Button.addActionListener(e -> chooseDoor(1));
         dungeonPanel.door2Button.addActionListener(e -> chooseDoor(2));
@@ -120,17 +122,24 @@ public class Game {
         equipStartingWeapon();
         startNextLevel();
     }
-
+    //automatically equips the first weapon found in the active plyer's inventory
     private void equipStartingWeapon() {
-        Item startingWeapon = activePlayer.getInventory().getItems().stream()
-            .filter(item -> item instanceof Weapon)
-            .findFirst()
-            .orElse(null);
+        Item startingWeapon = null;
+        
+        for(Item item :  activePlayer.getInventory().getItems())
+        {
+            if (item instanceof Weapon)
+            {
+                startingWeapon = item;
+                break;
+            }
+        }
         if (startingWeapon != null) {
             try {
                 ItemUseResult result = itemUsageManager.useItem(activePlayer, startingWeapon.getName());
                 uiManager.getLogPanel().addMessage(result.getMessage());
-            } catch (InvalidMoveException e) {
+            } 
+            catch (InvalidMoveException e) {
                 uiManager.getLogPanel().addMessage("Error equipping starting weapon: " + e.getMessage());
             }
         }
@@ -142,7 +151,7 @@ public class Game {
         uiManager.loadBackgroundImage(level.getBackgroundImagePath());
         uiManager.getLogPanel().addMessage("\n--- You have entered " + level.getName() + " ---");
         uiManager.setDoorMode();
-        updateGUI();
+        updateGUI();//updating all panels 
     }
 
     public Player getActivePlayer() {
@@ -153,6 +162,7 @@ public class Game {
         return uiManager.getLogPanel();
     }
 
+    //They are private because only the Game class should manage the process of choosing doors and handling encounters, not outside code.
     private void chooseDoor(int doorNumber) {
         chooseDoor(doorNumber, null);
     }
@@ -177,7 +187,7 @@ public class Game {
             handleLevelComplete();
         }
     }
-
+    //Whenever the player opens a door and finds an enemy, this method is called to begin the battle with that enemy.
     private void handleEnemyEncounter(Enemy enemy) {
         enterCombat(enemy);
     }
@@ -340,7 +350,6 @@ public class Game {
     }
 
     private void manageInventory() {
-        // UI logic is now handled in the Game controller, not the ItemManager.
         // 1. Get data from the model
         List<String> itemNamesList = activePlayer.getInventory().getItemNames();
         // 2. Delegate UI interaction to a dedicated View component
@@ -365,7 +374,7 @@ public class Game {
         }
     }
 
-//seperation of concern design pattern 
+
     public void updateGUI() {
         uiManager.updateAllPanels(activePlayer, party, currentEnemy);
     }

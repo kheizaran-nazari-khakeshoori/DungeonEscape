@@ -12,8 +12,5 @@ public class Main {
         
 
     }
-    public static String println(String name)
-    {
-        return name;
-    }
+    
 }
