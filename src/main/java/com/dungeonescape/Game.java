@@ -30,12 +30,12 @@ import utils.DiceRoller;
 import view.ControlPanel;
 import view.DungeonPanel;
 import view.GameWindow;
-import view.HUDPanel;
 import view.InventoryDialog;
 import view.InventoryPanel;
 import view.LogPanel;
 import view.PlayerListPanel;
 import view.ShopDialog;
+import view.StatusPanel;
 import view.UIStateManager;
 
 //class is responsible for overall game flow and coordination (managing encounters, UI updates, game state)
@@ -59,7 +59,7 @@ public class Game {
 
     private final Map<String, Integer> enemyEncounterCount;//the variable type is map (interface)
 
-    public Game(Player player, GameWindow gameWindow, PlayerListPanel PlayerListPanel, DungeonPanel dungeonPanel, InventoryPanel inventoryPanel, LogPanel logPanel, ControlPanel controlPanel, HUDPanel hudPanel, ItemUsageManager itemUsageManager) {
+    public Game(Player player, GameWindow gameWindow, PlayerListPanel PlayerListPanel, DungeonPanel dungeonPanel, InventoryPanel inventoryPanel, LogPanel logPanel, ControlPanel controlPanel, StatusPanel hudPanel, ItemUsageManager itemUsageManager) {
         // Initialize player and party
         this.activePlayer = player;
         this.party = new ArrayList<>();
@@ -71,7 +71,7 @@ public class Game {
         // Initialize managers
         TrapFactory trapFactory = new TrapFactory(dice);
         this.doorManager = new DoorManager(dice, enemyEncounterCount);
-        this.trapManager = new TrapManager(trapFactory, dice);
+        this.trapManager = new TrapManager(trapFactory);
         this.levelManager = new LevelManager(dice);
         this.itemUsageManager = itemUsageManager;
         this.uiManager = new UIStateManager(dungeonPanel, controlPanel, inventoryPanel,
@@ -185,14 +185,14 @@ public class Game {
 
     private void handleTrapEncounter() {
         // Delegate to TrapManager
-        TrapResult result = trapManager.handleTrap(activePlayer,true);
+        TrapResult result = trapManager.handleTrap(activePlayer);
         uiManager.getLogPanel().addMessage("\n=== TRAP ENCOUNTERED ===");
-        uiManager.displayImage(result.imagePath());
-        uiManager.getLogPanel().addMessage(result.messages());
+        uiManager.displayImage(result.getImagePath());
+        uiManager.getLogPanel().addMessage(result.getMessages());
         uiManager.getLogPanel().addMessage("========================\n");
         updateGUI();
 
-        if (result.playerDied()) {
+        if (result.isPlayerDied()) {
             endGame();
         } else {
             uiManager.setPostEncounterMode();

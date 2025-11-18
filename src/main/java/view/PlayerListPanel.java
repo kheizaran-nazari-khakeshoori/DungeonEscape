@@ -51,7 +51,8 @@ public class PlayerListPanel extends JPanel {
             playersContainer.add(Box.createRigidArea(new Dimension(0, 5)));
         }
 
+        //refreshing the gui
         revalidate();
-        repaint();
+        repaint();//just erquesting the panel to redraw itself on the screen
     }
 }

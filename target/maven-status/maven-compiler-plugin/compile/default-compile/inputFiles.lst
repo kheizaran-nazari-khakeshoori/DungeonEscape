@@ -2,14 +2,15 @@
 /home/kheizaran/Github/DungeonEscape/src/main/java/view/InventoryDialog.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/controller/ItemUsageManager.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/controller/EffectManager.java
+/home/kheizaran/Github/DungeonEscape/src/main/java/view/StatusPanel.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/StoneMan.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/view/ControlPanel.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/StaminaElixir.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/Weapon.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/controller/AttackAction.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/view/ShopDialog.java
+/home/kheizaran/Github/DungeonEscape/src/main/java/view/ImagePanel.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/IOperation_on_Effect.java
-/home/kheizaran/Github/DungeonEscape/src/main/java/view/HUDPanel.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/controller/CombatManager.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/com/dungeonescape/Game.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/Elfo.java

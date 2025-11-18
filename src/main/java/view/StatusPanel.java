@@ -14,7 +14,7 @@ import javax.swing.JProgressBar;
 import model.Enemy;
 import model.Player;
 
-public class HUDPanel extends JPanel {
+public class StatusPanel extends JPanel {
     // Player components
     private final JPanel playerPanel;
     private final JLabel playerNameLabel;
@@ -27,7 +27,7 @@ public class HUDPanel extends JPanel {
     private final JProgressBar enemyHealthBar;
     
 
-    public HUDPanel() {
+    public StatusPanel() {
         setLayout(new GridLayout(2, 1, 5, 5)); 
         setBorder(BorderFactory.createTitledBorder("Status"));
 

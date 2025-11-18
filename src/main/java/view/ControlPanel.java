@@ -1,5 +1,5 @@
 package view;
-
+//this class manage the gui of the action part (the part that has different button) 
 import java.awt.FlowLayout;
 import java.awt.event.ActionListener;
 
@@ -41,7 +41,6 @@ public class ControlPanel extends JPanel {
 
     //It keeps the buttons private (encapsulation).
     //Other classes can react to button clicks by providing a listener, but cannot modify the buttons directly.
-    //It makes your code safer and easier to maintain.
     // Public methods to add listeners without exposing the buttons themselves
     public void addInventoryListener(ActionListener listener) { inventoryButton.addActionListener(listener); }
     public void addAttackListener(ActionListener listener) { attackButton.addActionListener(listener); }
@@ -63,7 +62,7 @@ public class ControlPanel extends JPanel {
     public void setFleeButtonEnabled(boolean enabled) { fleeButton.setEnabled(enabled); }
     public void setSpecialButtonEnabled(boolean enabled) { specialButton.setEnabled(enabled); }
     public void setSpecialButtonColor(java.awt.Color color) { specialButton.setBackground(color); }
-    public boolean isContinueButtonVisible() { return continueButton.isVisible(); } // New getter
+    public boolean isContinueButtonVisible() { return continueButton.isVisible(); } 
 
     public void setAllButtonsEnabled(boolean enabled) {
         inventoryButton.setEnabled(enabled);
@@ -75,3 +74,5 @@ public class ControlPanel extends JPanel {
         //exitButton.setEnabled(enabled);
     }
 }
+
+//I used ActionListener because it is a special interface in Java that lets my program react to button clicks. By implementing it (often with a lambda expression), I can specify what should happen when the user clicks a button in the GUI.

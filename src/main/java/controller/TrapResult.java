@@ -2,48 +2,29 @@ package controller;
 
 import model.Trap;
 
+public class TrapResult {
+    private final Trap trap;
+    private final String imagePath;
+    private final String messages;
+    private final boolean playerDied;
 
-//Result of a trap encounter.
-//Contains trap information, messages, and outcome status.
-
-public record TrapResult(
-    Trap trap,
-    String imagePath,
-    String messages,
-    boolean trapDisarmed,
-    boolean playerDied
-) 
-{
-    
-    public static TrapResult disarmed(Trap trap, String messages) {
-        return new TrapResult(
-            trap,
-            "images/ui/Trap.png",
-            messages,
-            true,  // trapDisarmed
-            false  // playerDied
-        );
+    public TrapResult(Trap trap, String imagePath, String messages, boolean playerDied) {
+        this.trap = trap;
+        this.imagePath = imagePath;
+        this.messages = messages;
+        this.playerDied = playerDied;
     }
-    
-   
+
+    public Trap getTrap() { return trap; }
+    public String getImagePath() { return imagePath; }
+    public String getMessages() { return messages; }
+    public boolean isPlayerDied() { return playerDied; }
+
     public static TrapResult triggered(Trap trap, String messages, boolean playerDied) {
-        return new TrapResult(
-            trap,
-            "images/ui/Trap.png",
-            messages,
-            false,  // trapDisarmed
-            playerDied // there is two possible outcome wheter true or false 
-        );
+        return new TrapResult(trap, "images/ui/Trap.png", messages, playerDied);
     }
-    
-  
+
     public static TrapResult playerDiedEarly(String messages) {
-        return new TrapResult(
-            null,  // no trap
-            "images/ui/Trap.png",
-            messages,
-            false,  // trapDisarmed
-            true    // playerDied
-        );
+        return new TrapResult(null, "images/ui/Trap.png", messages, true);
     }
 }

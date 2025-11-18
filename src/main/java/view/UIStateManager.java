@@ -1,4 +1,5 @@
 package view;
+import java.util.List;
 
 import model.Enemy;
 import model.Player;
@@ -7,17 +8,17 @@ public class UIStateManager {
     private final DungeonPanel dungeonPanel;
     private final ControlPanel controlPanel;
     private final InventoryPanel inventoryPanel;
-    private final HUDPanel hudPanel;
+    private final StatusPanel statusPanel;
     private final PlayerListPanel PlayerListPanel;
     private final LogPanel logPanel;
 
     public UIStateManager(DungeonPanel dungeonPanel, ControlPanel controlPanel,
-                          InventoryPanel inventoryPanel, HUDPanel hudPanel,
+                          InventoryPanel inventoryPanel, StatusPanel statusPanel,
                           PlayerListPanel PlayerListPanel, LogPanel logPanel) {
         this.dungeonPanel = dungeonPanel;
         this.controlPanel = controlPanel;
         this.inventoryPanel = inventoryPanel;
-        this.hudPanel = hudPanel;
+        this.statusPanel = statusPanel;
         this.PlayerListPanel = PlayerListPanel;
         this.logPanel = logPanel;
     }
@@ -65,10 +66,10 @@ public class UIStateManager {
         controlPanel.setAllButtonsEnabled(false);
     }
 
-    public void updateAllPanels(Player activePlayer, java.util.List<Player> party, Enemy currentEnemy) {
+    public void updateAllPanels(Player activePlayer,List<Player> party, Enemy currentEnemy) {
         inventoryPanel.updateInventory(activePlayer);
-        hudPanel.updateStatus(activePlayer);
-        hudPanel.updateEnemyStatus(currentEnemy);
+        statusPanel.updateStatus(activePlayer);
+        statusPanel.updateEnemyStatus(currentEnemy);
         PlayerListPanel.updatePlayerList(activePlayer, party);
     }
 

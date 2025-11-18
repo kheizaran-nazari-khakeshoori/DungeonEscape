@@ -1,5 +1,4 @@
 model/GoblinPoisonEffect.class
-view/DungeonPanel$ImagePanel.class
 controller/EncounterResult.class
 model/Potion.class
 controller/CombatManager.class
@@ -14,10 +13,11 @@ controller/DoorManager.class
 model/Goblin.class
 model/SlimeBlob.class
 com/dungeonescape/Game.class
+view/StatusPanel.class
 controller/ItemUsageManager.class
 model/Iwarrior.class
+view/ImagePanel.class
 model/Enemy.class
-view/HUDPanel.class
 model/ITakeable.class
 view/GameWindow.class
 exceptions/InvalidMoveException.class

@@ -1,4 +1,5 @@
 package view;
+//shop window 
 
 import java.awt.BorderLayout;
 import java.awt.Container;
@@ -34,7 +35,7 @@ public class ShopDialog extends JDialog {
 
         setLayout(new BorderLayout(10, 10));
         setSize(800, 600);
-        Container contentPane = getContentPane();//what does it return ? 
+        Container contentPane = getContentPane();
         JPanel panel = (JPanel) contentPane;
         panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
@@ -44,7 +45,7 @@ public class ShopDialog extends JDialog {
         JScrollPane scrollPane = new JScrollPane(itemsPanel);
         this.add(scrollPane, BorderLayout.CENTER);
         
-        pack();
+        pack();// automatically sizes the window 
         setLocationRelativeTo(null); // Center the dialog
     }
 
@@ -63,7 +64,7 @@ public class ShopDialog extends JDialog {
             game.getLogPanel().addMessage("Not enough gold to buy " + item.getName() + ".");
         }
     }
-    
+    //refreshing the shop after a purchase 
     private void refreshShopItems() {
         itemsPanel.removeAll(); 
         for (Item item : shopEncounter.getAvailableItems()) {

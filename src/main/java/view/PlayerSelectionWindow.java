@@ -1,5 +1,5 @@
 package view;
-
+//this class create graphical window that lets the player choose their character 
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
@@ -21,7 +21,7 @@ import model.Elfo;
 import model.Lucy;
 import model.Player;
 
-public class PlayerSelectionWindow extends JFrame {
+public class PlayerSelectionWindow extends JFrame {// extending the Jfram to directly represent a window in GUI 
 
     //frame
     public PlayerSelectionWindow() {
@@ -31,7 +31,7 @@ public class PlayerSelectionWindow extends JFrame {
         setLocationRelativeTo(null);//center the window on the screen 
         setLayout(new GridLayout(1, 3, 10, 10));//one row three columns the 10 pixlels of space between them 
         
-        //using add to add component like the panes to the window 
+        //using add to add component like the panels to the window 
         add(createCharacterPanel(
             "Bean",
             "A rebellious princess from Dreamland, surprisingly tough and handy with a sword.",
@@ -57,9 +57,10 @@ public class PlayerSelectionWindow extends JFrame {
     }
 
     //characters
+    //So, the type is JPanel because the method’s purpose is to build and give you a ready-to-use JPanel.
     private JPanel createCharacterPanel(String name, String description, String imagePath, Supplier<Player> playerSupplier) {
         JPanel panel = new JPanel(new BorderLayout(5, 10));//You are saying: “This panel will use a BorderLayout to arrange its components.”
-        panel.setBorder(BorderFactory.createLineBorder(Color.BLACK,3));
+        panel.setBorder(BorderFactory.createLineBorder(Color.GRAY,3));
 
         JLabel nameLabel = new JLabel(name, SwingConstants.CENTER);
         nameLabel.setFont(new Font("MV Boli", Font.PLAIN, 20));
@@ -103,6 +104,7 @@ public class PlayerSelectionWindow extends JFrame {
 
         JButton selectButton = new JButton("Select " + name);
 
+        //when the selection button is clicked 
         selectButton.addActionListener(e -> {
             Player selectedPlayer = playerSupplier.get();
             this.setVisible(false);

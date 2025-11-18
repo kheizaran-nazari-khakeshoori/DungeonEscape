@@ -1,56 +1,35 @@
 package controller;
 
-
-
 import model.Player;
 import model.Trap;
 import model.TrapFactory;
-import utils.DiceRoller;
 
+// Used to manage traps
 public class TrapManager {
-    private static final int TRAP_STRESS_DAMAGE = 5;
+   
     private final TrapFactory trapFactory;
-    private final DiceRoller dice;
 
-    public TrapManager(TrapFactory trapFactory, DiceRoller dice) {
+    public TrapManager(TrapFactory trapFactory) {
         this.trapFactory = trapFactory;
-        this.dice = dice;
+     
     }
 
-    public TrapResult handleTrap(Player player,boolean attemptDisarm) {
+    public TrapResult handleTrap(Player player) {
         StringBuilder messages = new StringBuilder();
-    
-        player.takeDamage(TRAP_STRESS_DAMAGE);
-        messages.append("The stress of finding a trap takes a toll on you...");
-        messages.append("You lose ").append(TRAP_STRESS_DAMAGE).append(" HP\n");
-        if (!player.isAlive()) {
-           return TrapResult.playerDiedEarly(messages.toString());
-        }
-        
+
+        // Create a new trap using the factory and dice
         Trap trap = trapFactory.createRandomTrap();
-        messages.append(trap.getTriggerMessage()).append("\n");
-        
 
-        if (attemptDisarm && dice.getRandom().nextDouble() < player.getTrapDisarmChance()) {
-           
-            messages.append("Success! You deftly avoid the ").append(trap.getName()).append(".");
-            return TrapResult.disarmed(trap, messages.toString());
-        } 
-        else {
-            
-            if (attemptDisarm) {
-                messages.append("You failed to disarm the trap!\n");
-            }
+        // The trap is always triggered
+        String triggerResult = trap.trigger(player);
+        messages.append(triggerResult);
+        boolean playerDied = !player.isAlive();
 
-            String triggerResult = trap.trigger(player);
-            messages.append(triggerResult);
-            boolean playerDied = !player.isAlive();
-            return TrapResult.triggered(trap, messages.toString(), playerDied);
+        if (playerDied) {
+            return TrapResult.playerDiedEarly(messages.toString());
+        } else {
+            return TrapResult.triggered(trap, messages.toString(), false);
         }
-    
     }
 
-    public int getDisarmChancePercent(Player player) {
-        return (int) (player.getTrapDisarmChance() * 100);
-    }
 }

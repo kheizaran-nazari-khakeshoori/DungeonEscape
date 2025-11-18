@@ -19,23 +19,24 @@ public class GameWindow extends JFrame {
         setLocationRelativeTo(null); 
 
         // Create panels
-        PlayerListPanel PlayerListPanel = new PlayerListPanel();
-        DungeonPanel dungeonPanel = new DungeonPanel();
-        InventoryPanel inventoryPanel = new InventoryPanel();
-        LogPanel logPanel = new LogPanel();
-        ControlPanel controlPanel = new ControlPanel();
-        HUDPanel hudPanel = new HUDPanel();
+        PlayerListPanel PlayerListPanel = new PlayerListPanel();//players list 
+        DungeonPanel dungeonPanel = new DungeonPanel();//images and doors 
+        InventoryPanel inventoryPanel = new InventoryPanel();//inventory 
+        LogPanel logPanel = new LogPanel();//log messages 
+        ControlPanel controlPanel = new ControlPanel();//actions
+        StatusPanel statusPanel = new StatusPanel(); //satus 
 
         ItemUsageManager itemUsageManager = new ItemUsageManager();
         
-        //this >> is current window  
-        new Game(player, this, PlayerListPanel, dungeonPanel, inventoryPanel, logPanel, controlPanel, hudPanel,itemUsageManager);
+        //calling the game.java constructor  
+        new Game(player, this, PlayerListPanel, dungeonPanel, inventoryPanel, logPanel, controlPanel,statusPanel,itemUsageManager);
 
 
+        //deviding window into the five regions
         setLayout(new BorderLayout());
         add(controlPanel, BorderLayout.NORTH);
         JPanel westPanel = new JPanel(new BorderLayout());
-        westPanel.add(hudPanel, BorderLayout.NORTH);
+        westPanel.add(statusPanel, BorderLayout.NORTH);
         westPanel.add(PlayerListPanel, BorderLayout.CENTER);
 
         add(westPanel, BorderLayout.WEST);

@@ -22,7 +22,7 @@ public class RuleEngine {
     public RuleEngine() {
        
         rules.put(ENEMY_CHANCE, 0.75); 
-        rules.put(TRAP_CHANCE, 0.1); 
+        rules.put(TRAP_CHANCE, 0.3); 
         rules.put(FLEE_CHANCE, 0.5); 
         rules.put(ENEMY_HEALTH_SCALING, 0.2); 
         rules.put(ENEMY_DAMAGE_SCALING, 0.1); 
