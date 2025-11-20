@@ -26,8 +26,8 @@ public class ControlPanel extends JPanel {
         specialButton = new JButton("Special");
         specialButton.setOpaque(true); // Make sure background color is visible
         specialButton.setBackground(java.awt.Color.CYAN); // Default to ready (blue)
-        shopButton = new JButton("Shop"); // Initialize the shop button
-        continueButton = new JButton("Continue"); // Initialize the continue button
+        shopButton = new JButton("Shop"); 
+        continueButton = new JButton("Continue"); 
         exitButton = new JButton("Exit Game");
 
         add(inventoryButton);

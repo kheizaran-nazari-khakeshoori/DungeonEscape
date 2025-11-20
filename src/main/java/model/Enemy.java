@@ -14,7 +14,6 @@ public abstract class Enemy implements Iwarrior, ITakeable,IOperation_on_Effect<
     private int baseDamage;
     private final int goldValue;
     private final String imagePath;
-    private final DamageType damageType;
     private final EffectManager<Enemy> effectManager;
     private  final Map<DamageType, Double> weaknesses;
     private final Map<DamageType, Double> resistances;
@@ -27,7 +26,6 @@ public abstract class Enemy implements Iwarrior, ITakeable,IOperation_on_Effect<
         this.baseDamage = baseDamage;
         this.goldValue = goldValue;
         this.imagePath = imagePath;
-        this.damageType = damageType;
         this.weaknesses = new HashMap<>();
         this.resistances = new HashMap<>();
         this.effectManager = new EffectManager<>();
@@ -155,7 +153,7 @@ public abstract class Enemy implements Iwarrior, ITakeable,IOperation_on_Effect<
     }
 
     public String getHint() {
-        if(weaknesses.size()> 0)
+        if(!weaknesses.isEmpty())
         {
             DamageType firstWeakness = weaknesses.keySet().iterator().next();
             String weaknessName = firstWeakness.toString().toLowerCase();
@@ -245,5 +243,15 @@ public abstract class Enemy implements Iwarrior, ITakeable,IOperation_on_Effect<
 
 }
 
-
+/**
+ * I kept the damage calculation logic inside the Enemy class because:
+ * 
+ * 1. The calculation directly depends on the Enemy's own fields (health, weaknesses, resistances).
+ * 2. The logic is closely tied to the Enemy's state and behavior, making it a natural responsibility for the class.
+ * 3. Moving this logic to a separate class would require exposing internal state (like health, weaknesses, resistances) through getters and setters, which can break encapsulation and make the code harder to maintain.
+ * 4. The calculation is not duplicated elsewhere (e.g., Player may have different logic), so there is no code repetition to eliminate.
+ * 5. Keeping it here makes the code easier to read and follow, as all combat-related logic for Enemy is in one place.
+ * 
+ * If the project grows and I see that damage calculation is shared and identical across multiple classes, or becomes more complex, I will consider refactoring it into a utility or strategy class.
+ */
 

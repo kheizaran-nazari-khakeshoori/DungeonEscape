@@ -34,13 +34,13 @@ public class ItemSelectionWindow extends JFrame {
     public ItemSelectionWindow(Player player) {
         this.selectedPlayer = player;
         //sart with creating main frame 
-        setTitle("Choose Your Starting Gear");
+        setTitle("Choose Your Starting accessories ");
         setSize(800, 900);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLocationRelativeTo(null);
+        setLocationRelativeTo(null);//center the window on the screen 
         setLayout(new BorderLayout(10, 10));
        
-        //  creating contaners for both weapons and potions
+        //  creating containers for both weapons and potions
         JPanel weaponPanel = new JPanel(new GridLayout(0, 3, 10, 10)); // 3 columns
         JPanel potionPanel = new JPanel(new GridLayout(0, 3, 10, 10)); // 3 columns
 
@@ -107,7 +107,8 @@ public class ItemSelectionWindow extends JFrame {
     private JPanel createItemCard(Item item, ButtonGroup group) {
         JPanel card = new JPanel(new BorderLayout(5, 5));
         card.setBorder(BorderFactory.createEtchedBorder());//just for 3d feature 
-        
+        //card.setBorder(BorderFactory.createLineBorder(Color.BLACK, 3));
+
         JRadioButton selectRadio = new JRadioButton(item.getName());//used for selecting one option from a group
         selectRadio.setFont(new Font("Serif", Font.BOLD, 16));
         selectRadio.setHorizontalAlignment(SwingConstants.CENTER);
@@ -137,6 +138,7 @@ public class ItemSelectionWindow extends JFrame {
         String statsText = item.getStatsString(); // OCP in action!
         String fullDescription = "<html><div style='text-align: center;'>" + descriptionText + "<br>" + statsText + "</div></html>";
         JLabel descLabel = new JLabel(fullDescription, SwingConstants.CENTER);
+        //descLabel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 3));
 
         card.add(selectRadio, BorderLayout.NORTH);
         card.add(imageLabel, BorderLayout.CENTER);

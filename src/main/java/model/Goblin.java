@@ -4,7 +4,7 @@ import utils.DiceRoller;
 public class Goblin extends Enemy {
      public Goblin() {
         
-        super("Goblin", 30, 8, 10, "images/enemies/Goblin.png", model.DamageType.PHYSICAL);
+        super("Goblin", 30, 8, 10, "images/enemies/Goblin.png",DamageType.PHYSICAL);
        
     }
 
@@ -12,12 +12,13 @@ public class Goblin extends Enemy {
    @Override
     public String attack(Iwarrior target, DiceRoller dice) {
  
-    //apply poison is boring so diece roller help me to make it as a special case 
+   
     target.takeDamage(getBaseDamage());
     String result = getName() + " attacks you for " + getBaseDamage() + " damage.";
     
-    if (target instanceof Player player)
+    if (target instanceof Player player) // instanceof tells you what an object really is at runtime
     {
+        //apply poison is boring so diece roller help me to make it as a special case 
         int poisonChance = dice.roll(4);
         if (poisonChance == 1) {  
         

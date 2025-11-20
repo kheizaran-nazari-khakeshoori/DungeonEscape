@@ -45,7 +45,6 @@ view/ItemSelectionWindow.class
 model/EnemyFactory.class
 controller/EffectManager.class
 model/PoisonDartTrap.class
-com/dungeonescape/GameState.class
 view/LogPanel.class
 model/Effect.class
 com/dungeonescape/Main.class

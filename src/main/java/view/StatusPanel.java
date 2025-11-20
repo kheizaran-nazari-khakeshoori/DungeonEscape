@@ -32,8 +32,10 @@ public class StatusPanel extends JPanel {
         setBorder(BorderFactory.createTitledBorder("Status"));
 
         playerPanel = new JPanel(new BorderLayout(10, 5));
+        //playerPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         JPanel playerInfoPanel = new JPanel();
         playerInfoPanel.setLayout(new BoxLayout(playerInfoPanel, BoxLayout.Y_AXIS));
+        
 
         playerNameLabel = new JLabel();
         playerNameLabel.setFont(new Font("SansSerif", Font.BOLD, 14));
@@ -42,6 +44,7 @@ public class StatusPanel extends JPanel {
         goldLabel.setForeground(new Color(218, 165, 32)); 
         playerInfoPanel.add(playerNameLabel);
         playerInfoPanel.add(goldLabel);
+        //playerInfoPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
         playerHealthBar = new JProgressBar();
         playerHealthBar.setStringPainted(true);

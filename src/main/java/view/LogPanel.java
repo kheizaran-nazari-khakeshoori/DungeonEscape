@@ -28,7 +28,7 @@ public class LogPanel extends JPanel {
     }
 
     public void addMessage(String message) {
-        logArea.append(message + "\n");
+        logArea.append(message + "\n");// i am not clearing the old text 
         // Auto-scroll to the bottom
         logArea.setCaretPosition(logArea.getDocument().getLength());
     }

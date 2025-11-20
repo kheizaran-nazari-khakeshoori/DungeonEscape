@@ -1,6 +1,6 @@
 package model;
 import utils.DiceRoller;
-public interface Iwarrior  {
+public interface Iwarrior{
     String getName();
     int getHealth();
     int getMaxHealth();
@@ -14,5 +14,6 @@ public interface Iwarrior  {
 
     String attack(Iwarrior target, DiceRoller dice) throws exceptions.InvalidMoveException;
     String applyTurnEffects();
+    
 }
 

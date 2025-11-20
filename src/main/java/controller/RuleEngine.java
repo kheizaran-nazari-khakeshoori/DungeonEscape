@@ -17,6 +17,7 @@ public class RuleEngine {
     public static final String ENEMY_DAMAGE_SCALING = "ENEMY_DAMAGE_SCALING";
     public static final String POISON_RESISTANCE = "POISON_RESISTANCE";
     public static final String SUPER_POWER = "SUPER_POWER";
+    public static final String Magic= "Magic";
     
 
     public RuleEngine() {
@@ -28,6 +29,7 @@ public class RuleEngine {
         rules.put(ENEMY_DAMAGE_SCALING, 0.1); 
         rules.put(POISON_RESISTANCE, 1.0); 
         rules.put(SUPER_POWER , 0.85);
+        rules.put(Magic,0.57);
 
     }
 

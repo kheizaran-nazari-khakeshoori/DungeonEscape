@@ -20,8 +20,8 @@ import model.Bean;
 import model.Elfo;
 import model.Lucy;
 import model.Player;
-
-public class PlayerSelectionWindow extends JFrame {// extending the Jfram to directly represent a window in GUI 
+//Extending JFrame lets us easily build and control our own application window in a structured, object-oriented way.
+public class PlayerSelectionWindow extends JFrame {
 
     //frame
     public PlayerSelectionWindow() {
@@ -69,11 +69,12 @@ public class PlayerSelectionWindow extends JFrame {// extending the Jfram to dir
         JLabel imageLabel;
         try {
         // Try to load the image from the resources folder
-            java.net.URL imgURL = getClass().getClassLoader().getResource(imagePath);
+            java.net.URL imgURL = getClass().getClassLoader().getResource(imagePath);//resource locator 
 
             if (imgURL != null) {
                 ImageIcon icon = new ImageIcon(imgURL);
             
+                //These lines resize the character image and create a label to show it, centered in the panel.
                 Image image = icon.getImage().getScaledInstance(300, 300, Image.SCALE_SMOOTH);
                 imageLabel = new JLabel(new ImageIcon(image), SwingConstants.CENTER);
             }    
@@ -92,13 +93,14 @@ public class PlayerSelectionWindow extends JFrame {// extending the Jfram to dir
 
         JPanel bottomPanel = new JPanel(new BorderLayout());
         JTextArea descArea = new JTextArea(description);
+        //bottomPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK,3));
 
         //text 
-        descArea.setWrapStyleWord(true);
-        descArea.setLineWrap(true);
+        descArea.setWrapStyleWord(true);//If a word doesn’t fit at the end of a line, the whole word moves to the next line.
+        descArea.setLineWrap(true);//enables line wrapping.
         descArea.setEditable(false);
         descArea.setForeground(Color.black);
-        descArea.setOpaque(true);//backgrounf color
+        descArea.setOpaque(true);//background color
         descArea.setFont(new Font("MV Boli", Font.PLAIN, 20));
         descArea.setBorder(BorderFactory.createEmptyBorder(0,0,0,0));
 

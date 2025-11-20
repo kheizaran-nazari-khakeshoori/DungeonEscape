@@ -44,3 +44,19 @@ public final class AttackAction {
         return result;
     }
 }
+
+/**
+ * I used a helper class (AttackAction) to handle the attack logic because:
+ * 
+ * 1. Separation of Concerns: The attack process involves multiple steps (damage calculation, weapon durability, inventory updates, and messaging). By moving this logic to a helper class, I keep the Player and Weapon classes focused on their main responsibilities.
+ * 
+ * 2. Reusability: AttackAction can be reused for different types of attacks or extended for other characters (e.g., enemies or NPCs) without duplicating code.
+ * 
+ * 3. Maintainability: If the attack logic changes (e.g., adding critical hits, special effects, or new weapon types), I only need to update one place, making the code easier to maintain and less error-prone.
+ * 
+ * 4. Testability: Having attack logic in a separate class makes it easier to write unit tests for attack scenarios, since the logic is isolated from the rest of the Player or Weapon code.
+ * 
+ * 5. Clean Code: This approach keeps the Player class simpler and more readable, as it delegates complex actions to specialized classes.
+ * 
+ * In summary, using AttackAction follows good software engineering practices by promoting modularity, reusability, and clean separation of responsibilities.
+ */

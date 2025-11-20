@@ -7,7 +7,6 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
 
-import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLayeredPane;
@@ -23,13 +22,12 @@ public final class DungeonPanel extends JLayeredPane {
 
     public DungeonPanel() {
         // Set up the basic panel look
-        setBorder(BorderFactory.createTitledBorder("Dungeon Map"));
         setPreferredSize(new Dimension(400, 300));
 
         // 1. Create the image-drawing panel (bottom layer)
         imagePanel = new ImagePanel();
-        imagePanel.setOpaque(true);
-        add(imagePanel, JLayeredPane.DEFAULT_LAYER);
+        imagePanel.setOpaque(true);//image panel is responsible for painting thee entire background 
+        add(imagePanel, JLayeredPane.DEFAULT_LAYER);//=0
 
         // 2. Create the door buttons (top layer)
         door1Button = new JButton("Enter Left");
@@ -66,11 +64,10 @@ public final class DungeonPanel extends JLayeredPane {
 
     private void styleDoorButton(JButton button) {
         button.setOpaque(false);
-        button.setContentAreaFilled(false);
-        button.setBorderPainted(false);
+        button.setContentAreaFilled(false);//This makes the button’s background transparent
+        button.setBorderPainted(false);//This removes the button’s border, so it doesn’t show the usual button outline.
         button.setForeground(Color.WHITE);
         button.setFont(new Font("Serif", Font.BOLD, 18));
-        button.setFocusPainted(false);
         button.setCursor(new Cursor(Cursor.HAND_CURSOR));
     }
 
@@ -110,3 +107,15 @@ public final class DungeonPanel extends JLayeredPane {
         imagePanel.setForegroundImage(null);
     }
 }
+
+//FlowLayout → components go side by side
+//BorderLayout → components go to North/South/East/West/Center
+//GridLayout → components arranged in rows/columns
+//In these cases, components don’t really “overlap”
+
+//JLayeredPane is designed for overlapping components.
+// | Layer         | Meaning                  |
+// | ------------- | ------------------------ |
+// | Higher number | On top, visible in front |
+// | Lower number  | Behind other components  |
+

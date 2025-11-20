@@ -27,6 +27,7 @@ public class PlayerListPanel extends JPanel {
 
         playersContainer = new JPanel();
         playersContainer.setLayout(new BoxLayout(playersContainer, BoxLayout.Y_AXIS));
+        //playersContainer.setBorder(BorderFactory.createLineBorder(Color.BLACK,3));
         JScrollPane scrollPane = new JScrollPane(playersContainer);
         add(scrollPane, BorderLayout.CENTER);
     }
