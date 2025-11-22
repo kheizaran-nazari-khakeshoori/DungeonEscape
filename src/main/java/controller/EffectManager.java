@@ -5,12 +5,12 @@ import java.util.Iterator;
 import java.util.List;
 
 import model.Effect;
-
+import model.Iwarrior;
 
 //EffectManager is a helper class that manages a collection of effects.
 
 
-public class EffectManager<T> {
+public class EffectManager<T extends Iwarrior> {
     private final List<Effect<T>> activeEffects;
     
     public EffectManager() {
@@ -52,32 +52,7 @@ public class EffectManager<T> {
             }
         }
     }
-    
-    //It applies ALL active effects to the target, removes finished effects, and returns a summary message. 
-    public String applyAllEffects(T target) {
-        if (activeEffects.isEmpty()) {
-            return "";
-        }
-        
-        StringBuilder effectsResult = new StringBuilder();
-        Iterator<Effect<T>> iterator = activeEffects.iterator();
-        
-        while (iterator.hasNext()) {
-            Effect<T> effect = iterator.next();
-            String result = effect.apply(target);
-            
-            if (result != null && !result.isEmpty()) {
-                effectsResult.append(result);
-            }
-            
-            if (effect.isFinished()) {
-                iterator.remove();
-            }
-        }
-        
-        return effectsResult.toString();
-    }
-    
+     
     public List<Effect<T>> getActiveEffects() {
         return new ArrayList<>(activeEffects);
     }

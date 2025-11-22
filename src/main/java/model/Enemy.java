@@ -1,13 +1,14 @@
 package model;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import controller.EffectManager;
 import controller.RuleEngine;
 import utils.DiceRoller;
 
-public abstract class Enemy implements Iwarrior, ITakeable,IOperation_on_Effect<Enemy> {
+public abstract class Enemy implements Iwarrior, ITakeable, IEffectable<Enemy>, Encounter {
     private String name;
     private int maxHealth;
     private  int health;
@@ -189,12 +190,6 @@ public abstract class Enemy implements Iwarrior, ITakeable,IOperation_on_Effect<
     }
     
     @Override
-    public String applyTurnEffects() {
-         return effectManager.applyAllEffects(this);
-       
-    }
-
-    @Override
     public Item dropLoot(DiceRoller dice) {
         // Default: no loot
         return null;
@@ -220,8 +215,9 @@ public abstract class Enemy implements Iwarrior, ITakeable,IOperation_on_Effect<
     protected abstract String getAttackMessage();
     
     @Override
+    
     public void addEffect(Effect<Enemy> effect) {
-       effectManager.addEffect(effect);
+       effectManager.addEffect((Effect)effect);
     }
 
 
@@ -237,10 +233,14 @@ public abstract class Enemy implements Iwarrior, ITakeable,IOperation_on_Effect<
 
 
     @Override
-    public void removeEffectsOfType(Class<?> effectType) {
+    public void removeEffectsOfType(Class<? extends Effect<Enemy>> effectType) {
         effectManager.removeEffectsOfType(effectType);
     }
 
+    @Override
+    public List<Effect<Enemy>> getActiveEffects() {
+        return effectManager.getActiveEffects();
+    }
 }
 
 /**
@@ -254,4 +254,3 @@ public abstract class Enemy implements Iwarrior, ITakeable,IOperation_on_Effect<
  * 
  * If the project grows and I see that damage calculation is shared and identical across multiple classes, or becomes more complex, I will consider refactoring it into a utility or strategy class.
  */
-

@@ -7,12 +7,6 @@ public class Antidote extends Potion {
     }
 
     @Override
-    public void use(Player player) {
-        super.use(player); 
-        player.removeEffectsOfType(PoisonTypeEffect.class);//add extra behavior 
-    }
-
-    @Override
     public String getUseMessage(Player user) {
         return "You used the " + getName() + ". The poison subsides and you recover " + getHealAmount() + " health!";
     }

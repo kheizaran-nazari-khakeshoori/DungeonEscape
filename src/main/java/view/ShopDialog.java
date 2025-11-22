@@ -1,6 +1,5 @@
 package view;
 //shop window 
-
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Dimension;
@@ -29,16 +28,20 @@ public class ShopDialog extends JDialog {
     private final JPanel itemsPanel;
 
     public ShopDialog(Game game, ShopEncounter shopEncounter) {
-        super((JFrame) null, "Welcome to the Shop!", true); 
+        super((JFrame) null, "Welcome to the Shop!", true); //(JFrame) null makes the dialog independent, not attached to any parent frame.
+
         this.game = game;
         this.shopEncounter = shopEncounter;
 
         setLayout(new BorderLayout(10, 10));
         setSize(800, 600);
+        //Every JDialog (and JFrame) has a content pane, which is the “real container” where you can add components.
+        //getContentPane() returns a Container, which is a generic type.
+        //You cast it to JPanel here ((JPanel) contentPane) so you can call JPanel-specific methods like setBorder().
         Container contentPane = getContentPane();
         JPanel panel = (JPanel) contentPane;
         panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-
+        //panel.setBorder(BorderFactory.createLineBorder(Color.BLACK,3));
         itemsPanel = new JPanel(new GridLayout(0, 3, 10, 10)); // 3 columns
         refreshShopItems();
 
@@ -53,7 +56,7 @@ public class ShopDialog extends JDialog {
         int itemCost = item.getCost();
         if (game.getActivePlayer().getGold() >= itemCost) {
            
-            game.getActivePlayer().addGold(-itemCost); 
+            game.getActivePlayer().spendGold(itemCost); 
             game.getActivePlayer().pickItem(item); 
             game.getLogPanel().addMessage("You bought " + item.getName() + " for " + itemCost + " gold.");
             

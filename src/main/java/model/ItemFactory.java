@@ -3,7 +3,7 @@ package model;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ItemFactory {
+public final class ItemFactory {
     
     public static List<Weapon> createStartingWeapons() {
         List<Weapon> weapons = new ArrayList<>();

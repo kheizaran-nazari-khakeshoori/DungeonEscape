@@ -1,5 +1,5 @@
 package model;
-import utils.DiceRoller;
+
 
 public class PoisonSpider extends Enemy {
      public PoisonSpider() {
@@ -7,20 +7,6 @@ public class PoisonSpider extends Enemy {
         super("Poison Spider", 35, 6, 12, "images/enemies/PoisonSpider.png", model.DamageType.POISON);
     }
 
-
-    @Override
-    public String attack(Iwarrior target, DiceRoller dice)  {
-       Player player = (Player) target;
-       target.takeDamage(getBaseDamage());
-        String result = getName() + " bites you for " + getBaseDamage() + " damage.";
-
-        // 75% chance to apply a nasty poison
-        if (dice.roll(4) <= 3) {
-            player.addEffect(new PoisonEffect(4, 4)); // 4 damage for 4 turns
-            result += "\nYou have been poisoned by its venom!";
-        }
-        return result;
-    }
     @Override
     protected String getAttackMessage() {
         return getName() + " bites you for " + getBaseDamage()+ " damage.";

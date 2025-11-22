@@ -28,7 +28,8 @@ public class Defensive_type_Effect implements Effect<Player>  {
         return EFFECT_NAME;
     }
 
-    public int applyDefense(int incomingDamage) {
-        return incomingDamage / 2; 
+    @Override
+    public int modifyIncomingDamage(int incomingDamage) {
+        return incomingDamage / 2; // Reduces damage by 50%
     }
 }

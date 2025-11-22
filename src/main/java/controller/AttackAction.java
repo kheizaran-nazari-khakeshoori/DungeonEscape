@@ -10,12 +10,8 @@ import model.Weapon;
 //AttackAction is a helper class that handles weapon attack logic.
 //this includes damage calculation, weapon durability management, and weapon breaking.
  
-public final class AttackAction {
+public abstract class AttackAction {
   
-    private AttackAction() {
-        throw new AssertionError("Utility class should not be instantiated");
-    }
-    
     
     public static String performWeaponAttack(Player attacker,Iwarrior target,Weapon weapon,Inventory inventory) throws InvalidMoveException {
         

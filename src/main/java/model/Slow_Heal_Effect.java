@@ -25,5 +25,11 @@ public class Slow_Heal_Effect implements Effect<Player>{
 
     @Override
     public String getName() { return EFFECT_NAME; }
+
+    @Override
+    public int modifyIncomingDamage(int incomingDamage) {
+        // Slow heal doesn't modify incoming damage
+        return incomingDamage;
+    }
     
 }

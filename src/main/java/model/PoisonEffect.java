@@ -1,6 +1,6 @@
 package model;
 
-public class PoisonEffect implements PoisonTypeEffect {
+public class PoisonEffect implements Effect<Player>{
     public static final String EFFECT_NAME = "Poison";
     private final int damagePerTurn;
     private int remainingDuration;
@@ -27,5 +27,11 @@ public class PoisonEffect implements PoisonTypeEffect {
 
     @Override
     public String getName() { return EFFECT_NAME; }
+
+    @Override
+    public int modifyIncomingDamage(int incomingDamage) {
+        // Poison doesn't modify incoming damage
+        return incomingDamage;
+    }
 
 }

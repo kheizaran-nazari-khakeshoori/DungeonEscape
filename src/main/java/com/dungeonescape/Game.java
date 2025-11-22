@@ -130,7 +130,7 @@ public class Game {
         {
             if (item instanceof Weapon)
             {
-                startingWeapon = item;
+                startingWeapon = item;//i am not calling specific weapon behavior here
                 break;
             }
         }
@@ -176,16 +176,14 @@ public class Game {
         EncounterResult encounter = doorManager.generateEncounter(activePlayer, enemyToAvoid);
 
 
-        var encounterType = encounter.getType();
-        if (encounterType == EncounterType.ENEMY) {
-            handleEnemyEncounter(encounter.getEnemy());
-        } else if (encounterType == EncounterType.TRAP) {
-            handleTrapEncounter();
-        } else if (encounterType ==EncounterType.EMPTY_ROOM) {
-            handleEmptyRoom();
-        } else if (encounterType ==EncounterType.LEVEL_COMPLETE) {
-            handleLevelComplete();
-        }
+        Map<EncounterType, Runnable> encounterHandlers = new HashMap<>();
+        encounterHandlers.put(EncounterType.ENEMY, () -> handleEnemyEncounter(encounter.getEnemy()));
+        encounterHandlers.put(EncounterType.TRAP, this::handleTrapEncounter);//refrenct to the current game object handle trap methode 
+        encounterHandlers.put(EncounterType.EMPTY_ROOM, this::handleEmptyRoom);
+        encounterHandlers.put(EncounterType.LEVEL_COMPLETE, this::handleLevelComplete);
+
+        Runnable handler = encounterHandlers.get(encounter.getType());
+        if (handler != null) handler.run();
     }
     //Whenever the player opens a door and finds an enemy, this method is called to begin the battle with that enemy.
     private void handleEnemyEncounter(Enemy enemy) {

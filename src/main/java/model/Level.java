@@ -7,7 +7,7 @@ import java.util.function.Supplier;
 
 import utils.DiceRoller;
 
-public class Level<T> {
+public class Level<T extends Encounter> {
     private final String name;
     private final List<Supplier<T>> encounterDeck;
     private final String backgroundImagePath;

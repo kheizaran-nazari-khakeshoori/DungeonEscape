@@ -1,27 +1,32 @@
 package model;
 
+import java.util.List;
+
 import controller.AttackAction;
 import controller.EffectManager;
 import controller.RuleEngine; 
 import exceptions.InvalidMoveException;
 import utils.DiceRoller;
 
-//this class manages the satates and the behaviors that a player must have  
-public abstract class Player implements Iwarrior,IOperation_on_Effect<Player>{
-    private static final int COOLDOWN_TURNS = 3;
-    
+//this class manages the states and the behaviors that a player must have
+//final object → reference fixed, contents can change
+//final primitive (int, double) → value cannot change, ever
+public abstract class Player implements Iwarrior, IEffectable<Player> {
+    private static final int COOLDOWN_TURNS = 3;//one copy 
+
     private final String name;
     private final int maxHealth;
     private int health;
-    private final Inventory inventory;
+    private int gold;
+    private final Inventory inventory;//only one inventory per player
     private Weapon equippedWeapon;
-    private int gold; 
     private final EffectManager<Player> effectManager;
-    
-    private int currentSpecialAbilityCooldown;
     private final RuleEngine ruleEngine; 
+    private int currentSpecialAbilityCooldown;
+    
 
     public Player(String name, int maxHealth) {
+    
         this.name = name;
         this.maxHealth = maxHealth;
         this.health = this.maxHealth;
@@ -31,6 +36,7 @@ public abstract class Player implements Iwarrior,IOperation_on_Effect<Player>{
         this.gold = 0; 
         this.currentSpecialAbilityCooldown = 0; 
         this.ruleEngine = new RuleEngine(); 
+        
     }
 
     @Override
@@ -80,14 +86,17 @@ public abstract class Player implements Iwarrior,IOperation_on_Effect<Player>{
     public String takeDamage(int amount, DamageType type) {
         int finalDamage = amount;
         String message = "";
-        this.health = health - finalDamage ;
-        for (Effect<Player> effect : effectManager.getActiveEffects())
-        {
-            if (effect instanceof Defensive_type_Effect defensive) {
-                finalDamage = (int)(finalDamage - (defensive.applyDefense(amount)));
-                message = " (Reduced by Defensive Stance!)";
+        
+        
+        for (Effect<Player> effect : effectManager.getActiveEffects()) {
+            int reducedDamage = effect.modifyIncomingDamage(finalDamage);
+            if (reducedDamage < finalDamage) {
+                message = " (Reduced by " + effect.getName() + "!)";
+                finalDamage = reducedDamage;
             }
         }
+        
+        this.health = health - finalDamage;
         if(this.health < 0 ) this.health = 0;
         return message; 
     }
@@ -120,7 +129,10 @@ public abstract class Player implements Iwarrior,IOperation_on_Effect<Player>{
         return AttackAction.performWeaponAttack(this, target, equippedWeapon, inventory);
     }
     
+
     @Override
+
+
     public void addEffect(Effect<Player> effect) { 
        effectManager.addEffect(effect);
     }
@@ -136,16 +148,15 @@ public abstract class Player implements Iwarrior,IOperation_on_Effect<Player>{
     }
 
     @Override
-    public void removeEffectsOfType(Class<?> effectType) {
+    public void removeEffectsOfType(Class<? extends Effect<Player>> effectType) {
         effectManager.removeEffectsOfType(effectType);
     }
-
+ 
     @Override
-    public String applyTurnEffects() { 
-        return effectManager.applyAllEffects(this);
+    public List<Effect<Player>> getActiveEffects() {
+        return effectManager.getActiveEffects();
     }
 
-    
     public double getTrapDisarmChance() {
         return 0.33; 
     }

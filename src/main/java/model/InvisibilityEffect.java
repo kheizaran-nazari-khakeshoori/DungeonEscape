@@ -25,5 +25,11 @@ public class InvisibilityEffect implements Effect<Player> {
     @Override
     public String getName() { return EFFECT_NAME; }
 
+    @Override
+    public int modifyIncomingDamage(int incomingDamage) {
+        // Invisibility doesn't modify incoming damage (it prevents combat entirely)
+        return incomingDamage;
+    }
+
    
 }

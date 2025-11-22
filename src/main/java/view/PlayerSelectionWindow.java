@@ -71,18 +71,14 @@ public class PlayerSelectionWindow extends JFrame {
         // Try to load the image from the resources folder
             java.net.URL imgURL = getClass().getClassLoader().getResource(imagePath);//resource locator 
 
-            if (imgURL != null) {
+           
                 ImageIcon icon = new ImageIcon(imgURL);
             
                 //These lines resize the character image and create a label to show it, centered in the panel.
                 Image image = icon.getImage().getScaledInstance(300, 300, Image.SCALE_SMOOTH);
                 imageLabel = new JLabel(new ImageIcon(image), SwingConstants.CENTER);
-            }    
-            else
-            {  
-                // If the image isn't found, show a placeholder text instead
-                imageLabel = new JLabel("[Image not found]", SwingConstants.CENTER);
-            }
+          
+            
         }   
         catch (Exception e) 
         {

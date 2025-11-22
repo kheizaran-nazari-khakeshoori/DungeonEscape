@@ -1,7 +1,10 @@
 package controller;
 
-import exceptions.InvalidMoveException;
-import model.Enemy;
+import java.util.Iterator;
+
+
+import model.Effect;
+import model.IEffectable;
 import model.InvisibilityEffect;
 import model.Iwarrior;
 import model.Player;
@@ -21,6 +24,9 @@ public class CombatManager {
     public String performCombatRound() {
         StringBuilder combatLog = new StringBuilder();
         player.tickCooldowns();
+
+        combatLog.append(applyEffects(player));
+        combatLog.append(applyEffects(enemy));
       
         if (player.isAlive()) {
             try {
@@ -29,30 +35,33 @@ public class CombatManager {
                 combatLog.append(player.getName()).append(" tries to attack but fails: ").append(e.getMessage());
             }
         }
-
        
         if (enemy.isAlive()) {
             try {
                 combatLog.append("\n").append(enemy.attack(player, dice));
             } catch (exceptions.InvalidMoveException e) {
-                    combatLog.append("\n").append(enemy.getName()).append(" is unable to attack! (").append(e.getMessage()).append(")");
+                combatLog.append("\n").append(enemy.getName()).append(" is unable to attack! (").append(e.getMessage()).append(")");
             }
         }
-
-        
-        String playerEffects = player.applyTurnEffects();
-        if (!playerEffects.isEmpty()) {
-            combatLog.append("\n").append(playerEffects);
-        }
-
-        String enemyEffects = enemy.applyTurnEffects();
-        if (!enemyEffects.isEmpty()) {
-            combatLog.append("\n").append(enemyEffects);
-        }
-
         return combatLog.toString();
     }
 
+    private <T extends Iwarrior> String applyEffects(T target) {
+        if (!(target instanceof IEffectable)) return "";//i am checking for compatibility not the behavior
+
+        StringBuilder effectsLog = new StringBuilder();
+        IEffectable<T> effectableTarget = (IEffectable<T>) target;
+
+        Iterator<Effect<T>> iterator = effectableTarget.getActiveEffects().iterator();
+        while (iterator.hasNext()) {
+            Effect<T> effect = iterator.next();
+            effectsLog.append(effect.apply(target));
+            if (effect.isFinished()) {
+                iterator.remove();
+            }
+        }
+        return effectsLog.toString();
+    }
     public String useSpecialAbility() 
     {
         if (!player.isSpecialAbilityReady()) 
@@ -60,16 +69,7 @@ public class CombatManager {
             return player.getName() + "'s special ability is not ready!";
         }
         
-        if (!(enemy instanceof Enemy)) 
-        {
-       
-            return player.getName() + " can't use their ability on this target.";
-        } 
-        else 
-        {
-            Enemy realEnemy = (Enemy) enemy; 
-            return player.useSpecialAbility(realEnemy);
-        }
+        return player.useSpecialAbility(enemy);
     }
 
     
@@ -97,10 +97,8 @@ public class CombatManager {
                 String attackResult = enemy.attack(player, dice);
                 String message = "You failed to escape!\n" + attackResult;
                 return new FleeResult(false, message);
-                }       
-            catch (InvalidMoveException e) 
-            {
-            return new FleeResult(false, "You failed to escape!");
+            } catch (exceptions.InvalidMoveException e) {
+                return new FleeResult(false, "You failed to escape!");
             }
         }
     }

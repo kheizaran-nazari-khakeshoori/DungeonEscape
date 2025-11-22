@@ -74,9 +74,15 @@ public class DoorManager {
         return new EncounterResult(EncounterType.TRAP, null);
     }
 
+    // Check for an empty room
+    double emptyRoomChance = player.getRuleEngine().getRule(RuleEngine.EMPTY_ROOM_CHANCE);
+    if (randomChanceValue < enemyChance + trapChance + emptyRoomChance) { // e.g., 0.85 + 0.15 = 1.0
+        return new EncounterResult(EncounterType.EMPTY_ROOM, null); // Happens if random is between 0.85 and 1.0
+    }
+
+    // As a fallback, return another empty room. This should not be reached with the current rules.
     return new EncounterResult(EncounterType.EMPTY_ROOM, null);
 }
-
 
     public void Enemy_Appearance_count(String enemyName) {
         int newCount = enemyCount.getOrDefault(enemyName, 0) + 1;
