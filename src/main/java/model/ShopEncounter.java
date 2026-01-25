@@ -1,30 +1,16 @@
 package model;
-//this class stores shop item , provides access to items and search for item 
+// This class manages shop inventory and provides access to items
+// Uses dependency injection to follow Open/Closed Principle
 import java.util.ArrayList;
 import java.util.List;
 
 public class ShopEncounter {
-    private final List<Item> availableItems;//list depends on abstract class
+    private final List<Item> availableItems; // List depends on abstract class
 
-    public ShopEncounter() {
-        this.availableItems = new ArrayList<>();
-        populateShopItems();//delegates setup
-    }
-
-    private void populateShopItems() {
-       
-        availableItems.add(new Weapon("Greatsword", "A heavy two-handed sword. High damage, but average durability.", 15, 30, DamageType.SLASHING, "images/weapons/Greatsword.png", 50));
-        availableItems.add(new Weapon("Runic Bow", "A bow etched with runes. Good damage and durability.", 14, 35, DamageType.PIERCING, "images/weapons/RunicBow.png", 45));
-        availableItems.add(new Weapon("Dual Daggers", "A pair of quick daggers. Lower damage, but very durable.", 8, 40, DamageType.PIERCING, "images/weapons/DualDaggers.png", 30));
-        availableItems.add(new Weapon("Enchanted Staff", "A staff crackling with fire. High damage, but fragile.", 18, 20, DamageType.FIRE, "images/weapons/EnchantedStaff.png", 60));
-        availableItems.add(new Weapon("War Axe", "A brutal axe that cleaves through armor. Good damage, low durability.", 16, 25, DamageType.SLASHING, "images/weapons/WarAxe.png", 40));
-        availableItems.add(new Weapon("Crossbow", "A powerful crossbow that hits hard but is very fragile.", 20, 15, DamageType.PIERCING, "images/weapons/CrossBow.png", 55));
-
-        
-        availableItems.add(new Potion("Health Potion", "A swirling red liquid that restores 25 health.", 25, 1, "images/potions/ManaPotion.png", 15));
-        availableItems.add(new StaminaElixir("Stamina Elixir", "Restores 20 health and grants regeneration for 3 turns.", 20, "images/potions/StaminaElixir.png", 25));
-        availableItems.add(new InvisibilityPotion("Invisibility Potion", "Guarantees a successful escape from your next fight.", "images/potions/InvisibilityPotion.png", 35));
-        availableItems.add(new Antidote("Antidote", "A chalky fluid that cures poison.", "images/potions/Antidote.png", 20));
+   
+    public ShopEncounter(List<Item> items) {
+        // Defensive copy to prevent external modification
+        this.availableItems = new ArrayList<>(items);
     }
 
     public List<Item> getAvailableItems() {
@@ -48,6 +34,13 @@ public class ShopEncounter {
         return "You enter the shop.";
     }
 }
-//"In my project, the shop always uses the same set of items, so I kept the item list hardcoded inside the class for simplicity.
-//If I needed different shops or wanted to load items from outside, I would use dependency injection."
-//By using dependency injection (passing the list of items to the constructor), the ShopEncounter class no longer needs to be modified to add, remove, or change shop items; instead, new or different item lists can be provided from outside the class, making it open for extension but closed for modification, thus satisfying the Open/Closed Principle.
+// REFACTORED DESIGN BENEFITS:
+// 1. Open/Closed Principle: Open for extension (create different shops), closed for modification
+// 2. Single Responsibility: This class only manages shop access, not item creation
+// 3. Dependency Injection: Items are injected via constructor for flexibility and testability
+// 4. No Code Duplication: Item creation centralized in ItemFactory
+// 5. Examples of different shop types:
+//    - new ShopEncounter(ItemFactory.createShopItems())       // Standard shop
+//    - new ShopEncounter(createPotionOnlyShop())              // Potion specialty shop
+//    - new ShopEncounter(createBeginnerShop())                // Beginner-friendly shop
+//    - new ShopEncounter(loadShopFromFile("advanced.json"))   // Data-driven shops

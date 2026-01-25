@@ -5,15 +5,13 @@ import controller.RuleEngine;
 
 public class Lucy extends Player {
     public Lucy() {
-        super("Lucy", 85);
+        super("Lucy",85);
        
-        getRuleEngine().setRule(RuleEngine.FLEE_CHANCE, 0.25); 
+        getRuleEngine().setRule(RuleEngine.getFleeChance(), 0.25); 
+        getRuleEngine().setRule(RuleEngine.getTrapDisarmChance(),0.33);
     }
 
-    @Override 
-    public double getTrapDisarmChance() {
-        return 0.20; 
-    }
+    
 
     
     @Override

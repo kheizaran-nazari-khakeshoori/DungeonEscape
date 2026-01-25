@@ -9,6 +9,7 @@ public abstract class Trap {
         this.triggerMessage = triggerMessage;
     }
 
+
     public String getName() {
         return name;
     }

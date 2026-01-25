@@ -28,7 +28,7 @@ public class DoorManager {
     public EncounterResult generateEncounter(Player player, String enemyToAvoid) {
 
         double randomChanceValue = dice.getRandom().nextDouble();
-        double enemyChance = player.getRuleEngine().getRule(RuleEngine.ENEMY_CHANCE);
+        double enemyChance = player.getRuleEngine().getRule(RuleEngine.getEnemyChance());
 
         //level complete
         if (randomChanceValue < enemyChance) 
@@ -69,13 +69,13 @@ public class DoorManager {
     }
 
     //trap encounter 
-    double trapChance = player.getRuleEngine().getRule(RuleEngine.TRAP_CHANCE);
+    double trapChance = player.getRuleEngine().getRule(RuleEngine.getTrapChance());
     if (randomChanceValue < enemyChance + trapChance) {
         return new EncounterResult(EncounterType.TRAP, null);
     }
 
     // Check for an empty room
-    double emptyRoomChance = player.getRuleEngine().getRule(RuleEngine.EMPTY_ROOM_CHANCE);
+    double emptyRoomChance = player.getRuleEngine().getRule(RuleEngine.getEmptyRoomChance());
     if (randomChanceValue < enemyChance + trapChance + emptyRoomChance) { // e.g., 0.85 + 0.15 = 1.0
         return new EncounterResult(EncounterType.EMPTY_ROOM, null); // Happens if random is between 0.85 and 1.0
     }

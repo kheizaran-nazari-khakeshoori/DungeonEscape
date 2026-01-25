@@ -8,4 +8,5 @@ public interface IEffectable<T extends Iwarrior> {//The generic type T must be a
     void removeEffect(String effectName);
     void removeEffectsOfType(Class<? extends Effect<T>> effectType);
     List<Effect<T>> getActiveEffects();
+    
 }

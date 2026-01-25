@@ -78,13 +78,14 @@ public class Game {
         this.itemUsageManager = itemUsageManager;
         this.uiManager = new UIStateManager(dungeonPanel, controlPanel, inventoryPanel,
                                             hudPanel, PlayerListPanel, logPanel);
-        this.shopEncounter = new ShopEncounter();
+        this.shopEncounter = new ShopEncounter(ItemFactory.createShopItems());
         // Setup UI listeners
         setupListeners(dungeonPanel, controlPanel);
         // Start the game
         startGame();
     }
 
+    // Demonstrates subtyping: List<Player> contains Elfo, Bean, Lucy (all subclasses of Player)
     private void initializeParty() {
         this.party.add(this.activePlayer);
         List<Player> allCharacters = new ArrayList<>();
@@ -99,7 +100,28 @@ public class Game {
                 party.add(character);
             }
         }
+        //demonstrateClientSideMultityping();
     }
+
+    // private void demonstrateClientSideMultityping() {
+      
+    //     Player p = new Elfo();        
+
+        
+    //     IEffectable e = p;            
+
+    //     // Optional: root Object type (not required for gameplay)
+    //     Object o = p;
+
+    //     // Use the references to call methods
+    //     e.addEffect(null);             // call via interface
+    //     String name = p.getName();     // call via Player
+    //     o.toString();                  // call via Object, just to demonstrate
+
+    //     // Optional log to show the demo ran
+    //     System.out.println("Client-side multi-typing demo: " + name);
+    // }
+
 
     // connects the game's user interface buttons to the game logic using action listeners.
     private void setupListeners(DungeonPanel dungeonPanel, ControlPanel controlPanel) {

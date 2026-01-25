@@ -14,6 +14,7 @@
 /home/kheizaran/Github/DungeonEscape/src/main/java/com/dungeonescape/Game.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/Elfo.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/InvisibilityEffect.java
+/home/kheizaran/Github/DungeonEscape/src/main/java/model/LevelFactory.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/InvisibilityPotion.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/Iwarrior.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/exceptions/InvalidMoveException.java
@@ -53,6 +54,7 @@
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/PoisonDartTrap.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/view/ItemSelectionWindow.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/controller/EncounterType.java
+/home/kheizaran/Github/DungeonEscape/src/main/java/model/Zock.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/Encounter.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/Inventory.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/utils/DiceRoller.java

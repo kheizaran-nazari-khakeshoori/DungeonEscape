@@ -170,8 +170,8 @@ public abstract class Enemy implements Iwarrior, ITakeable, IEffectable<Enemy>, 
             throw new IllegalArgumentException(" level must start from 1");
         }
 
-        double health_scaling = ruleEngine.getRule(RuleEngine.ENEMY_HEALTH_SCALING);
-        double damage_scaling = ruleEngine.getRule(RuleEngine.ENEMY_DAMAGE_SCALING);
+        double health_scaling = ruleEngine.getRule(RuleEngine.getEnemyHealthScaling());
+        double damage_scaling = ruleEngine.getRule(RuleEngine.getEnemyDamageScaling());
 
         for(int i = 1 ; i < level ; i++)
         {
@@ -217,9 +217,9 @@ public abstract class Enemy implements Iwarrior, ITakeable, IEffectable<Enemy>, 
     @Override
     
     public void addEffect(Effect<Enemy> effect) {
-       effectManager.addEffect((Effect)effect);
+       effectManager.addEffect(effect);
     }
-
+    //
 
     @Override
     public boolean hasEffect(String effectName) {
@@ -254,3 +254,4 @@ public abstract class Enemy implements Iwarrior, ITakeable, IEffectable<Enemy>, 
  * 
  * If the project grows and I see that damage calculation is shared and identical across multiple classes, or becomes more complex, I will consider refactoring it into a utility or strategy class.
  */
+// Enums provide type safety, compile-time checking, and prevent typos. String would allow takeDamage(10, "FIER") to compile but fail silently.

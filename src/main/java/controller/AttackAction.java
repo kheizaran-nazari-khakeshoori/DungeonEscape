@@ -10,9 +10,15 @@ import model.Weapon;
 //AttackAction is a helper class that handles weapon attack logic.
 //this includes damage calculation, weapon durability management, and weapon breaking.
  
-public abstract class AttackAction {
+public final class AttackAction {//only static methods, and there is no logical reason to inherit from them.
+    //do not forget it is a designe rule not a language rule 
   
-    
+    private AttackAction()
+    {
+        throw new AssertionError("No instances allowed");
+    }  
+
+
     public static String performWeaponAttack(Player attacker,Iwarrior target,Weapon weapon,Inventory inventory) throws InvalidMoveException {
         
         if (weapon == null) {
@@ -27,7 +33,7 @@ public abstract class AttackAction {
         
         String result = attacker.getName() + " attacks " + target.getName() + 
                        " with " + weapon.getName() + " for " + baseDamage + 
-                       " damage! " + effectivenessMessage;
+                       " damage! and " + effectivenessMessage;
         
        
         if (weapon.getDurability() <= 0) {
@@ -56,3 +62,5 @@ public abstract class AttackAction {
  * 
  * In summary, using AttackAction follows good software engineering practices by promoting modularity, reusability, and clean separation of responsibilities.
  */
+
+//Attack behavior is uniform across all weapons, so I do not need polymorphic objects

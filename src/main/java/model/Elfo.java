@@ -6,14 +6,11 @@ public class Elfo extends Player {
     public Elfo() {
         super("Elfo", 75);
     
-       getRuleEngine().setRule(RuleEngine.FLEE_CHANCE, 0.75); 
+       getRuleEngine().setRule(RuleEngine.getFleeChance(), 0.75); 
+       getRuleEngine().setRule(RuleEngine.getTrapDisarmChance(),0.75);
     }
 
-    //Because it's NOT setting data - it's CALCULATING/RETURNING a value! 
-    @Override
-    public double getTrapDisarmChance() { 
-        return 0.66; 
-    }
+  
 
     @Override
     public String useSpecialAbility(Iwarrior target) {
@@ -29,4 +26,7 @@ public class Elfo extends Player {
         return "Elfo takes a moment to aim carefully... and lands a precise shot for " +
                bonusDamage + " bonus damage! " + effectiveness;
     }
+
+
+
 }

@@ -2,8 +2,8 @@ package model;
 
 //used to reduce the damage income 
 public class Defensive_type_Effect implements Effect<Player>  {
-    //static : Belongs to the CLASS, not to individual objects
-    public static final String EFFECT_NAME = "Defensive Stance";//is a constant - a value that never changes and is shared by all instances of the class.
+    
+    public static final String EFFECT_NAME = "Defensive Stance";
     private int remainingDuration;
 
     public Defensive_type_Effect(int duration) {
@@ -14,8 +14,13 @@ public class Defensive_type_Effect implements Effect<Player>  {
     public String apply(Player player) {
         if (!isFinished()) {
             remainingDuration--;
+            if (remainingDuration == 0)
+            {
+                return player.getName() + "is in defensive mode!";
+            }
         }
-        return player.getName() + " is in a defensive stance!";
+        return "";
+       
     }
 
     @Override

@@ -7,7 +7,7 @@ import controller.EffectManager;
 import controller.RuleEngine; 
 import exceptions.InvalidMoveException;
 import utils.DiceRoller;
-
+//modeling an entity 
 //this class manages the states and the behaviors that a player must have
 //final object → reference fixed, contents can change
 //final primitive (int, double) → value cannot change, ever
@@ -27,6 +27,8 @@ public abstract class Player implements Iwarrior, IEffectable<Player> {
 
     public Player(String name, int maxHealth) {
     
+       
+
         this.name = name;
         this.maxHealth = maxHealth;
         this.health = this.maxHealth;
@@ -78,8 +80,10 @@ public abstract class Player implements Iwarrior, IEffectable<Player> {
 
     @Override
     public void takeDamage(int amount) {
-        takeDamage(amount,null);
+        takeDamage(amount,null);//no-type version should still use the complete damage-processing logic.
     }
+
+    // In Java, overloading is determined by the parameter list (number, types, and order of parameters), NOT the return type. So yes, having different return types (void vs String) is perfectly valid as long as the parameters are different. The compiler chooses which method to call based on the arguments you pass
 
 
     @Override
@@ -131,8 +135,6 @@ public abstract class Player implements Iwarrior, IEffectable<Player> {
     
 
     @Override
-
-
     public void addEffect(Effect<Player> effect) { 
        effectManager.addEffect(effect);
     }
@@ -151,19 +153,19 @@ public abstract class Player implements Iwarrior, IEffectable<Player> {
     public void removeEffectsOfType(Class<? extends Effect<Player>> effectType) {
         effectManager.removeEffectsOfType(effectType);
     }
+    //= wildcard meaning "any type that is Effect<Player> or a subclass of it"
+    //So you could pass: PoisonEffect.class, InvisibilityEffect.class, etc.
  
     @Override
     public List<Effect<Player>> getActiveEffects() {
         return effectManager.getActiveEffects();
     }
 
-    public double getTrapDisarmChance() {
-        return 0.33; 
-    }
+    
 
     
     public double getPoisonResistance() {
-        return ruleEngine.getRule(RuleEngine.POISON_RESISTANCE);
+        return ruleEngine.getRule(RuleEngine.getPoisonResistance());
     }
 
     public RuleEngine getRuleEngine() {
@@ -171,6 +173,10 @@ public abstract class Player implements Iwarrior, IEffectable<Player> {
     }
 
    
+    public double getTrapDisarmChance() {
+        return ruleEngine.getRule(RuleEngine.getTrapDisarmChance());
+    }
+    
     public abstract String useSpecialAbility(Iwarrior target);
 
     
@@ -187,5 +193,5 @@ public abstract class Player implements Iwarrior, IEffectable<Player> {
 
     
     protected void putSpecialAbilityOnCooldown() { this.currentSpecialAbilityCooldown = COOLDOWN_TURNS; } 
+    //Should you change it? Not necessarily! It depends on your design: Current design is fine if you trust classes in the model package If you want stricter encapsulation, you could make it private and force subclasses to only use it indirectly The current protected design is a reasonable choice for this game
 }
-//

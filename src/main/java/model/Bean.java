@@ -7,8 +7,9 @@ public class Bean extends Player {
     public Bean() {
         
         super("Bean", 100);
-        
-       getRuleEngine().setRule(RuleEngine.POISON_RESISTANCE, 0.5);
+        //Without it, you'd get a compiler error because Java requires calling a parent constructor (either explicitly or implicitly).
+       getRuleEngine().setRule(RuleEngine.getPoisonResistance(), 0.5);
+       getRuleEngine().setRule(RuleEngine.getTrapDisarmChance(),0.20);
     }
 
    
@@ -21,4 +22,9 @@ public class Bean extends Player {
         putSpecialAbilityOnCooldown(); 
         return "Bean scoffs, 'Is that all you've got?' She recovers " + healAmount + " health and braces for the next attack.";
     }
+
+
+
+
+    
 }

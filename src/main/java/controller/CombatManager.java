@@ -2,7 +2,6 @@ package controller;
 
 import java.util.Iterator;
 
-
 import model.Effect;
 import model.IEffectable;
 import model.InvisibilityEffect;
@@ -85,7 +84,7 @@ public class CombatManager {
         }  
         
         double chance = dice.getRandom().nextDouble();
-        double fleeChance = player.getRuleEngine().getRule(RuleEngine.FLEE_CHANCE);
+        double fleeChance = player.getRuleEngine().getRule(RuleEngine.getFleeChance());
         //This is the standard way to check for a percentage chance in programming.
         if (chance < fleeChance) 
         {

@@ -19,6 +19,7 @@ public class Weapon extends Item {
         player.setEquippedWeapon(this);
     }
 
+
     public int getDamage() {
         return damage;
     }
