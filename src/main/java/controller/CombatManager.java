@@ -24,8 +24,8 @@ public class CombatManager {
         StringBuilder combatLog = new StringBuilder();
         player.tickCooldowns();
 
-        combatLog.append(applyEffects(player));
-        combatLog.append(applyEffects(enemy));
+        combatLog.append(applyEffects(player));// ← Player IS-A Iwarrior
+        combatLog.append(applyEffects(enemy)); // ← Iwarrior
       
         if (player.isAlive()) {
             try {
@@ -46,15 +46,16 @@ public class CombatManager {
     }
 
     private <T extends Iwarrior> String applyEffects(T target) {
-        if (!(target instanceof IEffectable)) return "";//i am checking for compatibility not the behavior
+        if (!(target instanceof IEffectable)) return "";//i am checking for compatibility not the behavior , instanceof prevent crash 
+    
 
         StringBuilder effectsLog = new StringBuilder();
-        IEffectable<T> effectableTarget = (IEffectable<T>) target;
+        IEffectable<T> effectableTarget = (IEffectable<T>) target; // ← Subtyping! Same object, different type
 
         Iterator<Effect<T>> iterator = effectableTarget.getActiveEffects().iterator();
         while (iterator.hasNext()) {
             Effect<T> effect = iterator.next();
-            effectsLog.append(effect.apply(target));
+            effectsLog.append(effect.apply(target)); // ← Both references used on same object
             if (effect.isFinished()) {
                 iterator.remove();
             }
@@ -75,6 +76,7 @@ public class CombatManager {
     // Attempts to flee from combat. If the player has the Invisibility effect, fleeing always succeeds and the effect is removed.
     // Otherwise, a random chance is compared to the player's flee chance rule. If the flee fails, the enemy gets a free attack.
     // Returns a FleeResult indicating whether the escape was successful and a message describing the outcome.
+
     public FleeResult attemptFlee() {
         
         if (player.hasEffect(InvisibilityEffect.EFFECT_NAME)) {
@@ -88,7 +90,7 @@ public class CombatManager {
         //This is the standard way to check for a percentage chance in programming.
         if (chance < fleeChance) 
         {
-            return new FleeResult(true, "You successfully escaped!");
+            return new FleeResult(true, "You successfully escaped!");// creating fleeresult object (composition)
         } 
         else
         {
