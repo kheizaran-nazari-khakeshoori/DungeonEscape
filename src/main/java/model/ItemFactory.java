@@ -9,7 +9,7 @@ import java.util.List;
 //Utility class pattern - Pure object creation logic
 public final class ItemFactory {
     
-    // ========== WEAPON CREATION HELPERS (DRY - Define once, reuse everywhere) ==========
+    //WEAPON CREATION HELPERS 
     
     private static Weapon createGreatsword(int cost) {
         return new Weapon("Greatsword", "A heavy two-handed sword. High damage, but average durability.", 
@@ -41,7 +41,7 @@ public final class ItemFactory {
                          20, 15, DamageType.PIERCING, "images/weapons/CrossBow.png", cost);
     }
     
-    // ========== POTION CREATION HELPERS (DRY - Define once, reuse everywhere) ==========
+    //POTION CREATION HELPERS 
     
     private static Potion createHealthPotion(int cost) {
         return new Potion("Health Potion", "A swirling blue liquid that restores 25 health.", 
@@ -63,7 +63,7 @@ public final class ItemFactory {
                            "images/potions/Antidote.png", cost);
     }
     
-    // ========== PUBLIC API - Starting Items (cost = 0) ==========
+    // PUBLIC API - Starting Items (cost = 0) 
     
     public static List<Weapon> createStartingWeapons() {
         List<Weapon> weapons = new ArrayList<>();
@@ -85,7 +85,7 @@ public final class ItemFactory {
         return potions;
     }
     
-    // ========== PUBLIC API - Shop Items (with prices) ==========
+    //  PUBLIC API - Shop Items (with prices)
     
     public static List<Item> createShopItems() {
         List<Item> items = new ArrayList<>();
@@ -108,45 +108,3 @@ public final class ItemFactory {
     }
 }
 
-// ========== OOP PRINCIPLES & DESIGN PATTERNS DEMONSTRATED ==========
-//
-// 1. DRY (Don't Repeat Yourself) ✅
-//    - Each item defined ONCE in private helper methods
-//    - Helper methods reused with different costs
-//    - Single source of truth: change Greatsword stats in ONE place
-//
-// 2. Encapsulation ✅
-//    - Private helper methods hide implementation details
-//    - Public API exposes only what clients need
-//    - Internal item creation logic is encapsulated
-//
-// 3. Single Responsibility Principle ✅
-//    - ItemFactory has ONE job: create items
-//    - Each helper method creates ONE specific item type
-//
-// 4. Open/Closed Principle (Improved) ⚠️
-//    - Still requires modification to add new items (acceptable for static factory)
-//    - But changes are localized to helper methods
-//    - Easy to add new shop types: createBeginnnerShopItems(), createAdvancedShopItems()
-//
-// 5. Factory Pattern ✅
-//    - Centralizes object creation logic
-//    - Clients don't need to know item construction details
-//    - Consistent item creation across the application
-//
-// 6. Parameterization ✅
-//    - Helper methods use cost parameter for flexibility
-//    - Same item definition works for starting items (cost=0) and shop items (cost>0)
-//
-// 7. Code Maintainability ✅
-//    - To change Greatsword damage: edit ONE method (createGreatsword)
-//    - To add new shop type: create new public method using existing helpers
-//    - To add new item: create helper + update relevant public methods
-//
-// BENEFITS OF THIS REFACTORED DESIGN:
-// • No code duplication - each item defined once
-// • Easy to maintain - change stats in one place
-// • Flexible - can create items with any cost
-// • Extensible - easy to add new item collections
-// • Testable - can test individual item creation
-// • Clear separation between definition (helpers) and composition (public methods)

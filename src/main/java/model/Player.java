@@ -57,8 +57,10 @@ public abstract class Player implements Iwarrior, IEffectable<Player> {
     }
 
     public void addGold(int amount) {
-        this.gold = gold + amount ;
-        if (this.gold < 0) this.gold = 0;
+        if (amount > 0)
+        {
+            this.gold = gold + amount;
+        }
     }
    
     public boolean spendGold(int amount) {

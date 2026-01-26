@@ -1,8 +1,8 @@
 package model;
-// This class manages shop inventory and provides access to items
-// Uses dependency injection to follow Open/Closed Principle
 import java.util.ArrayList;
 import java.util.List;
+
+//manages shop access 
 
 public class ShopEncounter {
     private final List<Item> availableItems; // List depends on abstract class
@@ -34,13 +34,4 @@ public class ShopEncounter {
         return "You enter the shop.";
     }
 }
-// REFACTORED DESIGN BENEFITS:
-// 1. Open/Closed Principle: Open for extension (create different shops), closed for modification
-// 2. Single Responsibility: This class only manages shop access, not item creation
-// 3. Dependency Injection: Items are injected via constructor for flexibility and testability
-// 4. No Code Duplication: Item creation centralized in ItemFactory
-// 5. Examples of different shop types:
-//    - new ShopEncounter(ItemFactory.createShopItems())       // Standard shop
-//    - new ShopEncounter(createPotionOnlyShop())              // Potion specialty shop
-//    - new ShopEncounter(createBeginnerShop())                // Beginner-friendly shop
-//    - new ShopEncounter(loadShopFromFile("advanced.json"))   // Data-driven shops
+//for the future i can add selling logic , discount logic 

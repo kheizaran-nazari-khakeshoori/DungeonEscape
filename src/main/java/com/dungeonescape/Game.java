@@ -25,6 +25,7 @@ import model.Bean;
 import model.Elfo;
 import model.Enemy;
 import model.Item;
+import model.ItemFactory;
 import model.Level;
 import model.Lucy;
 import model.Player;

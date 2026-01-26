@@ -13,10 +13,10 @@ import model.Weapon;
 public final class AttackAction {//only static methods, and there is no logical reason to inherit from them.
     //do not forget it is a designe rule not a language rule 
   
-    private AttackAction()
-    {
-        throw new AssertionError("No instances allowed");
-    }  
+    // private AttackAction()
+    // {
+    //     throw new AssertionError("No instances allowed");
+    // }  
 
 
     public static String performWeaponAttack(Player attacker,Iwarrior target,Weapon weapon,Inventory inventory) throws InvalidMoveException {
