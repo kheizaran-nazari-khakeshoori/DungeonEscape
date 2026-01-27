@@ -21,6 +21,7 @@ public abstract class Player implements Iwarrior, IEffectable<Player> {
     private final Inventory inventory;//only one inventory per player
     private Weapon equippedWeapon;
     private final EffectManager<Player> effectManager;
+    private final AttackAction attackaction;
     private final RuleEngine ruleEngine; 
     private int currentSpecialAbilityCooldown;
     
@@ -38,6 +39,7 @@ public abstract class Player implements Iwarrior, IEffectable<Player> {
         this.gold = 0; 
         this.currentSpecialAbilityCooldown = 0; 
         this.ruleEngine = new RuleEngine(); 
+        this.attackaction = new AttackAction();
         
     }
 
@@ -132,7 +134,7 @@ public abstract class Player implements Iwarrior, IEffectable<Player> {
 
     @Override
     public String attack(Iwarrior target, DiceRoller dice) throws InvalidMoveException {
-        return AttackAction.performWeaponAttack(this, target, equippedWeapon, inventory);
+        return attackaction.performWeaponAttack(this, target, equippedWeapon, inventory);
     }
     
 
