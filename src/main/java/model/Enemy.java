@@ -173,13 +173,13 @@ public abstract class Enemy implements Iwarrior, ITakeable, IEffectable<Enemy>, 
         double health_scaling = ruleEngine.getRule(RuleEngine.getEnemyHealthScaling());
         double damage_scaling = ruleEngine.getRule(RuleEngine.getEnemyDamageScaling());
 
-        for(int i = 1 ; i < level ; i++)
+        for(int i = 0 ; i < level ; i++)
         {
-            int newMaxHealth = (int) (getMaxHealth() * health_scaling);
+            int newMaxHealth = (int) (getMaxHealth() * (1 + health_scaling));
             this.maxHealth = newMaxHealth;
             setHealth(getMaxHealth());
 
-            int newDamage = (int)(getBaseDamage() * damage_scaling);
+            int newDamage = (int)(getBaseDamage() * (1 + damage_scaling));
             setBaseDamage(newDamage);
 
         }

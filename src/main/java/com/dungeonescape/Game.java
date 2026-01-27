@@ -262,9 +262,10 @@ public class Game {
 
     private void enterCombat(Enemy enemy) {
         this.currentEnemy = enemy;
-        this.combatManager = new CombatManager(activePlayer, currentEnemy, dice); // Create a new combat manager
         String enemyName = enemy.getName();
-        int level = enemyEncounterCount.getOrDefault(enemyName, 0) + 1;
+        int previousEncounters = enemyEncounterCount.getOrDefault(enemyName, 0);
+        this.combatManager = new CombatManager(activePlayer, currentEnemy, dice, previousEncounters); // Create combat manager with encounter count
+        int level = previousEncounters + 1;
         uiManager.getLogPanel().addMessage("\nA " + enemyName + " (Lvl " + level + ") appears!");
         uiManager.getLogPanel().addMessage(enemy.getHint());
         uiManager.setCombatMode(activePlayer);

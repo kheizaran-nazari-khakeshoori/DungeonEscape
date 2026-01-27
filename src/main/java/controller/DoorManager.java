@@ -22,7 +22,7 @@ public class DoorManager {
     }
 
     public void setEncounters(List<Supplier<Enemy>> encounters) {
-        this.encounters.clear();
+        this.encounters.clear();//delete the old content
         this.encounters.addAll(encounters);
     }
     public EncounterResult generateEncounter(Player player, String enemyToAvoid) {
@@ -58,29 +58,16 @@ public class DoorManager {
             enemy = enemySupplier.get();
         }
 
-        //for making the enemy more strong cause it appears for two or more than once
-        String enemyName = enemy.getName();
-        int previousEncounters = enemyCount.getOrDefault(enemyName, 0);//return the value if the key exists, otherwise return 0
-        if (previousEncounters > 0) {
-            enemy.strengthen(previousEncounters, player.getRuleEngine());//the game logic (based on the player) control the appearance of the enemy 
-        }
-
         return new EncounterResult(EncounterType.ENEMY, enemy);
     }
 
-    //trap encounter 
+    //trap encounter just determin a trap happend
     double trapChance = player.getRuleEngine().getRule(RuleEngine.getTrapChance());
     if (randomChanceValue < enemyChance + trapChance) {
         return new EncounterResult(EncounterType.TRAP, null);
     }
 
-    // Check for an empty room
-    double emptyRoomChance = player.getRuleEngine().getRule(RuleEngine.getEmptyRoomChance());
-    if (randomChanceValue < enemyChance + trapChance + emptyRoomChance) { // e.g., 0.85 + 0.15 = 1.0
-        return new EncounterResult(EncounterType.EMPTY_ROOM, null); // Happens if random is between 0.85 and 1.0
-    }
-
-    // As a fallback, return another empty room. This should not be reached with the current rules.
+    // Empty room (default fallback for any remaining probability)
     return new EncounterResult(EncounterType.EMPTY_ROOM, null);
 }
 

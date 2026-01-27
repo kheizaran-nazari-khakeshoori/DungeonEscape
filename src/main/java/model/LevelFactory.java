@@ -21,7 +21,7 @@ public class LevelFactory {
         return new Level<>(
             "The Goblin Warrens",
             "images/ui/TwoDoors.png",
-            List.of(Goblin::new, Goblin::new, SkeletonWarrior::new)
+            List.of(Goblin::new, Goblin::new, StoneMan::new , PoisonSpider::new)
         );
     }
     

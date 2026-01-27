@@ -14,10 +14,15 @@ public class CombatManager {
     private final Iwarrior enemy;
     private final DiceRoller dice;
 
-    public CombatManager(Player player, Iwarrior enemy, DiceRoller dice) {
+    public CombatManager(Player player, Iwarrior enemy, DiceRoller dice, int previousEncounters) {
         this.player = player;
         this.enemy = enemy;
         this.dice = dice;
+        
+        // Strengthen enemy based on previous encounters with this enemy type
+        if (previousEncounters > 0 && enemy instanceof model.Enemy) {
+            ((model.Enemy) enemy).strengthen(previousEncounters, player.getRuleEngine());
+        }
     }
 
     public String performCombatRound() {
@@ -37,7 +42,8 @@ public class CombatManager {
        
         if (enemy.isAlive()) {
             try {
-                combatLog.append("\n").append(enemy.attack(player, dice));
+                String attackMsg = enemy.attack(player, dice);
+                combatLog.append("\n").append(attackMsg);
             } catch (exceptions.InvalidMoveException e) {
                 combatLog.append("\n").append(enemy.getName()).append(" is unable to attack! (").append(e.getMessage()).append(")");
             }
@@ -106,3 +112,29 @@ public class CombatManager {
 
     
 }
+
+
+/**
+ * Type Safety vs. Polymorphism Design Decision:
+ * 
+ * This class uses Player and Iwarrior base types rather than generic parameters
+ * (e.g., CombatManager<P extends Player, E extends Iwarrior>) to preserve runtime
+ * polymorphism. 
+ * 
+ * With 3 player types (Bean, Lucy, Elfo) and 8 enemy types, the game requires
+ * dynamic type selection at runtime. Making this class generic would require
+ * knowing exact types at compile time (e.g., CombatManager<Bean, Goblin>),
+ * which conflicts with polymorphic enemy/player selection.
+ * 
+ * Trade-off Analysis:
+ * - Generic approach: Perfect compile-time type safety, but loses runtime flexibility
+ * - Current approach: Full runtime polymorphism, type safety through polymorphic dispatch
+ * 
+ * The current design follows the Dependency Inversion Principle (depend on abstractions)
+ * and enables the game to create combat between any Player and Iwarrior combination
+ * without compile-time type constraints.
+ * 
+ * Note: Due to type erasure, the generic approach wouldn't provide runtime benefits
+ * anyway, while the current approach maintains clean, flexible OOP design.
+ */
+//"I used Iwarrior interface to follow the Dependency Inversion Principle. This allows maximum flexibility - any class implementing Iwarrior can be used as an enemy. Due to Java's type erasure, the generic type information is lost at runtime anyway, so using a more specific type wouldn't provide additional type safety. The code works correctly and follows interface-based design principles."
