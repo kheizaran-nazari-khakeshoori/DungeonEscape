@@ -1,7 +1,7 @@
 package view;
 import java.util.List;
 
-import model.Enemy;
+import model.Iwarrior;
 import model.Player;
 
 public class UIStateManager {
@@ -66,10 +66,10 @@ public class UIStateManager {
         controlPanel.setAllButtonsEnabled(false);
     }
 
-    public void updateAllPanels(Player activePlayer,List<Player> party, Enemy currentEnemy) {
+    public void updateAllPanels(Player activePlayer,List<Player> party, Iwarrior currentOpponent) {
         inventoryPanel.updateInventory(activePlayer);
         statusPanel.updateStatus(activePlayer);
-        statusPanel.updateEnemyStatus(currentEnemy);
+        statusPanel.updateEnemyStatus(currentOpponent);
         PlayerListPanel.updatePlayerList(activePlayer, party);
     }
 

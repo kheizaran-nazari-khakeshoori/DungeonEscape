@@ -27,6 +27,9 @@ public class Elfo extends Player {
                bonusDamage + " bonus damage! " + effectiveness;
     }
 
-
+    @Override
+    public String getImagePath() {
+        return "images/players/Elfo.png";
+    }
 
 }

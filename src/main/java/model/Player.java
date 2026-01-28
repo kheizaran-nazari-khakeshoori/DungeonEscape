@@ -10,7 +10,7 @@ import utils.DiceRoller;
 //modeling an entity 
 //this class manages the states and the behaviors that a player must have
 
-public abstract class Player implements Iwarrior, IEffectable<Player> {
+public abstract class Player implements Iwarrior, IEffectable<Player>{
     private static final int COOLDOWN_TURNS = 3;//one copy 
 
     private final String name;
@@ -196,4 +196,24 @@ public abstract class Player implements Iwarrior, IEffectable<Player> {
     
     protected void putSpecialAbilityOnCooldown() { this.currentSpecialAbilityCooldown = COOLDOWN_TURNS; } 
    
+    // Iwarrior interface methods for combat compatibility
+    @Override
+    public String getHint() {
+        return getName() + " is ready for battle!";
+    }
+
+    @Override
+    public abstract String getImagePath();
+
+    @Override
+    public Item dropLoot(DiceRoller dice) {
+        // Players don't drop loot when defeated (or could drop a random item from inventory)
+        return null;
+    }
+
+    @Override
+    public int getGoldValue() {
+        // Players don't have a gold value reward (or could return their current gold)
+        return 0;
+    }
 }

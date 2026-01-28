@@ -23,8 +23,9 @@ public class Bean extends Player {
         return "Bean scoffs, 'Is that all you've got?' She recovers " + healAmount + " health and braces for the next attack.";
     }
 
+    @Override
+    public String getImagePath() {
+        return "images/players/Bean.png";
+    }
 
-
-
-    
 }

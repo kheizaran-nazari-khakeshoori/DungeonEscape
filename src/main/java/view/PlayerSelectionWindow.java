@@ -33,32 +33,33 @@ public class PlayerSelectionWindow extends JFrame {
         
         //using add to add component like the panels to the window 
         add(createCharacterPanel(
-            "Bean",
             "A rebellious princess from Dreamland, surprisingly tough and handy with a sword.",
-            "images/players/Bean.png",
             Bean::new
         ));
 
        
         add(createCharacterPanel(
-            "Elfo",
             "An optimistic elf who left Elfwood for adventure. Not a fighter, but he tries.",
-            "images/players/Elfo.png",
             Elfo::new
         ));
 
         
         add(createCharacterPanel(
-            "Lucy",
             "Bean's personal demon. Fragile but powerful. Do it, do it, do it!",
-            "images/players/Lucy.png",
             Lucy::new
         ));
+
+        
     }
 
     //characters
     //So, the type is JPanel because the method’s purpose is to build and give you a ready-to-use JPanel.
-    private JPanel createCharacterPanel(String name, String description, String imagePath, Supplier<Player> playerSupplier) {
+    private JPanel createCharacterPanel(String description, Supplier<Player> playerSupplier) {
+        // Create an instance to get name and image path (DRY principle - Single Source of Truth)
+        Player player = playerSupplier.get();
+        String name = player.getName();
+        String imagePath = player.getImagePath();
+        
         JPanel panel = new JPanel(new BorderLayout(5, 10));//You are saying: “This panel will use a BorderLayout to arrange its components.”
         panel.setBorder(BorderFactory.createLineBorder(Color.GRAY,3));
 

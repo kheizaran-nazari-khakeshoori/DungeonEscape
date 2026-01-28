@@ -26,6 +26,7 @@ import model.Elfo;
 import model.Enemy;
 import model.Item;
 import model.ItemFactory;
+import model.Iwarrior;
 import model.Level;
 import model.Lucy;
 import model.Player;
@@ -50,7 +51,7 @@ public class Game {
     
     private final Player activePlayer;
     private final List<Player> party;
-    private Enemy currentEnemy;
+    private Iwarrior currentEnemy;
 
     // Managers 
     private final DiceRoller dice;
@@ -86,7 +87,6 @@ public class Game {
         startGame();
     }
 
-    // Demonstrates subtyping: List<Player> contains Elfo, Bean, Lucy (all subclasses of Player)
     private void initializeParty() {
         this.party.add(this.activePlayer);
         List<Player> allCharacters = new ArrayList<>();
@@ -101,27 +101,10 @@ public class Game {
                 party.add(character);
             }
         }
-        //demonstrateClientSideMultityping();
+        
     }
 
-    // private void demonstrateClientSideMultityping() {
       
-    //     Player p = new Elfo();        
-
-        
-    //     IEffectable e = p;            
-
-    //     // Optional: root Object type (not required for gameplay)
-    //     Object o = p;
-
-    //     // Use the references to call methods
-    //     e.addEffect(null);             // call via interface
-    //     String name = p.getName();     // call via Player
-    //     o.toString();                  // call via Object, just to demonstrate
-
-    //     // Optional log to show the demo ran
-    //     System.out.println("Client-side multi-typing demo: " + name);
-    // }
 
 
     // connects the game's user interface buttons to the game logic using action listeners.
@@ -201,7 +184,7 @@ public class Game {
 
         Map<EncounterType, Runnable> encounterHandlers = new HashMap<>();
         encounterHandlers.put(EncounterType.ENEMY, () -> handleEnemyEncounter(encounter.getEnemy()));
-        encounterHandlers.put(EncounterType.TRAP, this::handleTrapEncounter);//refrenct to the current game object handle trap methode 
+        encounterHandlers.put(EncounterType.TRAP, this::handleTrapEncounter);//refrenct to the current game object handle trap method 
         encounterHandlers.put(EncounterType.EMPTY_ROOM, this::handleEmptyRoom);
         encounterHandlers.put(EncounterType.LEVEL_COMPLETE, this::handleLevelComplete);
 

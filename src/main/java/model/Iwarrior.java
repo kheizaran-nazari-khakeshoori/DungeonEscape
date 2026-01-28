@@ -10,4 +10,10 @@ public interface Iwarrior{
     void takeDamage(int amount);
     String takeDamage(int amount, DamageType type);
     String attack(Iwarrior target, DiceRoller dice) throws exceptions.InvalidMoveException;
+    
+    // Combat interface methods
+    String getHint();
+    String getImagePath();
+    Item dropLoot(DiceRoller dice);
+    int getGoldValue();
 }

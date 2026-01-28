@@ -149,10 +149,12 @@ public abstract class Enemy implements Iwarrior, ITakeable, IEffectable<Enemy>, 
         return effectiveness;
     }
 
+    @Override
     public String getImagePath() {
         return imagePath;
     }
 
+    @Override
     public String getHint() {
         if(!weaknesses.isEmpty())
         {

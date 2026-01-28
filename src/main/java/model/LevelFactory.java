@@ -44,6 +44,7 @@ public class LevelFactory {
         );
     }
     
+  
     // Easy to add new levels in the future:
     // private Level<Enemy> createDragonLair() { ... }
 }

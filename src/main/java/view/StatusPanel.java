@@ -11,7 +11,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 
-import model.Enemy;
+import model.Iwarrior;
 import model.Player;
 
 public class StatusPanel extends JPanel {
@@ -75,14 +75,14 @@ public class StatusPanel extends JPanel {
         }
     }
 
-    public void updateEnemyStatus(Enemy enemy) {
-        boolean enemyVisible = (enemy != null && enemy.isAlive());
+    public void updateEnemyStatus(Iwarrior opponent) {
+        boolean enemyVisible = (opponent != null && opponent.isAlive());
         enemyPanel.setVisible(enemyVisible);
         if (enemyVisible) {
-            enemyNameLabel.setText(enemy.getName() + ":");
-            enemyHealthBar.setMaximum(enemy.getMaxHealth());
-            enemyHealthBar.setValue(enemy.getHealth());
-            enemyHealthBar.setString(enemy.getHealth() + " / " + enemy.getMaxHealth());
+            enemyNameLabel.setText(opponent.getName() + ":");
+            enemyHealthBar.setMaximum(opponent.getMaxHealth());
+            enemyHealthBar.setValue(opponent.getHealth());
+            enemyHealthBar.setString(opponent.getHealth() + " / " + opponent.getMaxHealth());
             setHealthBarColor(enemyHealthBar);
         }
     }

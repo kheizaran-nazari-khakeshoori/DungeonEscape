@@ -28,4 +28,9 @@ public class Lucy extends Player {
         putSpecialAbilityOnCooldown();
         return "Lucy unleashes a reckless flurry, dealing a massive " + damage + " damage! " + effectiveness + "\nShe takes " + penalty + " damage from the exertion.";
     }
+
+    @Override
+    public String getImagePath() {
+        return "images/players/Lucy.png";
+    }
 }
