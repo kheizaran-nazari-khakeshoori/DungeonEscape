@@ -7,7 +7,8 @@ public class Lucy extends Player {
     public Lucy() {
         super("Lucy",85);
        
-        getRuleEngine().setRule(RuleEngine.getFleeChance(), 0.25); 
+        //"This follows the Strategy pattern concept - I'm parameterizing behavior rather than hardcoding it.
+        getRuleEngine().setRule(RuleEngine.getFleeChance(), 0.25); // character-specific state 
         getRuleEngine().setRule(RuleEngine.getTrapDisarmChance(),0.33);
     }
 
@@ -16,6 +17,9 @@ public class Lucy extends Player {
     
     @Override
     public String useSpecialAbility(Iwarrior target) {
+         if (getEquippedWeapon() == null) {
+            return "Lucy tries to aim, but has nothing to shoot with!";
+        }
         int damage = 35;
         int penalty = 10;
 

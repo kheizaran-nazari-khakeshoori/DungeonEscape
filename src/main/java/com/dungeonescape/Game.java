@@ -52,7 +52,7 @@ public class Game {
     private final List<Player> party;
     private Enemy currentEnemy;
 
-    // Managers (single responsibility classes)
+    // Managers 
     private final DiceRoller dice;
     private final DoorManager doorManager;
     private final TrapManager trapManager;

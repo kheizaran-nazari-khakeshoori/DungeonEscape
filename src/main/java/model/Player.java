@@ -9,8 +9,7 @@ import exceptions.InvalidMoveException;
 import utils.DiceRoller;
 //modeling an entity 
 //this class manages the states and the behaviors that a player must have
-//final object → reference fixed, contents can change
-//final primitive (int, double) → value cannot change, ever
+
 public abstract class Player implements Iwarrior, IEffectable<Player> {
     private static final int COOLDOWN_TURNS = 3;//one copy 
 
@@ -18,7 +17,7 @@ public abstract class Player implements Iwarrior, IEffectable<Player> {
     private final int maxHealth;
     private int health;
     private int gold;
-    private final Inventory inventory;//only one inventory per player
+    private final Inventory inventory;
     private Weapon equippedWeapon;
     private final EffectManager<Player> effectManager;
     private final AttackAction attackaction;
@@ -29,7 +28,6 @@ public abstract class Player implements Iwarrior, IEffectable<Player> {
     public Player(String name, int maxHealth) {
     
        
-
         this.name = name;
         this.maxHealth = maxHealth;
         this.health = this.maxHealth;
@@ -197,5 +195,5 @@ public abstract class Player implements Iwarrior, IEffectable<Player> {
 
     
     protected void putSpecialAbilityOnCooldown() { this.currentSpecialAbilityCooldown = COOLDOWN_TURNS; } 
-    //Should you change it? Not necessarily! It depends on your design: Current design is fine if you trust classes in the model package If you want stricter encapsulation, you could make it private and force subclasses to only use it indirectly The current protected design is a reasonable choice for this game
+   
 }

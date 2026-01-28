@@ -1,5 +1,5 @@
 package model;
-//encapsulation
+
 public abstract class Trap {
     private final String name;
     private final String triggerMessage;

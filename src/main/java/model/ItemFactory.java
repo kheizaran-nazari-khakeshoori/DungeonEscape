@@ -2,7 +2,7 @@ package model;
 
 import java.util.ArrayList;
 import java.util.List;
-// this is an utility class with static methods , i do not want anyone to extend this class 
+// this is a final class with static methods , i do not want anyone to extend this class 
 //Why static?
 //No state needed - ItemFactory doesn't store any data, so no need for instances
 //Convenience - Call directly: ItemFactory.createStartingWeapons() instead of new ItemFactory().createStartingWeapons()
