@@ -143,7 +143,7 @@ public class Game {
         if (startingWeapon != null) {
             try {
                 ItemUseResult result = itemUsageManager.useItem(activePlayer, startingWeapon.getName());
-                uiManager.getLogPanel().addMessage(result.getMessage());
+                uiManager.getLogPanel().addMessage(result.message());
             } 
             catch (InvalidMoveException e) {
                 uiManager.getLogPanel().addMessage("Error equipping starting weapon: " + e.getMessage());
@@ -183,12 +183,12 @@ public class Game {
 
 
         Map<EncounterType, Runnable> encounterHandlers = new HashMap<>();
-        encounterHandlers.put(EncounterType.ENEMY, () -> handleEnemyEncounter(encounter.getEnemy()));
+        encounterHandlers.put(EncounterType.ENEMY, () -> handleEnemyEncounter(encounter.enemy()));
         encounterHandlers.put(EncounterType.TRAP, this::handleTrapEncounter);//refrenct to the current game object handle trap method 
         encounterHandlers.put(EncounterType.EMPTY_ROOM, this::handleEmptyRoom);
         encounterHandlers.put(EncounterType.LEVEL_COMPLETE, this::handleLevelComplete);
 
-        Runnable handler = encounterHandlers.get(encounter.getType());
+        Runnable handler = encounterHandlers.get(encounter.type());
         if (handler != null) handler.run();
     }
     //Whenever the player opens a door and finds an enemy, this method is called to begin the battle with that enemy.
@@ -201,12 +201,12 @@ public class Game {
         // Delegate to TrapManager
         TrapResult result = trapManager.handleTrap(activePlayer);
         uiManager.getLogPanel().addMessage("\n=== TRAP ENCOUNTERED ===");
-        uiManager.displayImage(result.getImagePath());
-        uiManager.getLogPanel().addMessage(result.getMessages());
+        uiManager.displayImage(result.imagePath());
+        uiManager.getLogPanel().addMessage(result.messages());
         uiManager.getLogPanel().addMessage("========================\n");
         updateGUI();
 
-        if (result.isPlayerDied()) {
+        if (result.playerDied()) {
             endGame();
         } else {
             uiManager.setPostEncounterMode();
@@ -335,9 +335,9 @@ public class Game {
 
         // Delegate flee logic to the CombatManager
         FleeResult result = combatManager.attemptFlee();
-        uiManager.getLogPanel().addMessage(result.getLogMessage());
+        uiManager.getLogPanel().addMessage(result.logMessage());
 
-        if (result.isSuccess()) {
+        if (result.success()) {
             String fledEnemyName = currentEnemy.getName();
             this.currentEnemy = null;
             this.combatManager = null;
@@ -370,8 +370,8 @@ public class Game {
         // Try to use the item by calling the dedicated manager
         try {
             ItemUseResult result = itemUsageManager.useItem(activePlayer, selectedItem);
-            uiManager.getLogPanel().addMessage(result.getMessage());
-            if (result.isSuccess()) {
+            uiManager.getLogPanel().addMessage(result.message());
+            if (result.success()) {
                 updateGUI(); // Update UI only on successful use
             }
         } catch (InvalidMoveException e) {
