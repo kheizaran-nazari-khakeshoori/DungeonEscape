@@ -109,8 +109,8 @@ public class Game {
 
     // connects the game's user interface buttons to the game logic using action listeners.
     private void setupListeners(DungeonPanel dungeonPanel, ControlPanel controlPanel) {
-        dungeonPanel.door1Button.addActionListener(e -> chooseDoor(1));
-        dungeonPanel.door2Button.addActionListener(e -> chooseDoor(2));
+        dungeonPanel.addDoor1Listener(e -> chooseDoor(1));
+        dungeonPanel.addDoor2Listener(e -> chooseDoor(2));
         controlPanel.addAttackListener(e -> performCombatRound());
         controlPanel.addSpecialListener(e -> useSpecialAbility());
         controlPanel.addFleeListener(e -> fleeEncounter());
@@ -247,7 +247,7 @@ public class Game {
         this.currentEnemy = enemy;
         String enemyName = enemy.getName();
         int previousEncounters = enemyEncounterCount.getOrDefault(enemyName, 0);
-        this.combatManager = new CombatManager(activePlayer, currentEnemy, dice, previousEncounters); // Create combat manager with encounter count
+        this.combatManager = new CombatManager(activePlayer, currentEnemy, dice, previousEncounters);
         int level = previousEncounters + 1;
         uiManager.getLogPanel().addMessage("\nA " + enemyName + " (Lvl " + level + ") appears!");
         uiManager.getLogPanel().addMessage(enemy.getHint());

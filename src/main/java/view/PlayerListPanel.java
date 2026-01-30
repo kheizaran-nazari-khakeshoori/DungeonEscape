@@ -32,7 +32,7 @@ public class PlayerListPanel extends JPanel {
         add(scrollPane, BorderLayout.CENTER);
     }
 
-    public void updatePlayerList(Player activePlayer, List<Player> allPlayers) {//???
+    public void updatePlayerList(Player activePlayer, List<Player> allPlayers) {
         playersContainer.removeAll();//clears the old visual components 
 
         for (Player p : allPlayers) {

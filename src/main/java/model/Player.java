@@ -24,10 +24,10 @@ public abstract class Player implements Iwarrior, IEffectable<Player>{
     private final RuleEngine ruleEngine; 
     private int currentSpecialAbilityCooldown;
     
+   
 
     public Player(String name, int maxHealth) {
-    
-       
+        
         this.name = name;
         this.maxHealth = maxHealth;
         this.health = this.maxHealth;

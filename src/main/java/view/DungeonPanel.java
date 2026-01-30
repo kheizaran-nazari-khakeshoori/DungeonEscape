@@ -17,8 +17,8 @@ import javax.swing.JPanel;
 
 public final class DungeonPanel extends JLayeredPane {
     private final ImagePanel imagePanel;    // Panel that actually draws the images
-    public JButton door1Button;
-    public JButton door2Button;
+    private final JButton door1Button;
+    private final JButton door2Button;
 
     public DungeonPanel() {
         // Set up the basic panel look
@@ -26,7 +26,7 @@ public final class DungeonPanel extends JLayeredPane {
 
         // 1. Create the image-drawing panel (bottom layer)
         imagePanel = new ImagePanel();
-        imagePanel.setOpaque(true);//image panel is responsible for painting thee entire background 
+        imagePanel.setOpaque(true);//image panel is responsible for painting the entire background 
         add(imagePanel, JLayeredPane.DEFAULT_LAYER);//=0
 
         // 2. Create the door buttons (top layer)
@@ -70,7 +70,18 @@ public final class DungeonPanel extends JLayeredPane {
         button.setFont(new Font("Serif", Font.BOLD, 18));
         button.setCursor(new Cursor(Cursor.HAND_CURSOR));
     }
+    public void addDoor1Listener(java.awt.event.ActionListener listener) {
+        door1Button.addActionListener(listener);
+    }
 
+    public void addDoor2Listener(java.awt.event.ActionListener listener) {
+        door2Button.addActionListener(listener);
+    }
+
+    public void setDoorsVisible(boolean visible) {
+        door1Button.setVisible(visible);
+        door2Button.setVisible(visible);
+    }
     /**
      * Makes sure all child components (buttons and image) fill the window.
      */

@@ -24,8 +24,7 @@ public class UIStateManager {
     }
 
     public void setCombatMode(Player player) {
-        dungeonPanel.door1Button.setVisible(false);
-        dungeonPanel.door2Button.setVisible(false);
+        dungeonPanel.setDoorsVisible(false);
         controlPanel.setAttackButtonVisible(true);
         controlPanel.setFleeButtonVisible(true);
         controlPanel.setSpecialButtonVisible(true);
@@ -41,8 +40,7 @@ public class UIStateManager {
         if (clearImage) {
             dungeonPanel.clearImage();
         }
-        dungeonPanel.door1Button.setVisible(true);
-        dungeonPanel.door2Button.setVisible(true);
+        dungeonPanel.setDoorsVisible(true);
         controlPanel.setAttackButtonVisible(false);
         controlPanel.setFleeButtonVisible(false);
         controlPanel.setContinueButtonVisible(false);
@@ -51,8 +49,7 @@ public class UIStateManager {
     }
 
     public void setPostEncounterMode() {//trap and luck encounter 
-        dungeonPanel.door1Button.setVisible(false);
-        dungeonPanel.door2Button.setVisible(false);
+        dungeonPanel.setDoorsVisible(false);
         controlPanel.setAttackButtonVisible(false);
         controlPanel.setFleeButtonVisible(false);
         controlPanel.setSpecialButtonVisible(false);
@@ -61,8 +58,7 @@ public class UIStateManager {
     }
 
     public void setGameOverMode() {
-        dungeonPanel.door1Button.setVisible(false);
-        dungeonPanel.door2Button.setVisible(false);
+        dungeonPanel.setDoorsVisible(false);
         controlPanel.setAllButtonsEnabled(false);
     }
 

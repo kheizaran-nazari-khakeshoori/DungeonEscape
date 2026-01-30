@@ -1,7 +1,7 @@
 package model;
 
 public class PoisonEffect implements Effect<Player>{
-    public static final String EFFECT_NAME = "Poison";
+    private static final String EFFECT_NAME = "Poison";
     private final int damagePerTurn;
     private int remainingDuration;
 

@@ -7,7 +7,7 @@ public class Bean extends Player {
     public Bean() {
         
         super("Bean", 100);
-        //Without it, you'd get a compiler error because Java requires calling a parent constructor (either explicitly or implicitly).
+        //Without it, I'd get a compiler error because Java requires calling a parent constructor (either explicitly or implicitly).
        getRuleEngine().setRule(RuleEngine.getPoisonResistance(), 0.5);
        getRuleEngine().setRule(RuleEngine.getTrapDisarmChance(),0.20);
     }

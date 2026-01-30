@@ -60,8 +60,8 @@ public class PlayerSelectionWindow extends JFrame {
         String name = player.getName();
         String imagePath = player.getImagePath();
         
-        JPanel panel = new JPanel(new BorderLayout(5, 10));//You are saying: “This panel will use a BorderLayout to arrange its components.”
-        panel.setBorder(BorderFactory.createLineBorder(Color.GRAY,3));
+        JPanel panel = new JPanel(new BorderLayout(5, 10));
+        panel.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY,3));
 
         JLabel nameLabel = new JLabel(name, SwingConstants.CENTER);
         nameLabel.setFont(new Font("MV Boli", Font.PLAIN, 20));

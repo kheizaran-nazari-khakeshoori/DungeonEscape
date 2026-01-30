@@ -41,7 +41,7 @@ public class ControlPanel extends JPanel {
 
     //It keeps the buttons private (encapsulation).
     //Other classes can react to button clicks by providing a listener, but cannot modify the buttons directly.
-    // Public methods to add listeners without exposing the buttons themselves
+
     public void addInventoryListener(ActionListener listener) { inventoryButton.addActionListener(listener); }
     public void addAttackListener(ActionListener listener) { attackButton.addActionListener(listener); }
     public void addFleeListener(ActionListener listener) { fleeButton.addActionListener(listener); }

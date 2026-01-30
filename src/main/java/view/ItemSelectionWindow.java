@@ -68,7 +68,7 @@ public class ItemSelectionWindow extends JFrame {
         potionBorder.setBorder(BorderFactory.createLineBorder(Color.GRAY, 3));
         potionPanel.setBorder(potionBorder);
 
-        ButtonGroup potionGroup = new ButtonGroup();//creating logical group for radiobutton 
+        ButtonGroup potionGroup = new ButtonGroup();// ButtonGroup - NOT a button! It's an invisible manager
         for (Potion potion : availablePotions) {
             JPanel itemCard = createItemCard(potion, potionGroup);
             potionPanel.add(itemCard);
@@ -89,7 +89,7 @@ public class ItemSelectionWindow extends JFrame {
         }
         if (!availablePotions.isEmpty()) {
             selectedPotion = availablePotions.get(0);
-            JPanel firstPotionPanel = (JPanel) potionPanel.getComponent(0);//???
+            JPanel firstPotionPanel = (JPanel) potionPanel.getComponent(0);
             JRadioButton firstPotionButton = (JRadioButton) firstPotionPanel.getComponent(0);
             firstPotionButton.setSelected(true);
         }
