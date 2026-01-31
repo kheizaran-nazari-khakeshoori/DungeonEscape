@@ -1,6 +1,7 @@
 package model;
 
 import controller.RuleEngine;
+import exceptions.InvalidMoveException;
 
 public class Elfo extends Player {
     public Elfo() {
@@ -13,9 +14,9 @@ public class Elfo extends Player {
   
 
     @Override
-    public String useSpecialAbility(Iwarrior target) {
+    public String useSpecialAbility(Iwarrior target) throws InvalidMoveException {
         if (getEquippedWeapon() == null) {
-            return "Elfo tries to aim, but has nothing to shoot with!";
+            throw new InvalidMoveException("you can not attack without weapon");
         }
 
         int bonusDamage = 10;

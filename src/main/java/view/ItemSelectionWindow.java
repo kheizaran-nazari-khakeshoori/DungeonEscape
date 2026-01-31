@@ -43,6 +43,7 @@ public class ItemSelectionWindow extends JFrame {
         //  creating containers for both weapons and potions
         JPanel weaponPanel = new JPanel(new GridLayout(0, 3, 10, 10)); // 3 columns
         JPanel potionPanel = new JPanel(new GridLayout(0, 3, 10, 10)); // 3 columns
+        
 
         // WEAPON SELECTION
         List<Weapon> availableWeapons = ItemFactory.createStartingWeapons(); 
@@ -74,6 +75,7 @@ public class ItemSelectionWindow extends JFrame {
             potionPanel.add(itemCard);
         }
 
+        
         // START BUTTON
         JButton startButton = new JButton("Begin Adventure!");
         startButton.setFont(new Font("Serif", Font.BOLD, 18));
@@ -98,6 +100,7 @@ public class ItemSelectionWindow extends JFrame {
         JPanel selectionContainer = new JPanel(new GridLayout(2, 1, 10, 10));//rows , number of the column , horizontal and vertical gap 
         selectionContainer.add(weaponPanel);
         selectionContainer.add(potionPanel);
+       
 
         add(selectionContainer, BorderLayout.CENTER);
         add(startButton, BorderLayout.SOUTH);

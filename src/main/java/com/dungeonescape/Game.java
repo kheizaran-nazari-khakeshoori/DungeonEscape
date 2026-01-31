@@ -112,7 +112,13 @@ public class Game {
         dungeonPanel.addDoor1Listener(e -> chooseDoor(1));
         dungeonPanel.addDoor2Listener(e -> chooseDoor(2));
         controlPanel.addAttackListener(e -> performCombatRound());//create the listener 
-        controlPanel.addSpecialListener(e -> useSpecialAbility());
+        controlPanel.addSpecialListener(e -> {
+            try {
+                useSpecialAbility();
+            } catch (InvalidMoveException ex) {
+                uiManager.getLogPanel().addMessage("Cannot use special ability: " + ex.getMessage());
+            }
+        });
         controlPanel.addFleeListener(e -> fleeEncounter());
         controlPanel.addInventoryListener(e -> manageInventory());
         controlPanel.addContinueListener(e -> {
@@ -279,7 +285,7 @@ public class Game {
         }
     }
 
-    private void useSpecialAbility() {
+    private void useSpecialAbility() throws InvalidMoveException {
         if (combatManager == null || !activePlayer.isAlive()) {
             return;
         }

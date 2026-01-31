@@ -14,7 +14,6 @@
 /home/kheizaran/Github/DungeonEscape/src/main/java/com/dungeonescape/Game.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/Elfo.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/InvisibilityEffect.java
-/home/kheizaran/Github/DungeonEscape/src/main/java/model/Dagmar.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/LevelFactory.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/InvisibilityPotion.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/Iwarrior.java
@@ -43,6 +42,7 @@
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/Potion.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/controller/RuleEngine.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/PoisonSpider.java
+/home/kheizaran/Github/DungeonEscape/src/main/java/model/Shield.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/view/UIStateManager.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/view/GameWindow.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/controller/DoorManager.java

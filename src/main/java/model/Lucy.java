@@ -1,6 +1,7 @@
 package model;
 
 import controller.RuleEngine;
+import exceptions.InvalidMoveException;
 
 
 public class Lucy extends Player {
@@ -16,9 +17,9 @@ public class Lucy extends Player {
 
     
     @Override
-    public String useSpecialAbility(Iwarrior target) {
-         if (getEquippedWeapon() == null) {
-            return "Lucy tries to aim, but has nothing to shoot with!";
+    public String useSpecialAbility(Iwarrior target) throws InvalidMoveException{
+        if (getEquippedWeapon() == null) {
+           throw new InvalidMoveException("you can not attack without weapon");
         }
         int damage = 35;
         int penalty = 10;

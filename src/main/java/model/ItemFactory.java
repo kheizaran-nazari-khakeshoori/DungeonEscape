@@ -62,6 +62,11 @@ public final class ItemFactory {
         return new Antidote("Antidote", "A chalky fluid that cures poison.", 
                            "images/potions/Antidote.png", cost);
     }
+
+
+     
+   
+
     
     // PUBLIC API - Starting Items (cost = 0) 
     
@@ -85,6 +90,8 @@ public final class ItemFactory {
         return potions;
     }
     
+   
+
     //  PUBLIC API - Shop Items (with prices)
     
     public static List<Item> createShopItems() {
@@ -103,6 +110,8 @@ public final class ItemFactory {
         items.add(createStaminaElixir(25));
         items.add(createInvisibilityPotion(35));
         items.add(createAntidote(20));
+
+        
         
         return items;
     }

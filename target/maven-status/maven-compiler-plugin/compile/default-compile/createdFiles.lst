@@ -22,6 +22,7 @@ exceptions/InvalidMoveException.class
 view/PlayerSelectionWindow.class
 model/Bean.class
 controller/TrapManager.class
+model/Shield.class
 model/Elfo.class
 controller/ItemUseResult.class
 model/Encounter.class
@@ -42,7 +43,6 @@ model/InvisibilityPotion.class
 view/ItemSelectionWindow.class
 controller/EffectManager.class
 model/PoisonDartTrap.class
-model/Dagmar.class
 view/LogPanel.class
 model/Effect.class
 com/dungeonescape/Main.class

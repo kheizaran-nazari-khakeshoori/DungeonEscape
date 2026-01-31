@@ -49,6 +49,7 @@ public class PlayerSelectionWindow extends JFrame {
             Lucy::new
         ));
 
+      
         
     }
 
@@ -84,6 +85,7 @@ public class PlayerSelectionWindow extends JFrame {
         catch (Exception e) 
         {
             imageLabel = new JLabel("[Error loading image]", SwingConstants.CENTER);
+            //imageLabel.setForeground(Color.RED);
         }
         panel.add(imageLabel, BorderLayout.CENTER);
 

@@ -179,7 +179,7 @@ public abstract class Player implements Iwarrior, IEffectable<Player>{
         return ruleEngine.getRule(RuleEngine.getTrapDisarmChance());
     }
     
-    public abstract String useSpecialAbility(Iwarrior target);
+    public abstract String useSpecialAbility(Iwarrior target) throws InvalidMoveException;
 
     
     public boolean isSpecialAbilityReady() {

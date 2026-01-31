@@ -2,6 +2,7 @@ package controller;
 
 import java.util.Iterator;
 
+import exceptions.InvalidMoveException;
 import model.Effect;
 import model.IEffectable;
 import model.InvisibilityEffect;
@@ -68,7 +69,7 @@ public class CombatManager {
         }
         return effectsLog.toString();
     }
-    public String useSpecialAbility() 
+    public String useSpecialAbility() throws InvalidMoveException
     {
         if (!player.isSpecialAbilityReady()) 
         {
