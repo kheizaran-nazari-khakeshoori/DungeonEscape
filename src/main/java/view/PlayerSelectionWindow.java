@@ -37,7 +37,7 @@ public class PlayerSelectionWindow extends JFrame {
             Bean::new
         ));
 
-       
+
         add(createCharacterPanel(
             "An optimistic elf who left Elfwood for adventure. Not a fighter, but he tries.",
             Elfo::new

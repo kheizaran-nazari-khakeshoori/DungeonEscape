@@ -43,7 +43,8 @@ public class ControlPanel extends JPanel {
     //Other classes can react to button clicks by providing a listener, but cannot modify the buttons directly.
 
     public void addInventoryListener(ActionListener listener) { inventoryButton.addActionListener(listener); }
-    public void addAttackListener(ActionListener listener) { attackButton.addActionListener(listener); }
+    public void addAttackListener(ActionListener listener) { attackButton.addActionListener(listener); } // Receives the listener from Game.java (the listener parameter)
+    //Forwards it to attackButton
     public void addFleeListener(ActionListener listener) { fleeButton.addActionListener(listener); }
     public void addShopListener(ActionListener listener) { shopButton.addActionListener(listener); } 
     public void addContinueListener(ActionListener listener) { continueButton.addActionListener(listener); } 

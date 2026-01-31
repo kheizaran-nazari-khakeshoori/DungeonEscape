@@ -111,7 +111,7 @@ public class Game {
     private void setupListeners(DungeonPanel dungeonPanel, ControlPanel controlPanel) {
         dungeonPanel.addDoor1Listener(e -> chooseDoor(1));
         dungeonPanel.addDoor2Listener(e -> chooseDoor(2));
-        controlPanel.addAttackListener(e -> performCombatRound());
+        controlPanel.addAttackListener(e -> performCombatRound());//create the listener 
         controlPanel.addSpecialListener(e -> useSpecialAbility());
         controlPanel.addFleeListener(e -> fleeEncounter());
         controlPanel.addInventoryListener(e -> manageInventory());
@@ -141,7 +141,7 @@ public class Game {
             }
         }
         if (startingWeapon != null) {
-            try {
+            try { 
                 ItemUseResult result = itemUsageManager.useItem(activePlayer, startingWeapon.getName());
                 uiManager.getLogPanel().addMessage(result.message());
             } 

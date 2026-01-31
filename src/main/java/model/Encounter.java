@@ -8,5 +8,5 @@ package model;
 //   that ensures levels only contain valid encounter types.
  
 public interface Encounter {
-    String getName();
+    //String getName();
 }
