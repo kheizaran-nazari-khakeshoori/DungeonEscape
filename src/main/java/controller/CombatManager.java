@@ -93,6 +93,10 @@ public class CombatManager {
         }  
         
         double chance = dice.getRandom().nextDouble();
+        //This is a chained method call:
+        //dice.getRandom() - Calls the getRandom() method on the DiceRoller object, which returns Java's Random object (the random number generator)
+        //.nextDouble() - Calls nextDouble() on that Random object, which generates a random decimal number between 0.0 (inclusive) and 1.0 (exclusive)
+
         double fleeChance = player.getRuleEngine().getRule(RuleEngine.getFleeChance());
         //This is the standard way to check for a percentage chance in programming.
         if (chance < fleeChance) 
@@ -139,3 +143,13 @@ public class CombatManager {
  * anyway, while the current approach maintains clean, flexible OOP design.
  */
 //"I used Iwarrior interface to follow the Dependency Inversion Principle. This allows maximum flexibility - any class implementing Iwarrior can be used as an enemy. Due to Java's type erasure, the generic type information is lost at runtime anyway, so using a more specific type wouldn't provide additional type safety. The code works correctly and follows interface-based design principles."
+
+
+// for double randomchance 
+// In DiceRoller.java
+// public double nextDouble() {
+//     return random.nextDouble();
+// }
+
+// // In CombatManager.java
+// double chance = dice.nextDouble(); // ✓ Only talks to dice, not dice's internals

@@ -17,6 +17,7 @@ public class LevelFactory {
         levels.add(createHauntedHalls());
         levels.add(createCreatureCaves());
         
+        
         return levels;
     }
     
@@ -45,6 +46,7 @@ public class LevelFactory {
     }
     
   
+    }
     // Easy to add new levels in the future:
     // private Level<Enemy> createDragonLair() { ... }
-}
+

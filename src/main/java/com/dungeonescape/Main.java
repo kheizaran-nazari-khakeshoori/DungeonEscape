@@ -6,7 +6,7 @@ import view.PlayerSelectionWindow;
 
 public class Main {
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
+        SwingUtilities.invokeLater(() -> { // it ensures my GUI code runs on the correct thread.
             new PlayerSelectionWindow().setVisible(true);
         });
     }    

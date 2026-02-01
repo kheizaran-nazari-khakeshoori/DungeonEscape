@@ -5,6 +5,7 @@ model/Antidote.class
 model/ItemFactory.class
 model/SpikeTrap.class
 controller/RuleEngine.class
+model/Wizard.class
 model/MimicChest.class
 model/TrapFactory.class
 controller/DoorManager.class
@@ -22,7 +23,6 @@ exceptions/InvalidMoveException.class
 view/PlayerSelectionWindow.class
 model/Bean.class
 controller/TrapManager.class
-model/Shield.class
 model/Elfo.class
 controller/ItemUseResult.class
 model/Encounter.class

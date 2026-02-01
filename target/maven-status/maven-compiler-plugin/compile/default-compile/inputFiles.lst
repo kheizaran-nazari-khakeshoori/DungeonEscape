@@ -35,6 +35,7 @@
 /home/kheizaran/Github/DungeonEscape/src/main/java/controller/TrapResult.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/Trap.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/SkeletonWarrior.java
+/home/kheizaran/Github/DungeonEscape/src/main/java/model/Wizard.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/Antidote.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/controller/TrapManager.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/view/PlayerListPanel.java
@@ -42,7 +43,6 @@
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/Potion.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/controller/RuleEngine.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/model/PoisonSpider.java
-/home/kheizaran/Github/DungeonEscape/src/main/java/model/Shield.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/view/UIStateManager.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/view/GameWindow.java
 /home/kheizaran/Github/DungeonEscape/src/main/java/controller/DoorManager.java

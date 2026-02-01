@@ -43,7 +43,7 @@ public class EffectManager<T extends Iwarrior> {
     }
     
     //remove all the effects of one type in the list of activeeffect 
-    public void removeEffectsOfType(Class<?> effectType) {
+    public void removeEffectsOfType(Class<?> effectType) { //effectManager.removeEffectsOfType(Defensive_Type_Effect.class);
         Iterator<Effect<T>> iterator = activeEffects.iterator();//do not forget that iterator is a tool for  interating through a collection like list 
         while (iterator.hasNext()) {
             Effect<T> effect = iterator.next();
