@@ -11,7 +11,7 @@ import utils.DiceRoller;
 //this class manages the states and the behaviors that a player must have
 
 public abstract class Player implements Iwarrior, IEffectable<Player>{
-    private static final int COOLDOWN_TURNS = 3;//one copy 
+    private static final int COOLDOWN_TURNS = 3;
 
     private final String name;
     private final int maxHealth;
@@ -152,7 +152,7 @@ public abstract class Player implements Iwarrior, IEffectable<Player>{
     }
 
     @Override
-    public void removeEffectsOfType(Class<? extends Effect<Player>> effectType) {
+    public void removeEffectsOfType(Class<? extends Effect<Player>> effectType) {// it will get any object of that class to be able to remove all of them 
         effectManager.removeEffectsOfType(effectType);
     }
     //= wildcard meaning "any type that is Effect<Player> or a subclass of it"
