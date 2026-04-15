@@ -10,18 +10,44 @@ import utils.DiceRoller;
 //modeling an entity 
 //this class manages the states and the behaviors that a player must have
 
-public abstract class Player implements Iwarrior, IEffectable<Player>{
+/**
+ * Represents a player-controlled character in the game.
+ *
+ * This abstract class implements common state and behaviors shared by all
+ * concrete player types (health, inventory, effects, combat actions, etc.).
+ */
+public abstract class Player implements Iwarrior, IEffectable<Player> {
+    /** Number of turns a special ability remains on cooldown after use. */
     private static final int COOLDOWN_TURNS = 3;
 
+    /** The player's display name. */
     private final String name;
+
+    /** Maximum health value for this player. */
     private final int maxHealth;
+
+    /** Current health (0..maxHealth). */
     private int health;
+
+    /** Amount of gold carried by the player. */
     private int gold;
+
+    /** Player's item container. */
     private final Inventory inventory;
+
+    /** Currently equipped weapon (may be null). */
     private Weapon equippedWeapon;
+
+    /** Manages status effects applied to this player. */
     private final EffectManager<Player> effectManager;
+
+    /** Helper that encapsulates attack logic. */
     private final AttackAction attackaction;
+
+    /** Holds gameplay rules and stat modifiers. */
     private final RuleEngine ruleEngine; 
+
+    /** Remaining turns until special ability becomes available (0 == ready). */
     private int currentSpecialAbilityCooldown;
     
    
